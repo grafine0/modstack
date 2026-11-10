@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- Application Name and Branding -->
+  <data name="AppName" xml:space="preserve">
+    <value>ModStack</value>
+  </data>
+  <data name="AppSubtitle" xml:space="preserve">
+    <value>Administrador de Pila de Desarrollo</value>
+  </data>
+  <data name="AppTitle" xml:space="preserve">
+    <value>ModStack - Administrador de Pila de Desarrollo Web Modular</value>
+  </data>
+  
+  <!-- Navigation Menu -->
+  <data name="NavDashboard" xml:space="preserve">
+    <value>Panel de control</value>
+  </data>
+  <data name="NavPackageManager" xml:space="preserve">
+    <value>Administrador de paquetes</value>
+  </data>
+  <data name="NavManagePackages" xml:space="preserve">
+    <value>Gestionar paquetes</value>
+  </data>
+  <data name="NavAddPackage" xml:space="preserve">
+    <value>Agregar paquete</value>
+  </data>
+  <data name="NavManageServices" xml:space="preserve">
+    <value>Gestionar servicios</value>
+  </data>
+  <data name="NavServiceLogs" xml:space="preserve">
+    <value>Registros de servicio</value>
+  </data>
+  <data name="NavManageStacks" xml:space="preserve">
+    <value>Gestionar pilas</value>
+  </data>
+  <data name="NavCreateStack" xml:space="preserve">
+    <value>Crear pila</value>
+  </data>
+  <data name="NavManageProjects" xml:space="preserve">
+    <value>Gestionar proyectos</value>
+  </data>
+  <data name="NavCreateProject" xml:space="preserve">
+    <value>Crear proyecto</value>
+  </data>
+  <data name="NavConfigEditor" xml:space="preserve">
+    <value>Editor de configuración</value>
+  </data>
+  <data name="NavHostsFileEditor" xml:space="preserve">
+    <value>Editor de archivo Hosts</value>
+  </data>
+  <data name="NavSettings" xml:space="preserve">
+    <value>Configuración</value>
+  </data>
+  <data name="NavAbout" xml:space="preserve">
+    <value>Acerca de</value>
+  </data>
+  
+  <!-- Section Headers -->
+  <data name="SectionPackages" xml:space="preserve">
+    <value>PAQUETES</value>
+  </data>
+  <data name="SectionServices" xml:space="preserve">
+    <value>SERVICIOS</value>
+  </data>
+  <data name="SectionStacks" xml:space="preserve">
+    <value>PILAS</value>
+  </data>
+  <data name="SectionProjects" xml:space="preserve">
+    <value>PROYECTOS</value>
+  </data>
+  <data name="SectionTools" xml:space="preserve">
+    <value>HERRAMIENTAS</value>
+  </data>
+  <data name="SectionSystem" xml:space="preserve">
+    <value>SISTEMA</value>
+  </data>
+  
+  <!-- Service Logs View -->
+  <data name="ServiceLogsTitle" xml:space="preserve">
+    <value>Registros de servicio</value>
+  </data>
+  <data name="ServiceLogsDescription" xml:space="preserve">
+    <value>Registros de aplicación en tiempo real e información del estado de los servicios</value>
+  </data>
+  <data name="LogLevelAll" xml:space="preserve">
+    <value>Todos los niveles</value>
+  </data>
+  <data name="LogLevelInfo" xml:space="preserve">
+    <value>Solo información</value>
+  </data>
+  <data name="LogLevelWarning" xml:space="preserve">
+    <value>Solo advertencia</value>
+  </data>
+  <data name="LogLevelError" xml:space="preserve">
+    <value>Solo error</value>
+  </data>
+  <data name="ButtonRefresh" xml:space="preserve">
+    <value>Actualizar</value>
+  </data>
+  <data name="ButtonClear" xml:space="preserve">
+    <value>Limpiar</value>
+  </data>
+  <data name="ButtonSaveLogs" xml:space="preserve">
+    <value>Guardar registros</value>
+  </data>
+  <data name="ButtonCopyAllLogs" xml:space="preserve">
+    <value>Copiar todos los registros</value>
+  </data>
+  <data name="AutoScroll" xml:space="preserve">
+    <value>Desplazamiento automático</value>
+  </data>
+  <data name="LoadedLogEntries" xml:space="preserve">
+    <value>{0} entradas de registro cargadas</value>
+  </data>
+  <data name="NoLogFileFound" xml:space="preserve">
+    <value>No se encontró archivo de registro. Los registros de depuración aparecerán aquí cuando se generen.</value>
+  </data>
+  
+  <!-- Stack Management View -->
+  <data name="StackManagementTitle" xml:space="preserve">
+    <value>Gestión de pilas</value>
+  </data>
+  <data name="StackManagementDescription" xml:space="preserve">
+    <value>Administre sus pilas de desarrollo y configuraciones de servicios</value>
+  </data>
+  <data name="ButtonCreateStack" xml:space="preserve">
+    <value>Crear pila</value>
+  </data>
+  <data name="ButtonClearFilters" xml:space="preserve">
+    <value>Limpiar filtros</value>
+  </data>
+  <data name="ColumnStackName" xml:space="preserve">
+    <value>Nombre de pila</value>
+  </data>
+  <data name="ColumnDescription" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
+  <data name="ColumnServices" xml:space="preserve">
+    <value>Servicios</value>
+  </data>
+  <data name="ColumnStatus" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="ColumnActions" xml:space="preserve">
+    <value>Acciones</value>
+  </data>
+  <data name="ContextMenuStartStack" xml:space="preserve">
+    <value>Iniciar pila</value>
+  </data>
+  <data name="ContextMenuStopStack" xml:space="preserve">
+    <value>Detener pila</value>
+  </data>
+  <data name="ContextMenuEditStack" xml:space="preserve">
+    <value>Editar pila</value>
+  </data>
+  <data name="ContextMenuDeleteStack" xml:space="preserve">
+    <value>Eliminar pila</value>
+  </data>
+  <data name="TooltipStartStack" xml:space="preserve">
+    <value>Iniciar pila</value>
+  </data>
+  <data name="TooltipStopStack" xml:space="preserve">
+    <value>Detener pila</value>
+  </data>
+  <data name="TooltipEditStack" xml:space="preserve">
+    <value>Editar pila</value>
+  </data>
+  <data name="TooltipDeleteStack" xml:space="preserve">
+    <value>Eliminar pila</value>
+  </data>
+  <data name="NoStacksFound" xml:space="preserve">
+    <value>No se encontraron pilas</value>
+  </data>
+  <data name="NoStacksFoundDescription" xml:space="preserve">
+    <value>Cree su primera pila de desarrollo para comenzar</value>
+  </data>
+  
+  <!-- Common Buttons -->
+  <data name="ButtonOk" xml:space="preserve">
+    <value>Aceptar</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="ButtonSave" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="ButtonDelete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="ButtonEdit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="ButtonClose" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  <data name="ButtonYes" xml:space="preserve">
+    <value>Sí</value>
+  </data>
+  <data name="ButtonNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  
+  <!-- Status Bar -->
+  <data name="StatusReady" xml:space="preserve">
+    <value>Listo</value>
+  </data>
+  <data name="ButtonLogs" xml:space="preserve">
+    <value>Registros</value>
+  </data>
+  
+  <!-- Error Messages -->
+  <data name="ErrorGeneric" xml:space="preserve">
+    <value>Ha ocurrido un error</value>
+  </data>
+  <data name="ErrorLoading" xml:space="preserve">
+    <value>Error al cargar: {0}</value>
+  </data>
+  <data name="ErrorSaving" xml:space="preserve">
+    <value>Error al guardar: {0}</value>
+  </data>
+  
+  <!-- Success Messages -->
+  <data name="SuccessSaved" xml:space="preserve">
+    <value>Guardado correctamente</value>
+  </data>
+  <data name="SuccessDeleted" xml:space="preserve">
+    <value>Eliminado correctamente</value>
+  </data>
+  
+  <!-- Settings -->
+  <data name="SettingsLanguage" xml:space="preserve">
+    <value>Idioma de la aplicación</value>
+  </data>
+  <data name="SettingsLanguageDescription" xml:space="preserve">
+    <value>Elija el idioma de visualización para la aplicación</value>
+  </data>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>Idioma cambiado a {0}</value>
+  </data>
+  <data name="SettingsLanguageChanged" xml:space="preserve">
+    <value>Idioma cambiado</value>
+  </data>
+  <data name="ErrorChangingLanguage" xml:space="preserve">
+    <value>Error al cambiar el idioma: {0}</value>
+  </data>
+  
+  <!-- Settings View -->
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Configuración</value>
+  </data>
+  <data name="SettingsDescription" xml:space="preserve">
+    <value>Configure las preferencias de su aplicación ModStack</value>
+  </data>
+  <data name="ButtonResetToDefaults" xml:space="preserve">
+    <value>Restablecer valores predeterminados</value>
+  </data>
+  <data name="ButtonSaveSettings" xml:space="preserve">
+    <value>Guardar configuración</value>
+  </data>
+  <data name="ButtonApplySettings" xml:space="preserve">
+    <value>Aplicar configuración</value>
+  </data>
+  <data name="SectionAppearanceSettings" xml:space="preserve">
+    <value>Configuración de apariencia</value>
+  </data>
+  <data name="SettingsApplicationTheme" xml:space="preserve">
+    <value>Tema de la aplicación</value>
+  </data>
+  <data name="SettingsApplicationThemeDescription" xml:space="preserve">
+    <value>Elija el tema visual para la aplicación</value>
+  </data>
+  <data name="SettingsAccentColor" xml:space="preserve">
+    <value>Color de acento</value>
+  </data>
+  <data name="SettingsAccentColorDescription" xml:space="preserve">
+    <value>Color principal para botones y resaltados</value>
+  </data>
+  <data name="ButtonChooseColor" xml:space="preserve">
+    <value>Elegir color</value>
+  </data>
+  <data name="SettingsAlwaysOnTop" xml:space="preserve">
+    <value>Siempre visible</value>
+  </data>
+  <data name="SettingsAlwaysOnTopDescription" xml:space="preserve">
+    <value>Mantener la ventana de ModStack sobre otras aplicaciones</value>
+  </data>
+  <data name="SectionApplicationSettings" xml:space="preserve">
+    <value>Configuración de la aplicación</value>
+  </data>
+  <data name="SettingsStartWithWindows" xml:space="preserve">
+    <value>Iniciar con Windows</value>
+  </data>
+  <data name="SettingsStartWithWindowsDescription" xml:space="preserve">
+    <value>Iniciar ModStack automáticamente al arrancar Windows</value>
+  </data>
+  <data name="SettingsMinimizeToTray" xml:space="preserve">
+    <value>Minimizar a la bandeja del sistema</value>
+  </data>
+  <data name="SettingsMinimizeToTrayDescription" xml:space="preserve">
+    <value>Minimizar la aplicación a la bandeja del sistema en lugar de la barra de tareas</value>
+  </data>
+  <data name="SettingsResetMinimizeChoice" xml:space="preserve">
+    <value>Restablecer opción de minimización</value>
+  </data>
+  <data name="SettingsResetMinimizeChoiceDescription" xml:space="preserve">
+    <value>Borrar la preferencia guardada y mostrar el diálogo nuevamente al cerrar</value>
+  </data>
+  <data name="ButtonReset" xml:space="preserve">
+    <value>Restablecer</value>
+  </data>
+  <data name="SettingsAutoRefreshInterval" xml:space="preserve">
+    <value>Intervalo de actualización automática (segundos)</value>
+  </data>
+  <data name="SettingsAutoRefreshIntervalDescription" xml:space="preserve">
+    <value>Frecuencia de actualización automática del estado de los servicios</value>
+  </data>
+  <data name="SettingsEnableLogging" xml:space="preserve">
+    <value>Habilitar registro</value>
+  </data>
+  <data name="SettingsEnableLoggingDescription" xml:space="preserve">
+    <value>Habilitar o deshabilitar la funcionalidad de registro de la aplicación</value>
+  </data>
+  <data name="SettingsLogLevel" xml:space="preserve">
+    <value>Nivel de registro</value>
+  </data>
+  <data name="SettingsLogLevelDescription" xml:space="preserve">
+    <value>Establecer el nivel mínimo de registro para el registro de la aplicación</value>
+  </data>
+  <data name="SectionServiceSettings" xml:space="preserve">
+    <value>Configuración de servicios</value>
+  </data>
+  <data name="SettingsAutoAssignPorts" xml:space="preserve">
+    <value>Asignar puertos automáticamente</value>
+  </data>
+  <data name="SettingsAutoAssignPortsDescription" xml:space="preserve">
+    <value>Asignar automáticamente puertos disponibles para nuevos servicios</value>
+  </data>
+  <data name="SettingsPortRangeStart" xml:space="preserve">
+    <value>Inicio del rango de puertos</value>
+  </data>
+  <data name="SettingsPortRangeStartDescription" xml:space="preserve">
+    <value>Número de puerto inicial para la asignación automática de puertos</value>
+  </data>
+  <data name="SettingsPortRangeEnd" xml:space="preserve">
+    <value>Fin del rango de puertos</value>
+  </data>
+  <data name="SettingsPortRangeEndDescription" xml:space="preserve">
+    <value>Número de puerto final para la asignación automática de puertos</value>
+  </data>
+  <data name="SettingsRootDirectory" xml:space="preserve">
+    <value>Directorio raíz</value>
+  </data>
+  <data name="SettingsRootDirectoryDescription" xml:space="preserve">
+    <value>Directorio raíz donde ModStack crea todos los directorios (proyectos, servicios, registros)</value>
+  </data>
+  <data name="ButtonBrowse" xml:space="preserve">
+    <value>Examinar</value>
+  </data>
+  <data name="SectionNotifications" xml:space="preserve">
+    <value>Notificaciones</value>
+  </data>
+  <data name="NotificationsDescription" xml:space="preserve">
+    <value>Controle cómo y cuándo recibe notificaciones</value>
+  </data>
+  <data name="SettingsShowSuccessNotifications" xml:space="preserve">
+    <value>Mostrar notificaciones de éxito</value>
+  </data>
+  <data name="SettingsShowSuccessNotificationsDescription" xml:space="preserve">
+    <value>Mostrar notificaciones para acciones exitosas</value>
+  </data>
+  <data name="SettingsShowErrorNotifications" xml:space="preserve">
+    <value>Mostrar notificaciones de error</value>
+  </data>
+  <data name="SettingsShowErrorNotificationsDescription" xml:space="preserve">
+    <value>Mostrar notificaciones para errores y fallos</value>
+  </data>
+  <data name="SettingsAutoDismissNotifications" xml:space="preserve">
+    <value>Cerrar notificaciones automáticamente</value>
+  </data>
+  <data name="SettingsAutoDismissNotificationsDescription" xml:space="preserve">
+    <value>Ocultar automáticamente las notificaciones después de un retraso</value>
+  </data>
+  <data name="SettingsDismissTimeout" xml:space="preserve">
+    <value>Tiempo de cierre</value>
+  </data>
+  <data name="SettingsDismissTimeoutDescription" xml:space="preserve">
+    <value>Tiempo de visualización de las notificaciones antes del cierre automático</value>
+  </data>
+  
+  <!-- Create Stack View -->
+  <data name="CreateStackTitle" xml:space="preserve">
+    <value>Crear nueva pila</value>
+  </data>
+  <data name="EditStackTitle" xml:space="preserve">
+    <value>Editar pila</value>
+  </data>
+  <data name="CreateStackSubtitle" xml:space="preserve">
+    <value>Configure una nueva pila de desarrollo con sus servicios preferidos</value>
+  </data>
+  <data name="EditStackSubtitle" xml:space="preserve">
+    <value>Modifique la configuración de su pila de desarrollo</value>
+  </data>
+  <data name="ButtonUpdateStack" xml:space="preserve">
+    <value>Actualizar pila</value>
+  </data>
+  
+  <!-- Config Editor View -->
+  <data name="ConfigEditorNoFileLoaded" xml:space="preserve">
+    <value>Ningún archivo cargado</value>
+  </data>
+  <data name="ConfigEditorLines" xml:space="preserve">
+    <value>Líneas: {0}</value>
+  </data>
+  <data name="ConfigEditorChars" xml:space="preserve">
+    <value>Caracteres: {0}</value>
+  </data>
+  <data name="ConfigEditorModified" xml:space="preserve">
+    <value>Modificado - {0}</value>
+  </data>
+  <data name="ConfigEditorDialogTitle" xml:space="preserve">
+    <value>Abrir archivo de configuración</value>
+  </data>
+  <data name="ConfigEditorLoadingFile" xml:space="preserve">
+    <value>Cargando archivo...</value>
+  </data>
+  <data name="ConfigEditorFileLoadedSuccessfully" xml:space="preserve">
+    <value>Archivo cargado correctamente</value>
+  </data>
+  <data name="ConfigEditorFileNotFound" xml:space="preserve">
+    <value>Archivo no encontrado</value>
+  </data>
+  <data name="ConfigEditorErrorLoadingFile" xml:space="preserve">
+    <value>Error al cargar el archivo: {0}</value>
+  </data>
+  <data name="ConfigEditorLoadError" xml:space="preserve">
+    <value>Error de carga</value>
+  </data>
+  <data name="ConfigEditorSavingFile" xml:space="preserve">
+    <value>Guardando archivo...</value>
+  </data>
+  <data name="ConfigEditorFileSaved" xml:space="preserve">
+    <value>Archivo guardado correctamente</value>
+  </data>
+  <data name="ConfigEditorErrorSavingFile" xml:space="preserve">
+    <value>Error al guardar el archivo: {0}</value>
+  </data>
+  <data name="ConfigEditorSaveError" xml:space="preserve">
+    <value>Error de guardado</value>
+  </data>
+  <data name="ConfigEditorDialogSaveTitle" xml:space="preserve">
+    <value>Guardar archivo de configuración</value>
+  </data>
+  
+  <!-- MainWindow Tooltips -->
+  <data name="TooltipMinimize" xml:space="preserve">
+    <value>Minimizar</value>
+  </data>
+  <data name="TooltipMaximize" xml:space="preserve">
+    <value>Maximizar/Restaurar</value>
+  </data>
+  <data name="TooltipClose" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  
+  <!-- About Section -->
+  <data name="ButtonWebsite" xml:space="preserve">
+    <value>Sitio web</value>
+  </data>
+  <data name="ButtonDocumentation" xml:space="preserve">
+    <value>Documentación</value>
+  </data>
+  <data name="ButtonReportIssue" xml:space="preserve">
+    <value>Reportar problema</value>
+  </data>
+</root>
+

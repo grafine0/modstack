@@ -1,0 +1,394 @@
+{
+  "version": "1.0",
+  "description": "Default packages and versions to seed in the ModStack database",
+  "packages": [
+    {
+      "name": "apache",
+      "displayName": "Apache HTTP Server",
+      "description": "Apache HTTP Server for web hosting",
+      "category": "Web Server",
+      "icon": "apache-icon.png",
+      "isPopular": true,
+      "tags": ["web", "server", "http", "apache"],
+      "packageType": "Service",
+      "versions": [
+        {
+          "version": "2.4.58",
+          "displayName": "Apache HTTP Server 2.4.58",
+          "serviceName": "apache-2.4.58",
+          "releaseDate": "2023-10-01T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 15728640,
+          "downloadUrls": [
+            "https://archive.apache.org/dist/httpd/httpd-2.4.58-win64-VS17.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nginx",
+      "displayName": "Nginx",
+      "description": "High-performance web server and reverse proxy",
+      "category": "Web Server",
+      "icon": "nginx-icon.png",
+      "isPopular": true,
+      "tags": ["web", "server", "nginx", "proxy"],
+      "packageType": "Service",
+      "versions": [
+        {
+          "version": "1.24.0",
+          "displayName": "Nginx 1.24.0",
+          "serviceName": "nginx-1.24.0",
+          "releaseDate": "2023-04-11T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 1048576,
+          "downloadUrls": [
+            "https://nginx.org/download/nginx-1.24.0.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "php",
+      "displayName": "PHP",
+      "description": "PHP scripting language for web development",
+      "category": "Programming Language",
+      "icon": "php-icon.png",
+      "isPopular": true,
+      "tags": ["php", "scripting", "web", "development"],
+      "packageType": "Service",
+      "versions": [
+        {
+          "version": "8.3.0",
+          "displayName": "PHP 8.3.0",
+          "serviceName": "php-8.3.0",
+          "releaseDate": "2023-11-23T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 31457280,
+          "downloadUrls": [
+            "https://windows.php.net/downloads/releases/archives/php-8.3.0-Win32-vs16-x64.zip"
+          ]
+        },
+        {
+          "version": "8.4.2",
+          "displayName": "PHP 8.4.2",
+          "serviceName": "php-8.4.2",
+          "releaseDate": "2024-01-15T00:00:00Z",
+          "isStable": true,
+          "isRecommended": false,
+          "isLTS": false,
+          "size": 32505856,
+          "downloadUrls": [
+            "https://windows.php.net/downloads/releases/archives/php-8.4.2-Win32-vs17-x64.zip"
+          ]
+        },
+        {
+          "version": "8.5.0",
+          "displayName": "PHP 8.5.0",
+          "serviceName": "php-8.5.0",
+          "releaseDate": "2025-11-20T00:00:00Z",
+          "isStable": true,
+          "isRecommended": false,
+          "isLTS": false,
+          "size": 33554432,
+          "downloadUrls": [
+            "https://windows.php.net/downloads/releases/archives/php-8.5.0-Win32-vs17-x64.zip",
+            "https://windows.php.net/downloads/releases/php-8.5.12-1-Win32-vs17-x64.zip"
+          ]
+        }
+      ],
+      "defaultConfiguration": {
+        "port": 9000,
+        "installPath": "C:\\ModStack\\Services\\PHP",
+        "autoStart": false,
+        "registerAsService": false,
+        "availableOptions": [
+          {
+            "key": "memory_limit",
+            "displayName": "Memory Limit",
+            "type": "text",
+            "defaultValue": "256M"
+          },
+          {
+            "key": "max_execution_time",
+            "displayName": "Max Execution Time",
+            "type": "number",
+            "defaultValue": 30
+          },
+          {
+            "key": "upload_max_filesize",
+            "displayName": "Upload Max Filesize",
+            "type": "text",
+            "defaultValue": "2M"
+          },
+          {
+            "key": "post_max_size",
+            "displayName": "Post Max Size",
+            "type": "text",
+            "defaultValue": "8M"
+          },
+          {
+            "key": "enable_fileinfo",
+            "displayName": "Enable Fileinfo",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "File information functions"
+          },
+          {
+            "key": "enable_mbstring",
+            "displayName": "Enable MBString",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "Multibyte string functions"
+          },
+          {
+            "key": "enable_openssl",
+            "displayName": "Enable OpenSSL",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "OpenSSL cryptographic functions"
+          },
+          {
+            "key": "enable_curl",
+            "displayName": "Enable cURL",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "Client URL library"
+          },
+          {
+            "key": "enable_zip",
+            "displayName": "Enable ZIP",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "ZIP archive handling"
+          },
+          {
+            "key": "enable_xml",
+            "displayName": "Enable XML",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "XML parsing functions"
+          },
+          {
+            "key": "enable_json",
+            "displayName": "Enable JSON",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "JSON encoding/decoding"
+          },
+          {
+            "key": "enable_pdo_mysql",
+            "displayName": "Enable PDO MySQL",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "PDO MySQL driver"
+          },
+          {
+            "key": "enable_mysqli",
+            "displayName": "Enable MySQLi",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "MySQL improved extension"
+          },
+          {
+            "key": "enable_gd",
+            "displayName": "Enable GD",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "Image processing library"
+          },
+          {
+            "key": "enable_opcache",
+            "displayName": "Enable OPcache",
+            "type": "boolean",
+            "defaultValue": true,
+            "description": "Opcode cache for improved performance"
+          },
+          {
+            "key": "enable_xdebug",
+            "displayName": "Enable Xdebug",
+            "type": "boolean",
+            "defaultValue": false,
+            "description": "Debugging and profiling extension"
+          },
+          {
+            "key": "enable_ioncube",
+            "displayName": "Enable ionCube Loader",
+            "type": "boolean",
+            "defaultValue": false,
+            "description": "Loader for ionCube encoded PHP files"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mysql",
+      "displayName": "MySQL",
+      "description": "MySQL relational database management system",
+      "category": "Database",
+      "icon": "mysql-icon.png",
+      "isPopular": true,
+      "tags": ["database", "mysql", "sql", "relational"],
+      "packageType": "Service",
+      "versions": [
+        {
+          "version": "8.0.35",
+          "displayName": "MySQL 8.0.35",
+          "serviceName": "mysql-8.0.35",
+          "releaseDate": "2023-10-25T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": true,
+          "size": 524288000,
+          "downloadUrls": [
+            "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.35-winx64.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "postgresql",
+      "displayName": "PostgreSQL",
+      "description": "PostgreSQL advanced relational database system",
+      "category": "Database",
+      "icon": "postgresql-icon.png",
+      "isPopular": true,
+      "tags": ["database", "postgresql", "sql", "advanced"],
+      "packageType": "Service",
+      "versions": [
+        {
+          "version": "16.0",
+          "displayName": "PostgreSQL 16.0",
+          "serviceName": "postgresql-16.0",
+          "releaseDate": "2023-09-14T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 314572800,
+          "downloadUrls": [
+            "https://get.enterprisedb.com/postgresql/postgresql-16.0-1-windows-x64-binaries.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "redis",
+      "displayName": "Redis",
+      "description": "Redis in-memory data structure store",
+      "category": "Database",
+      "icon": "redis-icon.png",
+      "isPopular": true,
+      "tags": ["database", "redis", "cache", "memory"],
+      "packageType": "Service",
+      "versions": [
+        {
+          "version": "5.0.14.1",
+          "displayName": "Redis 5.0.14.1",
+          "serviceName": "redis-5.0.14.1",
+          "releaseDate": "2022-04-17T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": true,
+          "size": 5767168,
+          "downloadUrls": [
+            "https://github.com/tporadowski/redis/releases/download/v5.0.14.1/Redis-x64-5.0.14.1.zip"
+          ]
+        },
+        {
+          "version": "3.0.504",
+          "displayName": "Redis 3.0.504",
+          "serviceName": "redis-3.0.504",
+          "releaseDate": "2016-07-01T00:00:00Z",
+          "isStable": true,
+          "isRecommended": false,
+          "isLTS": false,
+          "size": 5242880,
+          "downloadUrls": [
+            "https://github.com/microsoftarchive/redis/releases/download/win-3.0.504/Redis-x64-3.0.504.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "phpmyadmin",
+      "displayName": "phpMyAdmin",
+      "description": "Web-based MySQL administration tool",
+      "category": "Web Application",
+      "icon": "phpmyadmin-icon.png",
+      "isPopular": false,
+      "tags": ["mysql", "admin", "web", "tool"],
+      "packageType": "StandaloneWebApp",
+      "versions": [
+        {
+          "version": "5.2.1",
+          "displayName": "phpMyAdmin 5.2.1",
+          "serviceName": "phpmyadmin-5.2.1",
+          "releaseDate": "2023-10-01T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 10485760,
+          "downloadUrls": [
+            "https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "laravel",
+      "displayName": "Laravel Framework",
+      "description": "The PHP framework for web artisans",
+      "category": "Framework",
+      "icon": "laravel-icon.png",
+      "isPopular": true,
+      "tags": ["php", "framework", "laravel", "web"],
+      "packageType": "Framework",
+      "versions": [
+        {
+          "version": "10.0.0",
+          "displayName": "Laravel 10.0.0",
+          "serviceName": "laravel-10.0.0",
+          "releaseDate": "2023-02-14T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 2097152,
+          "downloadUrls": [
+            "https://github.com/laravel/laravel/archive/refs/tags/v10.0.0.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wordpress",
+      "displayName": "WordPress",
+      "description": "The world's most popular content management system",
+      "category": "CMS",
+      "icon": "wordpress-icon.png",
+      "isPopular": true,
+      "tags": ["php", "cms", "wordpress", "blog"],
+      "packageType": "Framework",
+      "versions": [
+        {
+          "version": "6.4.0",
+          "displayName": "WordPress 6.4.0",
+          "serviceName": "wordpress-6.4.0",
+          "releaseDate": "2023-11-07T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 52428800,
+          "downloadUrls": [
+            "https://wordpress.org/wordpress-6.4.0.zip"
+          ]
+        }
+      ]
+    }
+  ]
+}

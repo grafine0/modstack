@@ -1,0 +1,838 @@
+<UserControl x:Class="ModStack.GUI.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:loc="clr-namespace:ModStack.GUI.Converters"
+             xmlns:converters="clr-namespace:ModStack.GUI.Converters"
+             Background="{DynamicResource BackgroundBrush}">
+    
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:LanguageDisplayConverter x:Key="LanguageDisplayConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Modern Header -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{loc:Localize SettingsTitle}" 
+                              FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" 
+                               Margin="0,0,0,8"/>
+                    <TextBlock Text="{loc:Localize SettingsDescription}" 
+                              FontSize="14" 
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" 
+                           Orientation="Horizontal" 
+                           VerticalAlignment="Center">
+                    <Button Name="ResetButton"
+                           Style="{StaticResource ModernSecondaryButton}"
+                           Margin="0,0,12,0"       
+                           Width="154"
+                           Height="40"
+                           Command="{Binding ResetCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,8,0"/>
+                            <TextBlock Text="{loc:Localize ButtonResetToDefaults}"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="SaveButton"
+                            Style="{StaticResource ModernPrimaryButton}"
+                            Width="150"
+                            Height="40"
+                           Command="{Binding SaveCommand}"
+                           Click="SaveButton_Click">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- Loading Spinner -->
+                            <Grid Width="16" Height="16" 
+                                  Margin="0,0,8,0"
+                                  Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <!-- Modern Ring Spinner -->
+                                <Ellipse Stroke="{DynamicResource PrimaryButtonTextBrush}" 
+                                        StrokeThickness="2" 
+                                        Width="14" Height="14"
+                                        StrokeDashArray="10,5"
+                                        RenderTransformOrigin="0.5,0.5">
+                                    <Ellipse.RenderTransform>
+                                        <RotateTransform x:Name="SaveButtonSpinnerRotation"/>
+                                    </Ellipse.RenderTransform>
+                                    <Ellipse.Triggers>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard RepeatBehavior="Forever">
+                                                    <DoubleAnimation Storyboard.TargetName="SaveButtonSpinnerRotation"
+                                                                   Storyboard.TargetProperty="Angle"
+                                                                   From="0" To="360" Duration="0:0:0.8"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Ellipse.Triggers>
+                                </Ellipse>
+                            </Grid>
+                            
+                            <!-- Icon (hidden when loading) -->
+                            <TextBlock Text="💾" 
+                                      Margin="0,0,8,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                            
+                            <!-- Button Text -->
+                            <TextBlock Text="{loc:Localize ButtonSaveSettings}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Settings Content -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Disabled"
+                      Margin="0,0,0,20">
+            <StackPanel>
+
+                <!-- Appearance Settings -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,16" Padding="24">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource ModernHeading2}"
+                                  Margin="0,0,0,16">
+                            <Run Text="🎨 "/>
+                            <Run Text="{loc:Localize SectionAppearanceSettings}"/>
+                        </TextBlock>
+
+                        <!-- Language selection -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsLanguage}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsLanguageDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <ComboBox x:Name="LanguageComboBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernComboBox}"
+                                      Width="200"
+                                      ItemsSource="{Binding AvailableLanguages}"
+                                      SelectedItem="{Binding Language, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource LanguageDisplayConverter}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+
+                        <!-- Theme selection -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsApplicationTheme}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsApplicationThemeDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <ComboBox x:Name="ThemeComboBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernComboBox}"
+                                      Width="200"
+                                      ItemsSource="{Binding Themes}"
+                                      SelectedItem="{Binding Theme}"/>
+                        </Grid>
+
+                        <!-- Accent color -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsAccentColor}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsAccentColorDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <Button x:Name="AccentColorButton"
+                                    Grid.Column="1"
+                                    Style="{StaticResource ModernSecondaryButton}"
+                                    Command="{Binding SelectAccentColorCommand}"
+                                    Background="{Binding AccentColorBrush}"
+                                    Foreground="White"
+                                    HorizontalAlignment="Right">
+                                <TextBlock Text="{loc:Localize ButtonChooseColor}"/>
+                            </Button>
+                        </Grid>
+
+                        <!-- Window behavior -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsAlwaysOnTop}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsAlwaysOnTopDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <CheckBox x:Name="AlwaysOnTopCheckBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernToggleSwitch}"
+                                      HorizontalAlignment="Left"
+                                      Margin="12,0,0,0"
+                                      FontSize="14"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      IsChecked="{Binding AlwaysOnTop}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Application Settings -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,16" Padding="24">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource ModernHeading2}"
+                                  Margin="0,0,0,16">
+                            <Run Text="🚀 "/>
+                            <Run Text="{loc:Localize SectionApplicationSettings}"/>
+                        </TextBlock>
+
+                        <!-- Auto-start with Windows -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsStartWithWindows}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsStartWithWindowsDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <CheckBox x:Name="AutoStartCheckBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernToggleSwitch}"
+                                      HorizontalAlignment="Left"
+                                      Margin="12,0,0,0"
+                                      FontSize="14"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      IsChecked="{Binding AutoStart}"/>
+                        </Grid>
+
+                        <!-- Minimize to tray -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsMinimizeToTray}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsMinimizeToTrayDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <CheckBox x:Name="MinimizeToTrayCheckBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernToggleSwitch}"
+                                      HorizontalAlignment="Left"
+                                      Margin="12,0,0,0"
+                                      FontSize="14"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      IsChecked="{Binding MinimizeToTray}"/>
+                        </Grid>
+
+                        <!-- Reset Minimize Choice -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsResetMinimizeChoice}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsResetMinimizeChoiceDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <Button x:Name="ResetMinimizeChoiceButton"
+                                    Grid.Column="1"
+                                    Content="{loc:Localize ButtonReset}"
+                                    Style="{StaticResource ModernSecondaryButton}"
+                                    HorizontalAlignment="Right"
+                                    Width="100"
+                                    Command="{Binding ResetMinimizeChoiceCommand}"/>
+                        </Grid>
+
+                        <!-- Auto-refresh interval -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsAutoRefreshInterval}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsAutoRefreshIntervalDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <TextBox x:Name="RefreshIntervalTextBox"
+                                     Grid.Column="1"
+                                     Style="{StaticResource ModernTextBox}"
+                                     Text="{Binding RefreshInterval}"
+                                     FontSize="14"
+                                     TextAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Enable Logging -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsEnableLogging}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsEnableLoggingDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <CheckBox x:Name="EnableLoggingCheckBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernToggleSwitch}"
+                                      HorizontalAlignment="Left"
+                                      Margin="12,0,0,0"
+                                      FontSize="14"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      IsChecked="{Binding EnableLogging}"/>
+                        </Grid>
+
+                        <!-- Log level -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsLogLevel}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsLogLevelDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <ComboBox x:Name="LogLevelComboBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernComboBox}"
+                                      ItemsSource="{Binding LogLevels}"
+                                      SelectedItem="{Binding LogLevel}"
+                                      IsEnabled="{Binding IsLogLevelEnabled}"/>
+                        </Grid>
+
+                        <!-- Mail Catcher Settings section within Application Settings -->
+                        <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,16" Padding="0,16,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Mail Catcher"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,16"/>
+                                
+                                <!-- Enable Mail Catcher -->
+                                <Grid Margin="0,0,0,16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Enable Mail Catcher"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   Margin="0,0,0,4"/>
+                                        <TextBlock Text="Run a local SMTP server to catch outgoing emails"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="EnableMailCatcherCheckBox"
+                                              Grid.Column="1"
+                                              Style="{StaticResource ModernToggleSwitch}"
+                                              HorizontalAlignment="Left"
+                                              Margin="12,0,0,0"
+                                              FontSize="14"
+                                              Foreground="{DynamicResource TextPrimaryBrush}"
+                                              IsChecked="{Binding EnableMailCatcher}"/>
+                                </Grid>
+
+                                <!-- Mail Catcher Port -->
+                                <Grid Margin="0,0,0,16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="120"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="SMTP Port"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   Margin="0,0,0,4"/>
+                                        <TextBlock Text="The port the Mail Catcher listens on (default 1025). Requires restart."
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </StackPanel>
+                                    <TextBox x:Name="MailCatcherPortTextBox"
+                                             Grid.Column="1"
+                                             Style="{StaticResource ModernTextBox}"
+                                             Text="{Binding MailCatcherPort, UpdateSourceTrigger=PropertyChanged}"
+                                             IsEnabled="{Binding EnableMailCatcher}"
+                                             FontSize="14"
+                                             TextAlignment="Center"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Service Settings -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,16" Padding="24">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource ModernHeading2}"
+                                  Margin="0,0,0,16">
+                            <Run Text="🔧 "/>
+                            <Run Text="{loc:Localize SectionServiceSettings}"/>
+                        </TextBlock>
+
+                        <!-- Auto-assign ports -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsAutoAssignPorts}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsAutoAssignPortsDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <CheckBox x:Name="AutoAssignPortsCheckBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernToggleSwitch}"
+                                      HorizontalAlignment="Left"
+                                      Margin="12,0,0,0"
+                                      FontSize="14"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      IsChecked="{Binding AutoAssignPorts}"/>
+                        </Grid>
+
+                        <!-- Port range start -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsPortRangeStart}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsPortRangeStartDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <TextBox x:Name="PortRangeStartTextBox"
+                                     Grid.Column="1"
+                                     Style="{StaticResource ModernTextBox}"
+                                     Text="{Binding PortRangeStart}"
+                                     FontSize="14"
+                                     TextAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Port range end -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsPortRangeEnd}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsPortRangeEndDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <TextBox x:Name="PortRangeEndTextBox"
+                                     Grid.Column="1"
+                                     Style="{StaticResource ModernTextBox}"
+                                     Text="{Binding PortRangeEnd}"
+                                     FontSize="14"
+                                     TextAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Root directory -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsRootDirectory}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsRootDirectoryDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <Button x:Name="BrowseRootDirectoryButton"
+                                    Grid.Column="1"
+                                    Style="{StaticResource ModernSecondaryButton}"
+                                    Command="{Binding BrowseRootDirectoryCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📁" FontSize="14" Margin="0,0,6,0"/>
+                                    <TextBlock Text="{loc:Localize ButtonBrowse}"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <TextBlock x:Name="RootDirectoryTextBlock"
+                                   Text="{Binding RootDirectory}"
+                                   FontSize="12"
+                                   Foreground="#666666"
+                                   Margin="0,0,0,16"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Notification Settings -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,16" Padding="24">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource ModernHeading2}"
+                                  Margin="0,0,0,8">
+                            <Run Text="🔔 "/>
+                            <Run Text="{loc:Localize SectionNotifications}"/>
+                        </TextBlock>
+                        <TextBlock Text="{loc:Localize NotificationsDescription}"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   Margin="0,0,0,16"/>
+
+                        <!-- Show success notifications -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsShowSuccessNotifications}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsShowSuccessNotificationsDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <CheckBox x:Name="ShowSuccessNotificationsCheckBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernToggleSwitch}"
+                                      HorizontalAlignment="Left"
+                                      Margin="12,0,0,0"
+                                      FontSize="14"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      IsChecked="{Binding ShowSuccessNotifications}"/>
+                        </Grid>
+
+                        <!-- Show error notifications -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsShowErrorNotifications}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsShowErrorNotificationsDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <CheckBox x:Name="ShowErrorNotificationsCheckBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernToggleSwitch}"
+                                      HorizontalAlignment="Left"
+                                      Margin="12,0,0,0"
+                                      FontSize="14"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      IsChecked="{Binding ShowErrorNotifications}"/>
+                        </Grid>
+
+                        <!-- Auto-dismiss notifications -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{loc:Localize SettingsAutoDismissNotifications}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="{loc:Localize SettingsAutoDismissNotificationsDescription}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <CheckBox x:Name="AutoDismissNotificationsCheckBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernToggleSwitch}"
+                                      HorizontalAlignment="Left"
+                                      Margin="12,0,0,0"
+                                      FontSize="14"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      IsChecked="{Binding AutoDismissNotifications}"/>
+                        </Grid>
+
+                        <!-- Dismiss timeout with slider -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{loc:Localize SettingsDismissTimeout}"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   Margin="0,0,0,4"/>
+                                        <TextBlock Text="{loc:Localize SettingsDismissTimeoutDescription}"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1"
+                                              Text="{Binding DismissTimeout, StringFormat='{}{0}s'}"
+                                              FontSize="14"
+                                              FontWeight="SemiBold"
+                                              Foreground="{DynamicResource PrimaryBrush}"
+                                              VerticalAlignment="Center"/>
+                                </Grid>
+                            </StackPanel>
+                            
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" 
+                                          Text="1s"
+                                          FontSize="11"
+                                          Foreground="{DynamicResource TextSecondaryBrush}"
+                                          VerticalAlignment="Center"/>
+                                <Slider Grid.Column="1"
+                                       x:Name="DismissTimeoutSlider"
+                                       Minimum="1"
+                                       Maximum="10"
+                                       Value="{Binding DismissTimeout}"
+                                       IsEnabled="{Binding AutoDismissNotifications}"
+                                       TickFrequency="1"
+                                       IsSnapToTickEnabled="True"
+                                       VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" 
+                                          Text="10s"
+                                          FontSize="11"
+                                          Foreground="{DynamicResource TextSecondaryBrush}"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Right"/>
+                            </Grid>
+                        </Grid>
+
+                        <!-- Notification position -->
+                        <Grid Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Notification position"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="Choose where toast notifications appear on screen"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <ComboBox x:Name="NotificationPositionComboBox"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ModernComboBox}"
+                                      ItemsSource="{Binding NotificationPositions}"
+                                      SelectedItem="{Binding NotificationPosition}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- About Section -->
+                <Border Style="{StaticResource ModernCard}" Margin="0,0,0,16" Padding="24">
+                    <StackPanel>
+                        <TextBlock Text="ℹ️ About" 
+                                  Style="{StaticResource ModernHeading2}"
+                                  Margin="0,0,0,16"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                                <TextBlock Text="ModStack"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock x:Name="VersionTextBlock"
+                                           Text="Version 1.0.0"
+                                           FontSize="14"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Margin="0,4,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="A modern development environment manager for web services"
+                                           FontSize="14"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,8"/>
+                                <TextBlock Text="Built with WPF and .NET 8"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                            <Button Style="{StaticResource ModernSecondaryButton}"
+                                    Margin="0,0,12,0"
+                                    Command="{Binding OpenWebsiteCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🌐" FontSize="14" Margin="0,0,6,0"/>
+                                    <TextBlock Text="{loc:Localize ButtonWebsite}"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource ModernSecondaryButton}"
+                                    Margin="0,0,12,0"
+                                    Command="{Binding OpenDocsCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📖" FontSize="14" Margin="0,0,6,0"/>
+                                    <TextBlock Text="{loc:Localize ButtonDocumentation}"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource ModernSecondaryButton}"
+                                    Command="{Binding ReportIssueCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🐛" FontSize="14" Margin="0,0,6,0"/>
+                                    <TextBlock Text="{loc:Localize ButtonReportIssue}"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

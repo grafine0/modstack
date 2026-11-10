@@ -1,0 +1,80 @@
+<UserControl x:Class="ModStack.GUI.Views.UpdateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Background="{DynamicResource BackgroundBrush}">
+        <Border Style="{StaticResource ModernCard}" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"
+                Padding="48"
+                MaxWidth="600"
+                MinWidth="400">
+            <StackPanel HorizontalAlignment="Center">
+                
+                <TextBlock Text="Software Updates" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,8"/>
+                           
+                <TextBlock Text="Keep ModStack up to date with the latest features and fixes." 
+                           FontSize="14" 
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center" 
+                           TextWrapping="Wrap" 
+                           TextAlignment="Center"
+                           Margin="0,0,0,32"/>
+                
+                <!-- Update Section -->
+                <Border Background="{DynamicResource CardBackgroundBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="24" 
+                        MaxWidth="400">
+                    <StackPanel>
+                        <TextBlock Text="{Binding StatusText}" 
+                                   FontSize="14" 
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   HorizontalAlignment="Center" 
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   Margin="0,0,0,24"/>
+
+                        <ProgressBar Minimum="0" Maximum="100" 
+                                     Value="{Binding DownloadProgress}" 
+                                     Height="8" 
+                                     Margin="0,0,0,24">
+                            <ProgressBar.Style>
+                                <Style TargetType="ProgressBar">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDownloading}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ProgressBar.Style>
+                        </ProgressBar>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="Check for Updates" 
+                                    Command="{Binding CheckForUpdatesCommand}"
+                                    Style="{DynamicResource ModernSecondaryButton}"
+                                    Visibility="{Binding ShowCheckButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Width="160"
+                                    Margin="0,0,8,0" />
+
+                            <Button Content="Download &amp; Install" 
+                                    Command="{Binding DownloadAndInstallCommand}"
+                                    Style="{DynamicResource ModernPrimaryButton}"
+                                    Visibility="{Binding ShowDownloadButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Width="160" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,96 @@
+## ==========================================
+## Build and Compilation Outputs (.NET / WPF)
+## ==========================================
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+*.dll
+*.exe
+*.pdb
+*.msi
+*.appx
+*_wpftmp.csproj
+
+# WebView2 Runtime Cache (WPF)
+*.WebView2/
+EBWebView/
+
+## ==========================================
+## Visual Studio & IDEs
+## ==========================================
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Visual Studio Code (preserve team settings, ignore local cache)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Rider / JetBrains
+.idea/
+
+## ==========================================
+## Release Packages & Inno Setup
+## ==========================================
+releases/
+installer/dist/
+installer/Output/
+*.iss.bak
+
+## ==========================================
+## Databases & Logs
+## ==========================================
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.log
+logs/
+[Ll]og/
+
+## ==========================================
+## Security, Keys & Certificates
+## ==========================================
+*.pfx
+*.p12
+*.cer
+*.crt
+*.key
+*.pem
+
+## ==========================================
+## Local Scratch Files & Personal Machine Configs
+## ==========================================
+# Root-level ad-hoc scripts with hardcoded user paths
+/Program.cs
+/RegisterApache.cs
+/httpd.conf
+
+# One-off scratch utility tools
+/StatusColumnAdder/
+/StackStatusFixer/
+
+## ==========================================
+## OS & Temporary Files
+## ==========================================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.tmp
+*.temp
+*.bak
+*.backup
+.DS_Store
+

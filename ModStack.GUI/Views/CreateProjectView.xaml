@@ -1,0 +1,672 @@
+<UserControl x:Class="ModStack.GUI.Views.CreateProjectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding InitializeCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Name="PageTitleTextBlock"
+                               Text="{Binding PageTitle}" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" 
+                               Margin="0,0,0,8"/>
+                    <TextBlock Name="PageSubtitleTextBlock"
+                               Text="{Binding PageSubtitle}"
+                               FontSize="14" 
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+                
+                <Button Grid.Column="1"
+                       Name="BackButton"
+                       Style="{StaticResource ModernSecondaryButton}"
+                       Height="32"
+                       Command="{Binding CancelCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="←" Margin="0,0,6,0" FontSize="12" VerticalAlignment="Center"/>
+                        <TextBlock Text="Back to Projects" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <!-- Project Templates Section -->
+                <Border Grid.Row="0" 
+                        Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Project Templates" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  Margin="0,0,0,16"/>
+                        
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Name="WordPressTemplateButton" 
+                                   Style="{StaticResource ModernSecondaryButton}"
+                                   Margin="0,0,12,12"
+                                   Padding="16,12"
+                                   Command="{Binding ApplyWordPressTemplateCommand}"
+                                   ToolTip="WordPress project with LAMP stack">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📝" Margin="0,0,8,0" FontSize="14"/>
+                                    <TextBlock Text="WordPress"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Name="LaravelTemplateButton" 
+                                   Style="{StaticResource ModernSecondaryButton}"
+                                   Margin="0,0,12,12"
+                                   Padding="16,12"
+                                   Command="{Binding ApplyLaravelTemplateCommand}"
+                                   ToolTip="Laravel project with PHP and MySQL">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🔧" Margin="0,0,8,0" FontSize="14"/>
+                                    <TextBlock Text="Laravel"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Name="ReactTemplateButton" 
+                                   Style="{StaticResource ModernSecondaryButton}"
+                                   Margin="0,0,12,12"
+                                   Padding="16,12"
+                                   Command="{Binding ApplyReactTemplateCommand}"
+                                   ToolTip="React application with Node.js">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="⚛️" Margin="0,0,8,0" FontSize="14"/>
+                                    <TextBlock Text="React App"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Name="StaticSiteTemplateButton" 
+                                   Style="{StaticResource ModernSecondaryButton}"
+                                   Margin="0,0,0,12"
+                                   Padding="16,12"
+                                   Command="{Binding ApplyStaticTemplateCommand}"
+                                   ToolTip="Static HTML/CSS/JS site">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🌐" Margin="0,0,8,0" FontSize="14"/>
+                                    <TextBlock Text="Static Site"/>
+                                </StackPanel>
+                            </Button>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Project Information Section -->
+                <Border Grid.Row="1" 
+                        Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Project Information" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  Margin="0,0,0,16"/>
+                        
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                      Text="Project Name:" 
+                                      VerticalAlignment="Center" 
+                                      Margin="0,0,8,16"
+                                      FontWeight="SemiBold"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                                    Name="ProjectNameTextBox"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Height="40"
+                                    Margin="0,0,0,16"
+                                    Text="{Binding ProjectName, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="Enter a unique name for this project"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" 
+                                      Text="Project Path:" 
+                                      VerticalAlignment="Center" 
+                                      Margin="0,0,8,16"
+                                      FontWeight="SemiBold"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" 
+                                    Name="ProjectPathTextBox"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Height="40"
+                                    Margin="0,0,8,16"
+                                    Text="{Binding ProjectPath, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="Path to your project directory"/>
+                            <Button Grid.Row="1" Grid.Column="2"
+                                   Name="BrowseButton"
+                                   Style="{StaticResource ModernSecondaryButton}"
+                                   Height="40"
+                                   Padding="12,0"
+                                   Command="{Binding BrowseProjectPathCommand}"
+                                   Margin="0,0,0,16">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📁" Margin="0,0,4,0" FontSize="12"/>
+                                    <TextBlock Text="Browse"/>
+                                </StackPanel>
+                            </Button>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" 
+                                      Text="Domain:" 
+                                      VerticalAlignment="Center" 
+                                      Margin="0,0,8,16"
+                                      FontWeight="SemiBold"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                    Name="DomainTextBox"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Height="40"
+                                    Margin="0,0,0,16"
+                                    Text="{Binding Domain, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="Local domain (e.g., myproject.local)"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" 
+                                      Text="Document Root:" 
+                                      VerticalAlignment="Center" 
+                                      Margin="0,0,8,16"
+                                      FontWeight="SemiBold"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" 
+                                    Name="DocumentRootTextBox"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Height="40"
+                                    Margin="0,0,8,16"
+                                    Text="{Binding DocumentRoot, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="Document root directory (optional)"/>
+                            <Button Grid.Row="3" Grid.Column="2"
+                                   Name="BrowseDocRootButton"
+                                   Style="{StaticResource ModernSecondaryButton}"
+                                   Height="40"
+                                   Padding="12,0"
+                                   Command="{Binding BrowseDocumentRootCommand}"
+                                   Margin="0,0,0,16">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📁" Margin="0,0,4,0" FontSize="12"/>
+                                    <TextBlock Text="Browse"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        
+                        <!-- Create Directory Toggle -->
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="Create directory if it doesn't exist"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    HorizontalAlignment="Left"
+                                    TextWrapping="Wrap"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    Margin="0,0,10,0"/>
+                            <CheckBox Name="CreateDirectoryCheckBox" 
+                                    Grid.Column="1"
+                                    Style="{StaticResource ModernToggleSwitch}"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    Foreground="{DynamicResource TextSecondaryBrush}"
+                                    IsChecked="{Binding CreateDirectory}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Stack Binding Section -->
+                <Border Grid.Row="2" 
+                        Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Stack Binding" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  Margin="0,0,0,16"/>
+                        
+                        <StackPanel>
+                            <RadioButton Name="NoStackRadio"
+                                        Content="No stack (create unbound project)"
+                                        GroupName="StackBinding"
+                                        IsChecked="{Binding NoStackSelected}"
+                                        FontSize="14"
+                                        Foreground="{DynamicResource TextPrimaryBrush}"
+                                        Margin="0,0,0,12"/>
+
+                            <RadioButton Name="ExistingStackRadio"
+                                        Content="Bind to existing stack:"
+                                        GroupName="StackBinding"
+                                        IsChecked="{Binding ExistingStackSelected}"
+                                        FontSize="14"
+                                        Foreground="{DynamicResource TextPrimaryBrush}"
+                                        Margin="0,0,0,12"/>
+
+                            <ComboBox Name="StackComboBox"
+                                     Style="{StaticResource ModernComboBox}"
+                                     Height="40"
+                                     ItemsSource="{Binding AvailableStacks}"
+                                     SelectedItem="{Binding SelectedStack, Mode=TwoWay}"
+                                     IsEnabled="{Binding IsChecked, ElementName=ExistingStackRadio}"
+                                     DisplayMemberPath="Name"
+                                     Margin="20,0,0,0">
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Service Binding Section (shown when no stack is selected) -->
+                <Border Grid.Row="3" 
+                        Name="ServiceBindingSection"
+                        Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20"
+                        Visibility="{Binding IsServiceBindingVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel>
+                        <TextBlock Text="Service Binding" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  Margin="0,0,0,16"/>
+                        
+                        <TextBlock Text="Select services to bind to this project:" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextSecondaryBrush}" 
+                                  Margin="0,0,0,16"/>
+                        
+                        <!-- Service Selection Grid (All ComboBoxes in one row) -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- Web Server -->
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Web Server" 
+                                          FontSize="14" 
+                                          FontWeight="SemiBold" 
+                                          Foreground="{DynamicResource TextPrimaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <ComboBox Name="WebServerComboBox"
+                                         Style="{StaticResource ModernComboBox}"
+                                         Height="40"
+                                         ItemsSource="{Binding WebServerServices}"
+                                         SelectedItem="{Binding SelectedWebServer, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding DisplayName}" 
+                                                          FontWeight="SemiBold" 
+                                                          Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding ServiceType}" 
+                                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                                          FontSize="12" 
+                                                          VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Database -->
+                            <StackPanel Grid.Column="1" Margin="8,0,8,0">
+                                <TextBlock Text="Database" 
+                                          FontSize="14" 
+                                          FontWeight="SemiBold" 
+                                          Foreground="{DynamicResource TextPrimaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <ComboBox Name="DatabaseComboBox"
+                                         Style="{StaticResource ModernComboBox}"
+                                         Height="40"
+                                         ItemsSource="{Binding DatabaseServices}"
+                                         SelectedItem="{Binding SelectedDatabase, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding DisplayName}" 
+                                                          FontWeight="SemiBold" 
+                                                          Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding ServiceType}" 
+                                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                                          FontSize="12" 
+                                                          VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- PHP Runtime -->
+                            <StackPanel Grid.Column="2" Margin="8,0,8,0">
+                                <TextBlock Text="PHP Runtime" 
+                                          FontSize="14" 
+                                          FontWeight="SemiBold" 
+                                          Foreground="{DynamicResource TextPrimaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <ComboBox Name="PHPRuntimeComboBox"
+                                         Style="{StaticResource ModernComboBox}"
+                                         Height="40"
+                                         ItemsSource="{Binding PHPRuntimeServices}"
+                                         SelectedItem="{Binding SelectedPHPRuntime, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding DisplayName}" 
+                                                          FontWeight="SemiBold" 
+                                                          Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding ServiceType}" 
+                                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                                          FontSize="12" 
+                                                          VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Additional Services -->
+                            <StackPanel Grid.Column="3" Margin="8,0,0,0">
+                                <TextBlock Text="Additional" 
+                                          FontSize="14" 
+                                          FontWeight="SemiBold" 
+                                          Foreground="{DynamicResource TextPrimaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <ComboBox Name="AdditionalServicesComboBox"
+                                         Style="{StaticResource ModernComboBox}"
+                                         Height="40"
+                                         ItemsSource="{Binding AdditionalServices}"
+                                         SelectedItem="{Binding SelectedAdditionalService, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding DisplayName}" 
+                                                          FontWeight="SemiBold" 
+                                                          Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding ServiceType}" 
+                                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                                          FontSize="12" 
+                                                          VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <TextBlock Text="💡 Selected services will be restarted after project creation" 
+                                  FontSize="12" 
+                                  Foreground="{DynamicResource TextSecondaryBrush}" 
+                                  Margin="0,8,0,0"
+                                  TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Virtual Host Configuration Section -->
+                <Border Grid.Row="4" 
+                        Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Virtual Host Configuration" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  Margin="0,0,0,16"/>
+                        
+                        <!-- Create Virtual Host Toggle -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="Create virtual host configuration"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    HorizontalAlignment="Left"
+                                    TextWrapping="Wrap"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    Margin="0,0,10,0"/>
+                            <CheckBox Name="CreateVirtualHostCheckBox" 
+                                    Grid.Column="1"
+                                    Style="{StaticResource ModernToggleSwitch}"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    IsChecked="{Binding CreateVirtualHost, Mode=TwoWay}"/>
+                        </Grid>
+                        
+                        <Grid IsEnabled="{Binding IsChecked, ElementName=CreateVirtualHostCheckBox}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0"
+                                      Text="Server Aliases:" 
+                                      VerticalAlignment="Top" 
+                                      Margin="0,0,8,16"
+                                      FontWeight="SemiBold"
+                                      Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,16">
+                                <TextBox Name="ServerAliasesTextBox"
+                                        Style="{StaticResource ModernTextBox}"
+                                        Height="60"
+                                        TextWrapping="Wrap"
+                                        AcceptsReturn="True"
+                                        VerticalScrollBarVisibility="Auto"
+                                        Text="{Binding ServerAliases, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        ToolTip="Enter one alias per line (e.g., www.mydomain.local, admin.mydomain.local)"/>
+                                <TextBlock Text="Enter one alias per line (e.g., www.mydomain.local, admin.mydomain.local)"
+                                          FontSize="11"
+                                          Foreground="{DynamicResource TextSecondaryBrush}"
+                                          Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Enable SSL Toggle -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="Enable SSL (HTTPS)"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    HorizontalAlignment="Left"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    Margin="0,0,10,0"/>
+                            <CheckBox Name="EnableSSLCheckBox" 
+                                    Grid.Column="1"
+                                    Style="{StaticResource ModernToggleSwitch}"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsChecked="{Binding EnableSSL, Mode=TwoWay}"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </Grid>
+
+                        <!-- Update Hosts File Toggle -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="Add entry to hosts file"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    HorizontalAlignment="Left"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    Margin="0,0,10,0"/>
+                            <CheckBox Name="UpdateHostsFileCheckBox" 
+                                    Grid.Column="1"
+                                    Style="{StaticResource ModernToggleSwitch}"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    IsChecked="{Binding UpdateHostsFile, Mode=TwoWay}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Action Buttons -->
+        <Border Grid.Row="3" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1"
+                CornerRadius="8" 
+                Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <Button Name="CancelButton"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource ModernSecondaryButton}"
+                        Height="36"
+                        Padding="20,8"
+                        Command="{Binding CancelCommand}">
+                    <TextBlock Text="Cancel" VerticalAlignment="Center"/>
+                </Button>
+                
+                <Button Name="SaveButton"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource ModernPrimaryButton}"
+                        Height="36"
+                        Padding="20,8"
+                        Command="{Binding CreateProjectCommand}"
+                        Click="SaveButton_Click">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Loading Spinner -->
+                        <Grid Width="16" Height="16" 
+                              Margin="0,0,8,0"
+                              Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <!-- Modern Ring Spinner -->
+                            <Ellipse Stroke="{DynamicResource PrimaryButtonTextBrush}" 
+                                    StrokeThickness="2" 
+                                    Width="14" Height="14"
+                                    StrokeDashArray="10,5"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Ellipse.RenderTransform>
+                                    <RotateTransform x:Name="CreateButtonSpinnerRotation"/>
+                                </Ellipse.RenderTransform>
+                                <Ellipse.Triggers>
+                                    <EventTrigger RoutedEvent="Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard RepeatBehavior="Forever">
+                                                <DoubleAnimation Storyboard.TargetName="CreateButtonSpinnerRotation"
+                                                               Storyboard.TargetProperty="Angle"
+                                                               From="0" To="360" Duration="0:0:0.8"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Ellipse.Triggers>
+                            </Ellipse>
+                        </Grid>
+                        
+                        <!-- Icon (hidden when loading) -->
+                        <TextBlock Text="{Binding ActionButtonIcon}" 
+                                  Margin="0,0,6,0" 
+                                  FontSize="12" 
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                        
+                        <!-- Button Text -->
+                        <TextBlock Text="{Binding ActionButtonText}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

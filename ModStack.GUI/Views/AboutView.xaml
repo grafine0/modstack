@@ -1,0 +1,94 @@
+<UserControl x:Class="ModStack.GUI.Views.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Background="{DynamicResource BackgroundBrush}">
+        <Border Style="{StaticResource ModernCard}" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"
+                Padding="48"
+                MaxWidth="600">
+            <StackPanel HorizontalAlignment="Center">
+                <!-- App Icon/Logo Area -->
+                <Image Width="80" Height="80" 
+                       Source="pack://application:,,,/Resources/logo.png"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,24"
+                       Stretch="Uniform"/>
+                
+                <!-- App Name -->
+                <TextBlock Text="ModStack" 
+                           FontSize="32" 
+                           FontWeight="Bold" 
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,8"/>
+                
+                <!-- Tagline -->
+                <TextBlock Text="Modular Web Development Stack Manager" 
+                           FontSize="16" 
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,16"/>
+                
+                <!-- Version -->
+                <TextBlock x:Name="VersionTextBlock"
+                           Text="{Binding Version}" 
+                           FontSize="14" 
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,24"/>
+                
+                <!-- Description -->
+                <TextBlock Text="A comprehensive tool for managing local web development environments, virtual hosts, and development stacks with ease." 
+                           FontSize="14" 
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           HorizontalAlignment="Center" 
+                           TextWrapping="Wrap" 
+                           MaxWidth="500"
+                           TextAlignment="Center"
+                           Margin="0,0,0,32"/>
+                
+                <!-- Features -->
+                <StackPanel Margin="0,0,0,32">
+                    <TextBlock Text="Key Features:" 
+                               FontSize="16" 
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               HorizontalAlignment="Center" 
+                               Margin="0,0,0,16"/>
+                    
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="• " FontSize="14" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <TextBlock Text="Service Management" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="• " FontSize="14" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <TextBlock Text="Stack Configuration" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="• " FontSize="14" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <TextBlock Text="Virtual Host Management" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="• " FontSize="14" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <TextBlock Text="Port Management" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="• " FontSize="14" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <TextBlock Text="Package Management" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                
+
+                
+                <!-- Copyright -->
+                <TextBlock Text="© 2025 ModStack. All rights reserved." 
+                           FontSize="12" 
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

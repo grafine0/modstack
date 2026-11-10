@@ -1,0 +1,40 @@
+{
+  "packageType": "Project",
+  "projectConfiguration": {
+    "defaultDomain": "phpmyadmin.local",
+    "defaultPort": 80,
+    "enableSSL": false,
+    "databaseConfig": {
+      "databaseType": "MySQL",
+      "databaseName": "phpmyadmin",
+      "username": "phpmyadmin",
+      "password": "phpmyadmin123",
+      "host": "localhost",
+      "port": 3306,
+      "createDatabase": true,
+      "createUser": true
+    },
+    "requiredServices": ["mysql", "apache"],
+    "configurationFiles": [
+      {
+        "relativePath": "config.inc.php",
+        "templateContent": "<?php\n/**\n * phpMyAdmin configuration\n */\n\n$cfg['blowfish_secret'] = '{blowfish_secret}';\n$cfg['DefaultLang'] = 'en';\n$cfg['ServerDefault'] = 1;\n$cfg['UploadDir'] = '';\n$cfg['SaveDir'] = '';\n\n$i = 0;\n$i++;\n$cfg['Servers'][$i]['verbose'] = 'MySQL Server';\n$cfg['Servers'][$i]['host'] = '{db_host}';\n$cfg['Servers'][$i]['port'] = {db_port};\n$cfg['Servers'][$i]['socket'] = '';\n$cfg['Servers'][$i]['connect_type'] = 'tcp';\n$cfg['Servers'][$i]['extension'] = 'mysqli';\n$cfg['Servers'][$i]['auth_type'] = 'cookie';\n$cfg['Servers'][$i]['user'] = '{db_username}';\n$cfg['Servers'][$i]['password'] = '{db_password}';\n$cfg['Servers'][$i]['AllowNoPassword'] = false;\n$cfg['Servers'][$i]['only_db'] = '';\n$cfg['Servers'][$i]['hide_db'] = '';\n$cfg['Servers'][$i]['AllowDeny']['order'] = '';\n$cfg['Servers'][$i]['AllowDeny']['rules'] = array();\n\n// Security settings\n$cfg['ForceSSL'] = false;\n$cfg['CheckConfigurationPermissions'] = true;\n$cfg['TempDir'] = './tmp/';\n$cfg['UploadDir'] = './tmp/';\n$cfg['SaveDir'] = './tmp/';\n\n// Appearance\n$cfg['DefaultTheme'] = 'pmahomme';\n$cfg['ThemeManager'] = true;\n$cfg['ThemeDefault'] = 'pmahomme';\n\n// Language\n$cfg['Lang'] = 'en';\n$cfg['DefaultLang'] = 'en';\n$cfg['FilterLanguages'] = array('ar', 'az', 'bn', 'bg', 'ca', 'cs', 'da', 'de', 'el', 'en', 'es', 'et', 'fa', 'fi', 'fr', 'gl', 'he', 'hr', 'hu', 'id', 'it', 'ja', 'ko', 'lt', 'lv', 'nl', 'pl', 'pt-BR', 'pt', 'ro', 'ru', 'si', 'sk', 'sr@latin', 'sr', 'sv', 'th', 'tr', 'uk', 'zh-TW', 'zh');\n\n// Misc\n$cfg['MaxRows'] = 50;\n$cfg['ExecTimeLimit'] = 300;\n$cfg['MemoryLimit'] = '128M';\n$cfg['CheckConfigurationPermissions'] = false;\n$cfg['LinkLengthLimit'] = 1000;\n$cfg['CSPAllow'] = 'frame-ancestors';\n",
+        "variables": {
+          "blowfish_secret": "{blowfish_secret}",
+          "db_host": "{db_host}",
+          "db_port": "{db_port}",
+          "db_username": "{db_username}",
+          "db_password": "{db_password}"
+        },
+        "overwriteExisting": true
+      }
+    ],
+    "environmentVariables": {
+      "PHPMYADMIN_CONFIG_FILE": "./config.inc.php"
+    },
+    "postInstallCommands": [
+      "mkdir -p tmp",
+      "chmod 755 tmp"
+    ]
+  }
+}

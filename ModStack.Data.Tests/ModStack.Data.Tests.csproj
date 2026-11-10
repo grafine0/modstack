@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.0" />
+    <PackageReference Include="Dapper" Version="2.1.28" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ModStack.Data\ModStack.Data.csproj" />
+    <ProjectReference Include="..\ModStack.Core\ModStack.Core.csproj" />
+    <ProjectReference Include="..\ModStack.Common\ModStack.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Exclude legacy v1 repository tests that reference removed ModStack.Core.Models and Dapper TypeHandlers -->
+    <Compile Remove="Advanced\**\*.cs" />
+    <Compile Remove="Integration\**\*.cs" />
+    <Compile Remove="Performance\**\*.cs" />
+    <Compile Remove="Repositories\**\*.cs" />
+    <Compile Remove="TestRunner.cs" />
+  </ItemGroup>
+
+</Project>

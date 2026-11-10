@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- Application Name and Branding -->
+  <data name="AppName" xml:space="preserve">
+    <value>ModStack</value>
+  </data>
+  <data name="AppSubtitle" xml:space="preserve">
+    <value>Development Stack Manager</value>
+  </data>
+  <data name="AppTitle" xml:space="preserve">
+    <value>ModStack - Modular Web Development Stack Manager</value>
+  </data>
+  
+  <!-- Navigation Menu -->
+  <data name="NavDashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="NavPackageManager" xml:space="preserve">
+    <value>Package Manager</value>
+  </data>
+  <data name="NavManagePackages" xml:space="preserve">
+    <value>Manage Packages</value>
+  </data>
+  <data name="NavAddPackage" xml:space="preserve">
+    <value>Add Package</value>
+  </data>
+  <data name="NavManageServices" xml:space="preserve">
+    <value>Manage Services</value>
+  </data>
+  <data name="NavServiceLogs" xml:space="preserve">
+    <value>Service Logs</value>
+  </data>
+  <data name="NavManageStacks" xml:space="preserve">
+    <value>Manage Stacks</value>
+  </data>
+  <data name="NavCreateStack" xml:space="preserve">
+    <value>Create Stack</value>
+  </data>
+  <data name="NavManageProjects" xml:space="preserve">
+    <value>Manage Projects</value>
+  </data>
+  <data name="NavCreateProject" xml:space="preserve">
+    <value>Create Project</value>
+  </data>
+  <data name="NavConfigEditor" xml:space="preserve">
+    <value>Config Editor</value>
+  </data>
+  <data name="NavHostsFileEditor" xml:space="preserve">
+    <value>Hosts File Editor</value>
+  </data>
+  <data name="NavSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="NavAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  
+  <!-- Section Headers -->
+  <data name="SectionPackages" xml:space="preserve">
+    <value>PACKAGES</value>
+  </data>
+  <data name="SectionServices" xml:space="preserve">
+    <value>SERVICES</value>
+  </data>
+  <data name="SectionStacks" xml:space="preserve">
+    <value>STACKS</value>
+  </data>
+  <data name="SectionProjects" xml:space="preserve">
+    <value>PROJECTS</value>
+  </data>
+  <data name="SectionTools" xml:space="preserve">
+    <value>TOOLS</value>
+  </data>
+  <data name="SectionSystem" xml:space="preserve">
+    <value>SYSTEM</value>
+  </data>
+  
+  <!-- Service Logs View -->
+  <data name="ServiceLogsTitle" xml:space="preserve">
+    <value>Service Logs</value>
+  </data>
+  <data name="ServiceLogsDescription" xml:space="preserve">
+    <value>Real-time application logs and service status information</value>
+  </data>
+  <data name="LogLevelAll" xml:space="preserve">
+    <value>All Levels</value>
+  </data>
+  <data name="LogLevelInfo" xml:space="preserve">
+    <value>Info Only</value>
+  </data>
+  <data name="LogLevelWarning" xml:space="preserve">
+    <value>Warning Only</value>
+  </data>
+  <data name="LogLevelError" xml:space="preserve">
+    <value>Error Only</value>
+  </data>
+  <data name="ButtonRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="ButtonClear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="ButtonSaveLogs" xml:space="preserve">
+    <value>Save Logs</value>
+  </data>
+  <data name="ButtonCopyAllLogs" xml:space="preserve">
+    <value>Copy All Logs</value>
+  </data>
+  <data name="AutoScroll" xml:space="preserve">
+    <value>Auto-scroll</value>
+  </data>
+  <data name="LoadedLogEntries" xml:space="preserve">
+    <value>Loaded {0} log entries</value>
+  </data>
+  <data name="NoLogFileFound" xml:space="preserve">
+    <value>No log file found. Debug logs will appear here when generated.</value>
+  </data>
+  
+  <!-- Stack Management View -->
+  <data name="StackManagementTitle" xml:space="preserve">
+    <value>Stack Management</value>
+  </data>
+  <data name="StackManagementDescription" xml:space="preserve">
+    <value>Manage your development stacks and service configurations</value>
+  </data>
+  <data name="ButtonCreateStack" xml:space="preserve">
+    <value>Create Stack</value>
+  </data>
+  <data name="ButtonClearFilters" xml:space="preserve">
+    <value>Clear Filters</value>
+  </data>
+  <data name="ColumnStackName" xml:space="preserve">
+    <value>Stack Name</value>
+  </data>
+  <data name="ColumnDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ColumnServices" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="ColumnStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ColumnActions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="ContextMenuStartStack" xml:space="preserve">
+    <value>Start Stack</value>
+  </data>
+  <data name="ContextMenuStopStack" xml:space="preserve">
+    <value>Stop Stack</value>
+  </data>
+  <data name="ContextMenuEditStack" xml:space="preserve">
+    <value>Edit Stack</value>
+  </data>
+  <data name="ContextMenuDeleteStack" xml:space="preserve">
+    <value>Delete Stack</value>
+  </data>
+  <data name="TooltipStartStack" xml:space="preserve">
+    <value>Start Stack</value>
+  </data>
+  <data name="TooltipStopStack" xml:space="preserve">
+    <value>Stop Stack</value>
+  </data>
+  <data name="TooltipEditStack" xml:space="preserve">
+    <value>Edit Stack</value>
+  </data>
+  <data name="TooltipDeleteStack" xml:space="preserve">
+    <value>Delete Stack</value>
+  </data>
+  <data name="NoStacksFound" xml:space="preserve">
+    <value>No stacks found</value>
+  </data>
+  <data name="NoStacksFoundDescription" xml:space="preserve">
+    <value>Create your first development stack to get started</value>
+  </data>
+  
+  <!-- Common Buttons -->
+  <data name="ButtonOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ButtonSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ButtonDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ButtonEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ButtonClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="ButtonYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="ButtonNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  
+  <!-- Status Bar -->
+  <data name="StatusReady" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="ButtonLogs" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  
+  <!-- Error Messages -->
+  <data name="ErrorGeneric" xml:space="preserve">
+    <value>An error occurred</value>
+  </data>
+  <data name="ErrorLoading" xml:space="preserve">
+    <value>Error loading: {0}</value>
+  </data>
+  <data name="ErrorSaving" xml:space="preserve">
+    <value>Error saving: {0}</value>
+  </data>
+  
+  <!-- Success Messages -->
+  <data name="SuccessSaved" xml:space="preserve">
+    <value>Saved successfully</value>
+  </data>
+  <data name="SuccessDeleted" xml:space="preserve">
+    <value>Deleted successfully</value>
+  </data>
+  
+  <!-- Settings -->
+  <data name="SettingsLanguage" xml:space="preserve">
+    <value>Application Language</value>
+  </data>
+  <data name="SettingsLanguageDescription" xml:space="preserve">
+    <value>Choose the display language for the application</value>
+  </data>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>Language changed to {0}</value>
+  </data>
+  <data name="SettingsLanguageChanged" xml:space="preserve">
+    <value>Language Changed</value>
+  </data>
+  <data name="ErrorChangingLanguage" xml:space="preserve">
+    <value>Error changing language: {0}</value>
+  </data>
+  
+  <!-- Settings View -->
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsDescription" xml:space="preserve">
+    <value>Configure your ModStack application preferences</value>
+  </data>
+  <data name="ButtonResetToDefaults" xml:space="preserve">
+    <value>Reset to Defaults</value>
+  </data>
+  <data name="ButtonSaveSettings" xml:space="preserve">
+    <value>Save Settings</value>
+  </data>
+  <data name="ButtonApplySettings" xml:space="preserve">
+    <value>Apply Settings</value>
+  </data>
+  <data name="SectionAppearanceSettings" xml:space="preserve">
+    <value>Appearance Settings</value>
+  </data>
+  <data name="SettingsApplicationTheme" xml:space="preserve">
+    <value>Application Theme</value>
+  </data>
+  <data name="SettingsApplicationThemeDescription" xml:space="preserve">
+    <value>Choose the visual theme for the application</value>
+  </data>
+  <data name="SettingsAccentColor" xml:space="preserve">
+    <value>Accent Color</value>
+  </data>
+  <data name="SettingsAccentColorDescription" xml:space="preserve">
+    <value>Primary color for buttons and highlights</value>
+  </data>
+  <data name="ButtonChooseColor" xml:space="preserve">
+    <value>Choose Color</value>
+  </data>
+  <data name="SettingsAlwaysOnTop" xml:space="preserve">
+    <value>Always on Top</value>
+  </data>
+  <data name="SettingsAlwaysOnTopDescription" xml:space="preserve">
+    <value>Keep ModStack window above other applications</value>
+  </data>
+  <data name="SectionApplicationSettings" xml:space="preserve">
+    <value>Application Settings</value>
+  </data>
+  <data name="SettingsStartWithWindows" xml:space="preserve">
+    <value>Start with Windows</value>
+  </data>
+  <data name="SettingsStartWithWindowsDescription" xml:space="preserve">
+    <value>Automatically start ModStack when Windows boots</value>
+  </data>
+  <data name="SettingsMinimizeToTray" xml:space="preserve">
+    <value>Minimize to System Tray</value>
+  </data>
+  <data name="SettingsMinimizeToTrayDescription" xml:space="preserve">
+    <value>Minimize application to system tray instead of taskbar</value>
+  </data>
+  <data name="SettingsResetMinimizeChoice" xml:space="preserve">
+    <value>Reset Minimize Choice</value>
+  </data>
+  <data name="SettingsResetMinimizeChoiceDescription" xml:space="preserve">
+    <value>Clear saved preference and show dialog again on close</value>
+  </data>
+  <data name="ButtonReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="SettingsAutoRefreshInterval" xml:space="preserve">
+    <value>Auto-refresh Interval (seconds)</value>
+  </data>
+  <data name="SettingsAutoRefreshIntervalDescription" xml:space="preserve">
+    <value>How often to refresh service status automatically</value>
+  </data>
+  <data name="SettingsEnableLogging" xml:space="preserve">
+    <value>Enable Logging</value>
+  </data>
+  <data name="SettingsEnableLoggingDescription" xml:space="preserve">
+    <value>Enable or disable application logging functionality</value>
+  </data>
+  <data name="SettingsLogLevel" xml:space="preserve">
+    <value>Log Level</value>
+  </data>
+  <data name="SettingsLogLevelDescription" xml:space="preserve">
+    <value>Set the minimum log level for application logging</value>
+  </data>
+  <data name="SectionServiceSettings" xml:space="preserve">
+    <value>Service Settings</value>
+  </data>
+  <data name="SettingsAutoAssignPorts" xml:space="preserve">
+    <value>Auto-assign Ports</value>
+  </data>
+  <data name="SettingsAutoAssignPortsDescription" xml:space="preserve">
+    <value>Automatically assign available ports for new services</value>
+  </data>
+  <data name="SettingsPortRangeStart" xml:space="preserve">
+    <value>Port Range Start</value>
+  </data>
+  <data name="SettingsPortRangeStartDescription" xml:space="preserve">
+    <value>Starting port number for automatic port assignment</value>
+  </data>
+  <data name="SettingsPortRangeEnd" xml:space="preserve">
+    <value>Port Range End</value>
+  </data>
+  <data name="SettingsPortRangeEndDescription" xml:space="preserve">
+    <value>Ending port number for automatic port assignment</value>
+  </data>
+  <data name="SettingsRootDirectory" xml:space="preserve">
+    <value>Root Directory</value>
+  </data>
+  <data name="SettingsRootDirectoryDescription" xml:space="preserve">
+    <value>Root directory where ModStack creates all directories (projects, services, logs)</value>
+  </data>
+  <data name="ButtonBrowse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="SectionNotifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="NotificationsDescription" xml:space="preserve">
+    <value>Control how and when you receive notifications</value>
+  </data>
+  <data name="SettingsShowSuccessNotifications" xml:space="preserve">
+    <value>Show success notifications</value>
+  </data>
+  <data name="SettingsShowSuccessNotificationsDescription" xml:space="preserve">
+    <value>Display notifications for successful actions</value>
+  </data>
+  <data name="SettingsShowErrorNotifications" xml:space="preserve">
+    <value>Show error notifications</value>
+  </data>
+  <data name="SettingsShowErrorNotificationsDescription" xml:space="preserve">
+    <value>Display notifications for errors and failures</value>
+  </data>
+  <data name="SettingsAutoDismissNotifications" xml:space="preserve">
+    <value>Auto-dismiss notifications</value>
+  </data>
+  <data name="SettingsAutoDismissNotificationsDescription" xml:space="preserve">
+    <value>Automatically hide notifications after a delay</value>
+  </data>
+  <data name="SettingsDismissTimeout" xml:space="preserve">
+    <value>Dismiss timeout</value>
+  </data>
+  <data name="SettingsDismissTimeoutDescription" xml:space="preserve">
+    <value>How long to show notifications before auto-dismissing</value>
+  </data>
+  
+  <!-- Create Stack View -->
+  <data name="CreateStackTitle" xml:space="preserve">
+    <value>Create New Stack</value>
+  </data>
+  <data name="EditStackTitle" xml:space="preserve">
+    <value>Edit Stack</value>
+  </data>
+  <data name="CreateStackSubtitle" xml:space="preserve">
+    <value>Configure a new development stack with your preferred services</value>
+  </data>
+  <data name="EditStackSubtitle" xml:space="preserve">
+    <value>Modify your development stack configuration</value>
+  </data>
+  <data name="ButtonUpdateStack" xml:space="preserve">
+    <value>Update Stack</value>
+  </data>
+  
+  <!-- Config Editor View -->
+  <data name="ConfigEditorNoFileLoaded" xml:space="preserve">
+    <value>No file loaded</value>
+  </data>
+  <data name="ConfigEditorLines" xml:space="preserve">
+    <value>Lines: {0}</value>
+  </data>
+  <data name="ConfigEditorChars" xml:space="preserve">
+    <value>Chars: {0}</value>
+  </data>
+  <data name="ConfigEditorModified" xml:space="preserve">
+    <value>Modified - {0}</value>
+  </data>
+  <data name="ConfigEditorDialogTitle" xml:space="preserve">
+    <value>Open Configuration File</value>
+  </data>
+  <data name="ConfigEditorLoadingFile" xml:space="preserve">
+    <value>Loading file...</value>
+  </data>
+  <data name="ConfigEditorFileLoadedSuccessfully" xml:space="preserve">
+    <value>File loaded successfully</value>
+  </data>
+  <data name="ConfigEditorFileNotFound" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="ConfigEditorErrorLoadingFile" xml:space="preserve">
+    <value>Error loading file: {0}</value>
+  </data>
+  <data name="ConfigEditorLoadError" xml:space="preserve">
+    <value>Load Error</value>
+  </data>
+  <data name="ConfigEditorSavingFile" xml:space="preserve">
+    <value>Saving file...</value>
+  </data>
+  <data name="ConfigEditorFileSaved" xml:space="preserve">
+    <value>File saved successfully</value>
+  </data>
+  <data name="ConfigEditorErrorSavingFile" xml:space="preserve">
+    <value>Error saving file: {0}</value>
+  </data>
+  <data name="ConfigEditorSaveError" xml:space="preserve">
+    <value>Save Error</value>
+  </data>
+  <data name="ConfigEditorDialogSaveTitle" xml:space="preserve">
+    <value>Save Configuration File</value>
+  </data>
+  
+  <!-- MainWindow Tooltips -->
+  <data name="TooltipMinimize" xml:space="preserve">
+    <value>Minimize</value>
+  </data>
+  <data name="TooltipMaximize" xml:space="preserve">
+    <value>Maximize/Restore</value>
+  </data>
+  <data name="TooltipClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  
+  <!-- About Section -->
+  <data name="ButtonWebsite" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="ButtonDocumentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
+  <data name="ButtonReportIssue" xml:space="preserve">
+    <value>Report Issue</value>
+  </data>
+</root>
+

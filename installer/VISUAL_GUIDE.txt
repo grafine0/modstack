@@ -1,0 +1,194 @@
+╔═══════════════════════════════════════════════════════════════════════╗
+║                   ModStack Installer - Visual Guide                   ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  STEP 1: Install Inno Setup (5 min)                                │
+└─────────────────────────────────────────────────────────────────────┘
+
+    1. Visit: https://jrsoftware.org/isdl.php
+    2. Download: Inno Setup 6.x (latest)
+    3. Install with default settings
+    
+    ✓ Done when you see: "Inno Setup" in Start Menu
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  STEP 2: Build ModStack (2 min)                                    │
+└─────────────────────────────────────────────────────────────────────┘
+
+    Open Command Prompt or PowerShell:
+    
+    ┌─────────────────────────────────────────────────────────────┐
+    │ > cd G:\ModStack                                                │
+    │ > dotnet build ModStack.sln --configuration Release         │
+    └─────────────────────────────────────────────────────────────┘
+    
+    Wait for: "Build succeeded" message
+    
+    ✓ Output created in: ModStack.GUI\bin\Release\net8.0-windows\
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  STEP 3: Create Installer (1 min)                                  │
+└─────────────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │ > cd G:\ModStack\installer                                      │
+    │ > build-installer.bat                                       │
+    └─────────────────────────────────────────────────────────────┘
+    
+    You'll see:
+    - "Found Inno Setup at: ..."
+    - "Build output found. Creating installer..."
+    - "SUCCESS: Installer created successfully!"
+    
+    ✓ Output: installer\dist\ModStackSetup.exe
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  STEP 4: Test Installer (5 min)                                    │
+└─────────────────────────────────────────────────────────────────────┘
+
+    1. Navigate to: G:\ModStack\installer\dist\
+    2. Right-click: ModStackSetup.exe
+    3. Select: "Run as administrator"
+    
+    Installation Wizard Steps:
+    ┌───────────────────────────────────────────────────────────┐
+    │ Welcome to ModStack Setup        → Click "Next"           │
+    │ License Agreement                → Read & Accept          │
+    │ Information                      → Read & Click "Next"    │
+    │ Select Destination Location      → Keep default or change │
+    │ Choose Installation Directory    → Keep C:\ModStack       │
+    │ Select Additional Tasks          → Choose shortcuts       │
+    │ Ready to Install                 → Click "Install"        │
+    └───────────────────────────────────────────────────────────┘
+    
+    ✓ Application should launch automatically
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  WHAT GETS INSTALLED?                                               │
+└─────────────────────────────────────────────────────────────────────┘
+
+    Application Files:
+    📂 C:\Program Files\ModStack\
+       ├── ModStack.GUI.exe          ← Main application
+       ├── *.dll                     ← Dependencies
+       └── runtimes\                 ← Native libraries
+    
+    Data Directory:
+    📂 C:\ModStack\                   ← User-chosen during install
+       ├── Services\                 ← Apache, MySQL, PHP, etc.
+       ├── Projects\                 ← Your projects
+       ├── Logs\                     ← Application logs
+       └── Config\                   ← Configuration files
+    
+    Shortcuts:
+    🔗 Start Menu → ModStack
+    🔗 Desktop → ModStack (optional)
+    
+    Registry:
+    🔧 HKCU\Software\ModStack
+       ├── RootDirectory = C:\ModStack
+       ├── ServicesDirectory = C:\ModStack\Services
+       └── ... (other settings)
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  VERIFY INSTALLATION                                                │
+└─────────────────────────────────────────────────────────────────────┘
+
+    Check Registry:
+    ┌─────────────────────────────────────────────────────────────┐
+    │ > reg query "HKCU\Software\ModStack" /v RootDirectory       │
+    └─────────────────────────────────────────────────────────────┘
+    
+    Should show: C:\ModStack (or your chosen directory)
+    
+    ✓ Launch from Start Menu
+    ✓ Open Settings → Verify root directory is correct
+    ✓ Try installing a service (e.g., Apache or MySQL)
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  DISTRIBUTION                                                       │
+└─────────────────────────────────────────────────────────────────────┘
+
+    Your installer is ready!
+    📦 File: G:\ModStack\installer\dist\ModStackSetup.exe
+    
+    You can:
+    ✓ Upload to GitHub Releases
+    ✓ Share via download link
+    ✓ Email to testers
+    ✓ Distribute to users
+    
+    Users just need to:
+    1. Download ModStackSetup.exe
+    2. Run as administrator
+    3. Follow installation wizard
+    4. Done! 🎉
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  TROUBLESHOOTING                                                    │
+└─────────────────────────────────────────────────────────────────────┘
+
+    ❌ "Inno Setup not found"
+       → Install from: https://jrsoftware.org/isdl.php
+    
+    ❌ "Build output not found"
+       → Run: dotnet build ModStack.sln --configuration Release
+    
+    ❌ Installer won't compile
+       → Open Inno Setup GUI and compile manually to see errors
+       → Check file paths in ModStackSetup.iss
+    
+    ❌ Application won't start after install
+       → Check registry: reg query "HKCU\Software\ModStack"
+       → Check files copied: dir "C:\Program Files\ModStack"
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  UNINSTALL TEST                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+    Before distributing, test uninstall:
+    
+    1. Go to: Control Panel → Programs → Uninstall a program
+    2. Find: ModStack
+    3. Click: Uninstall
+    
+    OR run directly:
+    📂 C:\Program Files\ModStack\unins000.exe
+    
+    Verify after uninstall:
+    ✓ No files in: C:\Program Files\ModStack\
+    ✓ No shortcuts in Start Menu
+    ✓ No registry entries: reg query "HKCU\Software\ModStack"
+    ✓ Data directory kept (or removed based on user choice)
+
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║                       QUICK REFERENCE                                 ║
+╠═══════════════════════════════════════════════════════════════════════╣
+║  Build Application:                                                   ║
+║    dotnet build ModStack.sln --configuration Release                  ║
+║                                                                       ║
+║  Create Installer:                                                    ║
+║    cd installer                                                       ║
+║    build-installer.bat                                                ║
+║                                                                       ║
+║  Output:                                                              ║
+║    installer\dist\ModStackSetup.exe                                   ║
+║                                                                       ║
+║  Documentation:                                                       ║
+║    installer\QUICK_START.md    ← Start here                           ║
+║    installer\CHECKLIST.md      ← Testing checklist                    ║
+║    installer\README.md         ← Full documentation                   ║
+║    DEPLOYMENT_GUIDE.md         ← Complete guide                       ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+                              🎉 Happy Deploying! 🎉

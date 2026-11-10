@@ -1,0 +1,487 @@
+<UserControl x:Class="ModStack.GUI.Views.ServiceManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:converters="clr-namespace:ModStack.GUI.Converters"
+             Background="{DynamicResource BackgroundBrush}">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Service Management" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" 
+                               Margin="0,0,0,8"/>
+                    <TextBlock Text="Manage your web development services and configurations" 
+                              FontSize="14" 
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" 
+                           Orientation="Horizontal" 
+                           VerticalAlignment="Center">
+                    <Button Name="InstallServiceButton"
+                           Style="{StaticResource ModernPrimaryButton}"
+                           Margin="0,0,12,0"       
+                           Width="140"
+                           Height="40"
+                           Grid.Column="2"
+                           Command="{Binding InstallServiceCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📦" Margin="0,0,8,0"/>
+                            <TextBlock Text="Install Service"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="RefreshButton"
+                            Grid.Column="3"
+                            Style="{StaticResource ModernSecondaryButton}"
+                            Width="140"
+                            Height="40"
+                            Command="{Binding RefreshCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,8,0"/>
+                            <TextBlock Text="Refresh"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Filters Section -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20,16" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Modern Search Box -->
+                <TextBox x:Name="SearchTextBox" 
+                        Grid.Column="0"
+                        Style="{StaticResource SearchBox}"
+                        Height="40"
+                        Margin="0,0,12,0"
+                        Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                </TextBox>
+
+                <!-- Service Type Filter -->
+                <ComboBox x:Name="TypeComboBox"
+                        Grid.Column="1"
+                        Style="{StaticResource ModernComboBox}"
+                        Height="40"
+                        Width="140"
+                        Margin="0,0,12,0"
+                        ItemsSource="{Binding ServiceTypes}"
+                        SelectedItem="{Binding SelectedServiceType}">
+                </ComboBox>
+
+                <!-- Status Filter -->
+                <ComboBox x:Name="StatusComboBox"
+                        Grid.Column="2"
+                        Style="{StaticResource ModernComboBox}"
+                        Height="40"
+                        Width="140"
+                        Margin="0,0,0,0"
+                        ItemsSource="{Binding StatusOptions}"
+                        SelectedItem="{Binding SelectedStatus}">
+                </ComboBox>
+            </Grid>
+        </Border>
+
+        <!-- Services Table -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" 
+                        Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="0,0,0,1" 
+                        CornerRadius="8,8,0,0" 
+                        Padding="20,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" 
+                                  Text="Service" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                        <TextBlock Grid.Column="1" 
+                                  Text="Status" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="2" 
+                                  Text="PID" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="3" 
+                                  Text="Port" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="4" 
+                                  Text="Auto Start" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="5" 
+                                  Text="Actions" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Services List -->
+                <ScrollViewer Grid.Row="1" 
+                              VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl Name="ServicesDataGrid" 
+                                ItemsSource="{Binding Services}"
+                                Margin="0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource CardBrush}" 
+                                        BorderBrush="{DynamicResource BorderBrush}" 
+                                        BorderThickness="0,0,0,1" 
+                                        Padding="20,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="200"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Service Info -->
+                                        <StackPanel Grid.Column="0" 
+                                                   Orientation="Horizontal" 
+                                                   VerticalAlignment="Center">
+                                            <Ellipse Width="12" Height="12" 
+                                                    Fill="{DynamicResource PrimaryBrush}"
+                                                    Margin="0,0,12,0"
+                                                    VerticalAlignment="Center"/>
+                                            <StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                    <TextBlock Text="{Binding Name}" 
+                                                              FontSize="14" 
+                                                              FontWeight="SemiBold" 
+                                                              Foreground="{DynamicResource TextPrimaryBrush}"
+                                                              Margin="0,0,8,0"/>
+                                                    <Border Background="{DynamicResource PrimaryBrush}" 
+                                                           CornerRadius="8" 
+                                                           Padding="4,2" 
+                                                           Margin="0,0,4,0"
+                                                           Visibility="{Binding Version, Converter={StaticResource StringToVisibilityConverter}}">
+                                                        <TextBlock Text="{Binding Version}" 
+                                                                  Foreground="White" 
+                                                                  FontSize="8" 
+                                                                  FontWeight="Bold"
+                                                                  HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding Description}" 
+                                                          FontSize="12" 
+                                                          Foreground="{DynamicResource TextSecondaryBrush}"
+                                                          TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Status -->
+                                        <StackPanel Grid.Column="1" 
+                                                   Orientation="Vertical" 
+                                                   VerticalAlignment="Center" 
+                                                   Margin="16,0,0,0">
+                                            <Ellipse Width="10" Height="10" 
+                                                    Fill="{Binding Status, Converter={StaticResource StringStatusToColorConverter}}"
+                                                    Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding Status}" 
+                                                      FontSize="11" 
+                                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                                      HorizontalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!-- PID -->
+                                        <TextBlock Grid.Column="2" 
+                                                  Text="{Binding ProcessIds}" 
+                                                  FontSize="10" 
+                                                  Foreground="{DynamicResource TextSecondaryBrush}"
+                                                  VerticalAlignment="Center" 
+                                                  Margin="16,0,0,0"
+                                                  HorizontalAlignment="Center"
+                                                  TextWrapping="Wrap"
+                                                  ToolTip="{Binding ProcessIds}"/>
+
+                                        <!-- Port -->
+                                        <TextBlock Grid.Column="3" 
+                                                  Text="{Binding Port}" 
+                                                  FontSize="12" 
+                                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                                  VerticalAlignment="Center" 
+                                                  Margin="16,0,0,0"
+                                                  HorizontalAlignment="Center"/>
+
+                                        <!-- Auto Start -->
+                                        <StackPanel Grid.Column="4" 
+                                                   Orientation="Vertical" 
+                                                   VerticalAlignment="Center" 
+                                                   Margin="16,0,0,0">
+                                            <CheckBox IsChecked="{Binding AutoStart}" 
+                                                     Style="{StaticResource ModernToggleSwitch}"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center"
+                                                     Checked="AutoStartCheckBox_Checked"
+                                                     Unchecked="AutoStartCheckBox_Unchecked"/>
+                                        </StackPanel>
+
+                                        <!-- Actions -->
+                                        <StackPanel Grid.Column="5" 
+                                                   Orientation="Horizontal" 
+                                                   VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Left"
+                                                   Margin="16,0,0,0">
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="0,0,8,0"
+                                                   IsEnabled="{Binding CanStart}"
+                                                   Click="StartService_Click"
+                                                   Tag="{Binding}"
+                                                   ToolTip="Start service">
+                                                <TextBlock Text="▶️" FontSize="12"/>
+                                            </Button>
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="0,0,8,0"
+                                                   IsEnabled="{Binding CanStop}"
+                                                   Click="StopService_Click"
+                                                   Tag="{Binding}"
+                                                   ToolTip="Stop service">
+                                                <TextBlock Text="⏹️" FontSize="12"/>
+                                            </Button>
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="0,0,8,0"
+                                                   IsEnabled="{Binding CanConfigure}"
+                                                   Click="ConfigureService_Click"
+                                                   Tag="{Binding}"
+                                                   ToolTip="Configure service">
+                                                <TextBlock Text="⚙️" FontSize="12"/>
+                                            </Button>
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   IsEnabled="{Binding CanDelete}"
+                                                   Click="DeleteService_Click"
+                                                   Tag="{Binding}"
+                                                   ToolTip="Delete service">
+                                                <TextBlock Text="🗑️" FontSize="12"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                
+                <!-- Loading Overlay -->
+                <Border Name="LoadingOverlay" 
+                        Grid.Row="1"
+                        Background="{DynamicResource BackgroundBrush}"
+                        Panel.ZIndex="1000"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <!-- Animated Loading Spinner -->
+                            <Border Width="48" Height="48" 
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,0,20">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                                        <Setter Property="BorderThickness" Value="4"/>
+                                        <Setter Property="CornerRadius" Value="24"/>
+                                        <Style.Triggers>
+                                            <EventTrigger RoutedEvent="Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard RepeatBehavior="Forever">
+                                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                       From="0" To="360" Duration="0:0:1"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Border.RenderTransform>
+                                    <RotateTransform CenterX="24" CenterY="24"/>
+                                </Border.RenderTransform>
+                                <Ellipse Width="8" Height="8" 
+                                         Fill="{DynamicResource PrimaryBrush}"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         Margin="2"/>
+                            </Border>
+                            
+                            <TextBlock Text="Loading Services..." 
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      FontSize="18"
+                                      FontWeight="SemiBold"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding StatusText}" 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      FontSize="14"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                
+                <!-- Empty State Message (shown when no stacks) -->
+                <StackPanel Name="EmptyStatePanel"
+                           Grid.Row="1"
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           Width="400"
+                           Background="{DynamicResource CardBrush}"
+                           Visibility="Collapsed">
+                    <!-- Package Icon with Dark Mode Support -->
+                    <Border Width="64" 
+                            Height="64" 
+                            HorizontalAlignment="Center" 
+                            Margin="0,0,0,16"
+                            Background="{DynamicResource SurfaceBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="2"
+                            CornerRadius="32">
+                        <TextBlock Text="⚙️" 
+                                  FontSize="32" 
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"
+                                  Foreground="{DynamicResource TextSecondaryBrush}"
+                                  Opacity="0.7"/>
+                    </Border>
+                    <TextBlock Text="No Services Found" 
+                              FontSize="18" 
+                              FontWeight="Bold" 
+                              Foreground="{DynamicResource TextPrimaryBrush}" 
+                              HorizontalAlignment="Center" 
+                              Margin="0,0,0,8"/>
+                    <TextBlock Text="No services match your current search or filter criteria. Try adjusting your search terms or clearing the filters." 
+                              FontSize="14" 
+                              Foreground="{DynamicResource TextSecondaryBrush}" 
+                              HorizontalAlignment="Center" 
+                              TextWrapping="Wrap" 
+                              TextAlignment="Center"
+                              Margin="0,0,0,16"/>
+                    <Button Name="ClearFiltersButton"
+                           Style="{StaticResource ModernSecondaryButton}"
+                           HorizontalAlignment="Center"
+                           Command="{Binding ClearFiltersCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,8,0" FontSize="16"/>
+                            <TextBlock Text="Clear Filters"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Modern Status Bar -->
+        <Border Grid.Row="3" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1"
+                CornerRadius="8" 
+                Padding="20,12">
+            <Grid VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                
+                <TextBlock  Grid.Column="0"
+                    Name="StatusTextBlock" 
+                    Text="{Binding StatusText}"
+                    Style="{StaticResource ModernCaptionText}"
+                    VerticalAlignment="Center"/>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Name="ServiceCountTextBlock" 
+                              Text="{Binding ServiceCountText}" 
+                              FontSize="12"
+                              Foreground="{DynamicResource TextSecondaryBrush}"
+                              VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

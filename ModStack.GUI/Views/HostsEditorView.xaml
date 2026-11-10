@@ -1,0 +1,305 @@
+<UserControl x:Class="ModStack.GUI.Views.HostsEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:converters="clr-namespace:ModStack.GUI.Converters"
+             Background="{StaticResource BackgroundBrush}">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Modern Header -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Hosts File Editor"  
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" 
+                               Margin="0,0,0,8"/>
+                    <TextBlock Text="Edit your system hosts file to manage local domain mappings" 
+                              FontSize="14" 
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" 
+                           Orientation="Horizontal" 
+                           VerticalAlignment="Center">
+                    <Button Name="AddEntryButton"
+                           Style="{StaticResource ModernPrimaryButton}"
+                           Margin="0,0,12,0"
+                           Width="140"
+                           Height="40"
+                           Click="AddEntryButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="➕" Margin="0,0,8,0"/>
+                            <TextBlock Text="Add Entry"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="SaveButton"
+                           Style="{StaticResource ModernPrimaryButton}"
+                           Margin="0,0,12,0"
+                           Width="140"
+                           Height="40"
+                           Click="SaveButton_Click">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- Loading Spinner -->
+                            <Grid Width="16" Height="16" 
+                                  Margin="0,0,8,0"
+                                  Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <!-- Modern Ring Spinner -->
+                                <Ellipse Stroke="{DynamicResource PrimaryButtonTextBrush}" 
+                                        StrokeThickness="2" 
+                                        Width="14" Height="14"
+                                        StrokeDashArray="10,5"
+                                        RenderTransformOrigin="0.5,0.5">
+                                    <Ellipse.RenderTransform>
+                                        <RotateTransform x:Name="SaveButtonSpinnerRotation"/>
+                                    </Ellipse.RenderTransform>
+                                    <Ellipse.Triggers>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard RepeatBehavior="Forever">
+                                                    <DoubleAnimation Storyboard.TargetName="SaveButtonSpinnerRotation"
+                                                                   Storyboard.TargetProperty="Angle"
+                                                                   From="0" To="360" Duration="0:0:0.8"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Ellipse.Triggers>
+                                </Ellipse>
+                            </Grid>
+                            
+                            <!-- Icon (hidden when loading) -->
+                            <TextBlock Text="💾" 
+                                      Margin="0,0,8,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                            
+                            <!-- Button Text -->
+                            <TextBlock Text="Save" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Modern Search and Filter Bar -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20,16" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/> <!-- Search takes remaining space -->
+                    <ColumnDefinition Width="Auto"/> <!-- Refresh button -->
+                    <ColumnDefinition Width="Auto"/> <!-- Status -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Search Box -->
+                <TextBox x:Name="SearchTextBox"
+                        Grid.Column="0"
+                        Style="{StaticResource SearchBox}"
+                        Height="40"
+                        HorizontalAlignment="Stretch"
+                        Margin="0,0,12,0"
+                        Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <!-- Refresh Button -->
+                <Button Name="RefreshButton"
+                        Grid.Column="1"
+                        Style="{StaticResource ModernSecondaryButton}"
+                        Width="120"
+                        Height="40"
+                        Margin="0,0,12,0"
+                        Click="RefreshButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🔄" Margin="0,0,8,0"/>
+                        <TextBlock Text="Refresh"/>
+                    </StackPanel>
+                </Button>
+                
+                <!-- Search Status -->
+                <TextBlock Grid.Column="2"
+                          x:Name="SearchStatusTextBlock"
+                          Text=""
+                          FontSize="12"
+                          VerticalAlignment="Center"
+                          Foreground="{DynamicResource TextSecondaryBrush}"
+                          HorizontalAlignment="Right"/>
+            </Grid>
+        </Border>
+
+        <!-- Hosts File Content -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Margin="0,0,0,20">
+            
+            <!-- Header -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- List Header -->
+                <Border Grid.Row="0" 
+                        Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="0,0,0,1" 
+                        CornerRadius="8,8,0,0" 
+                        Padding="20,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" 
+                                  Text="IP Address" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                        <TextBlock Grid.Column="1" 
+                                  Text="Hostname" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                        <TextBlock Grid.Column="2" 
+                                  Text="Actions" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Hosts Entries List -->
+                <ScrollViewer Grid.Row="1" 
+                              VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl x:Name="HostsEntriesItemsControl" 
+                                ItemsSource="{Binding FilteredHostsEntries}"
+                                Margin="0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource CardBrush}" 
+                                        BorderBrush="{DynamicResource BorderBrush}" 
+                                        BorderThickness="0,0,0,1" 
+                                        Padding="20,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- IP Address -->
+                                        <TextBox Grid.Column="0" 
+                                                Text="{Binding IpAddress}" 
+                                                Style="{StaticResource ModernTextBox}"
+                                                FontSize="12"
+                                                Margin="0,0,12,0"/>
+
+                                        <!-- Hostname -->
+                                        <TextBox Grid.Column="1" 
+                                                Text="{Binding Hostname}" 
+                                                Style="{StaticResource ModernTextBox}"
+                                                FontSize="12"
+                                                Margin="0,0,12,0"/>
+
+                                        <!-- Actions -->
+                                        <StackPanel Grid.Column="2" 
+                                                   Orientation="Horizontal" 
+                                                   VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Center">
+                                            <!-- NEW Badge for newly added entries -->
+                                            <Border Background="{DynamicResource SuccessBrush}" 
+                                                   CornerRadius="8" 
+                                                   Padding="8,0,8,0" 
+                                                   Margin="0,0,8,0"
+                                                   Visibility="{Binding IsNewlyAdded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <TextBlock Text="NEW" 
+                                                          FontSize="9" 
+                                                          FontWeight="SemiBold" 
+                                                          Foreground="White"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                            </Border>
+                                            
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="28" Height="28"
+                                                   Margin="0,0,8,0"
+                                                   Click="DeleteEntryButton_Click"
+                                                   Tag="{Binding}"
+                                                   ToolTip="Delete Entry">
+                                                <TextBlock Text="🗑️" FontSize="12"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="3" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1"
+                CornerRadius="8" 
+                Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="StatusTextBlock" 
+                        Text="Ready" 
+                        Style="{StaticResource ModernCaptionText}"
+                        VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Column="1" x:Name="EntryCountTextBlock"
+                        VerticalAlignment="Center"
+                        Text="{Binding EntryCountText}" 
+                        FontSize="12"  
+                        Foreground="{DynamicResource TextSecondaryBrush}"
+                        />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

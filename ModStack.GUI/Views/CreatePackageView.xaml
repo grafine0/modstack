@@ -1,0 +1,615 @@
+<UserControl x:Class="ModStack.GUI.Views.CreatePackageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:ModStack.GUI.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:InverseBooleanConverter x:Key="InverseBoolConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding PageTitle}" 
+                                   FontSize="24" 
+                                   FontWeight="Bold" 
+                                   Foreground="{DynamicResource TextPrimaryBrush}" 
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,12,0"/>
+                        <!-- System Package Badge -->
+                        <Border Background="{DynamicResource WarningBrush}"
+                                CornerRadius="4"
+                                Padding="8,4"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding IsSystemPackage, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="🔒 SYSTEM PACKAGE"
+                                       FontSize="10"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource CardBrush}"/>
+                        </Border>
+                    </StackPanel>
+                    <TextBlock Text="Define package details and available versions"
+                               FontSize="14" 
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               Margin="0,8,0,0"/>
+                </StackPanel>
+                <Button Grid.Column="1"
+                       Style="{StaticResource ModernSecondaryButton}"
+                       Height="40"
+                       Command="{Binding CancelCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="←" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Back to Packages" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <!-- Basic Information Section -->
+                <Border Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Basic Information" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  Margin="0,0,0,16"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Package Name -->
+                            <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,0,16">
+                                <TextBlock Text="Package Name *" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding PackageName, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                        ToolTip="Lowercase letters, numbers, and hyphens only"/>
+                                <TextBlock Text="{Binding ValidationMessage}" 
+                                          Foreground="#D32F2F" 
+                                          FontSize="11" 
+                                          Margin="0,4,0,0"
+                                          Visibility="{Binding HasValidationError, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            </StackPanel>
+
+                            <!-- Display Name -->
+                            <StackPanel Grid.Column="2" Grid.Row="0" Margin="0,0,0,16">
+                                <TextBlock Text="Display Name *" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsReadOnly="{Binding IsFieldsReadOnly}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"/>
+                            </StackPanel>
+
+                            <!-- Category -->
+                            <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,0,16">
+                                <TextBlock Text="Category *" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <ComboBox ItemsSource="{Binding Categories}" 
+                                         SelectedItem="{Binding Category}"
+                                         IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                         Style="{StaticResource ModernComboBox}"/>
+                            </StackPanel>
+
+                            <!-- Package Type -->
+                            <StackPanel Grid.Column="2" Grid.Row="1" Margin="0,0,0,16">
+                                <TextBlock Text="Package Type *" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <ComboBox ItemsSource="{Binding PackageTypes}" 
+                                         SelectedValue="{Binding PackageType}"
+                                         DisplayMemberPath="DisplayName"
+                                         SelectedValuePath="Type"
+                                         IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                         Style="{StaticResource ModernComboBox}"/>
+                            </StackPanel>
+
+                            <!-- Icon -->
+                            <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,0,16">
+                                <TextBlock Text="Icon (Emoji)" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding Icon, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsReadOnly="{Binding IsFieldsReadOnly}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                        MaxLength="2"/>
+                            </StackPanel>
+
+                            <!-- Tags -->
+                            <StackPanel Grid.Column="2" Grid.Row="2" Margin="0,0,0,16">
+                                <TextBlock Text="Tags (comma-separated)" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding Tags, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsReadOnly="{Binding IsFieldsReadOnly}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"/>
+                            </StackPanel>
+
+                            <!-- Description -->
+                            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Margin="0,0,0,16">
+                                <TextBlock Text="Description" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsReadOnly="{Binding IsFieldsReadOnly}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                        TextWrapping="Wrap"
+                                        AcceptsReturn="True"
+                                        MinHeight="60"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Is Popular Checkbox -->
+                        <CheckBox IsChecked="{Binding IsPopular}" 
+                                 Content="Mark as Popular Package" 
+                                 IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                 Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Additional Metadata Section -->
+                <Border Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Additional Metadata" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  Margin="0,0,0,16"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Homepage -->
+                            <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,0,16">
+                                <TextBlock Text="Homepage URL" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding Homepage, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsReadOnly="{Binding IsFieldsReadOnly}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                        ToolTip="Official website URL"/>
+                            </StackPanel>
+
+                            <!-- Documentation -->
+                            <StackPanel Grid.Column="2" Grid.Row="0" Margin="0,0,0,16">
+                                <TextBlock Text="Documentation URL" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding Documentation, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsReadOnly="{Binding IsFieldsReadOnly}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                        ToolTip="Documentation URL"/>
+                            </StackPanel>
+
+                            <!-- License -->
+                            <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,0,0">
+                                <TextBlock Text="License" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding License, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsReadOnly="{Binding IsFieldsReadOnly}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                        ToolTip="e.g., MIT, GPL, Apache 2.0"/>
+                            </StackPanel>
+
+                            <!-- Download Size -->
+                            <StackPanel Grid.Column="2" Grid.Row="1" Margin="0,0,0,0">
+                                <TextBlock Text="Download Size (bytes)" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding DownloadSize, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsReadOnly="{Binding IsFieldsReadOnly}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                        ToolTip="Package size in bytes"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Default Configuration Section -->
+                <Border Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Default Configuration" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  Margin="0,0,0,16"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Default Port -->
+                            <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,0,16">
+                                <TextBlock Text="Default Port" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding DefaultPort, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsReadOnly="{Binding IsFieldsReadOnly}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                        ToolTip="Default port number (0 for none)"/>
+                            </StackPanel>
+
+                            <!-- Default Install Path -->
+                            <StackPanel Grid.Column="2" Grid.Row="0" Margin="0,0,0,16">
+                                <TextBlock Text="Default Install Path" 
+                                          FontSize="12" 
+                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                          Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding DefaultInstallPath, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsReadOnly="{Binding IsFieldsReadOnly}"
+                                        IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                        ToolTip="Default installation directory"/>
+                            </StackPanel>
+
+                            <!-- Auto Start -->
+                            <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,0,0" Orientation="Vertical">
+                                <CheckBox IsChecked="{Binding AutoStart}" 
+                                         Content="Auto-start by default" 
+                                         IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                         Margin="0,0,0,8"/>
+                                <CheckBox IsChecked="{Binding RegisterAsService}" 
+                                         Content="Register as Windows service"
+                                         IsEnabled="{Binding IsFieldsReadOnly, Converter={StaticResource InverseBoolConverter}}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Versions Section -->
+                <Border Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="Available Versions" 
+                                      FontSize="18" 
+                                      FontWeight="SemiBold" 
+                                      Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            
+                            <Button Grid.Column="1"
+                                   Style="{StaticResource ModernPrimaryButton}"
+                                   Height="32"
+                                   Command="{Binding AddVersionCommand}">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="+" Margin="0,0,6,0" FontSize="16" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Add Version" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <ItemsControl x:Name="VersionsItemsControl" ItemsSource="{Binding Versions}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource BackgroundBrush}" 
+                                           BorderBrush="{DynamicResource BorderBrush}" 
+                                           BorderThickness="1" 
+                                           CornerRadius="4" 
+                                           Padding="12" 
+                                           Margin="0,0,0,12">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <!-- Version Info -->
+                                            <Grid Grid.Column="0" Grid.Row="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                                    <TextBlock Text="Version *" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                                    <TextBox Text="{Binding Version, UpdateSourceTrigger=PropertyChanged}" 
+                                                            Style="{StaticResource ModernTextBox}"
+                                                            IsReadOnly="{Binding IsSystemVersion}"
+                                                            IsEnabled="{Binding CanEdit}"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="1">
+                                                    <TextBlock Text="Display Name *" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                                    <TextBox Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}" 
+                                                            Style="{StaticResource ModernTextBox}"
+                                                            IsReadOnly="{Binding IsSystemVersion}"
+                                                            IsEnabled="{Binding CanEdit}"/>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <!-- Additional Version Fields -->
+                                            <Grid Grid.Column="0" Grid.Row="1" Margin="0,8,0,0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                
+                                                <!-- Download URL -->
+                                                <StackPanel Grid.Row="0" Margin="0,0,0,8">
+                                                    <TextBlock Text="Download URL *" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                                    <TextBox Text="{Binding DownloadUrl, UpdateSourceTrigger=PropertyChanged}" 
+                                                            Style="{StaticResource ModernTextBox}"
+                                                            IsReadOnly="{Binding IsSystemVersion}"
+                                                            IsEnabled="{Binding CanEdit}"/>
+                                                </StackPanel>
+                                                
+                                                <!-- Release Date, Size, Checksum -->
+                                                <Grid Grid.Row="1" Margin="0,0,0,8">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="12"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="12"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="Release Date" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                                        <DatePicker SelectedDate="{Binding ReleaseDate, UpdateSourceTrigger=PropertyChanged}"
+                                                                   Style="{StaticResource ModernDatePicker}"
+                                                                   IsEnabled="{Binding CanEdit}"/>
+                                                    </StackPanel>
+                                                    
+                                                    <StackPanel Grid.Column="2">
+                                                        <TextBlock Text="Size (bytes)" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                                        <TextBox Text="{Binding Size, UpdateSourceTrigger=PropertyChanged}" 
+                                                                Style="{StaticResource ModernTextBox}"
+                                                                IsReadOnly="{Binding IsSystemVersion}"
+                                                                IsEnabled="{Binding CanEdit}"/>
+                                                    </StackPanel>
+                                                    
+                                                    <StackPanel Grid.Column="4">
+                                                        <TextBlock Text="Checksum" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                                        <TextBox Text="{Binding Checksum, UpdateSourceTrigger=PropertyChanged}" 
+                                                                Style="{StaticResource ModernTextBox}"
+                                                                IsReadOnly="{Binding IsSystemVersion}"
+                                                                IsEnabled="{Binding CanEdit}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                                
+                                                <!-- Release Notes -->
+                                                <StackPanel Grid.Row="2">
+                                                    <TextBlock Text="Release Notes" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                                    <TextBox Text="{Binding ReleaseNotes, UpdateSourceTrigger=PropertyChanged}" 
+                                                            Style="{StaticResource ModernTextBox}"
+                                                            IsReadOnly="{Binding IsSystemVersion}"
+                                                            IsEnabled="{Binding CanEdit}"
+                                                            TextWrapping="Wrap"
+                                                            AcceptsReturn="True"
+                                                            MinHeight="40"/>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <!-- Version Flags and Remove Button -->
+                                            <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="12,0,0,0" VerticalAlignment="Center">
+                                                <!-- System Version Badge -->
+                                                <Border Background="{DynamicResource WarningBrush}"
+                                                        CornerRadius="4"
+                                                        Padding="8,4"
+                                                        Margin="0,0,0,12"
+                                                        Visibility="{Binding IsSystemVersion, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <TextBlock Text="🔒 System Version"
+                                                               FontSize="9"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource CardBrush}"/>
+                                                </Border>
+                                                
+                                                <CheckBox IsChecked="{Binding IsStable}" 
+                                                         Content="Stable" 
+                                                         IsEnabled="{Binding CanEdit}"
+                                                         Margin="0,0,0,4"/>
+                                                <CheckBox IsChecked="{Binding IsRecommended}" 
+                                                         Content="Recommended" 
+                                                         IsEnabled="{Binding CanEdit}"
+                                                         Margin="0,0,0,4"/>
+                                                <CheckBox IsChecked="{Binding IsLTS}" 
+                                                         Content="LTS" 
+                                                         IsEnabled="{Binding CanEdit}"
+                                                         Margin="0,0,0,12"/>
+                                                <Button Style="{StaticResource ModernDangerButton}"
+                                                       Height="28"
+                                                       Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                       Command="{Binding DataContext.RemoveVersionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                       CommandParameter="{Binding}">
+                                                    <TextBlock Text="Remove"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="No versions added yet. Click 'Add Version' to create one." 
+                                  FontSize="12" 
+                                  Foreground="{DynamicResource TextSecondaryBrush}"
+                                  HorizontalAlignment="Center"
+                                  Margin="0,20,0,0"
+                                  Visibility="{Binding Versions.Count, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Action Buttons -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1"
+                CornerRadius="8" 
+                Margin="0,20,0,0" 
+                Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <Button Name="CancelButton"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource ModernSecondaryButton}"
+                        Height="36"
+                        Padding="24,8"
+                        Command="{Binding CancelCommand}">
+                    <TextBlock Text="Cancel" VerticalAlignment="Center"/>
+                </Button>
+                
+                <Button Name="SaveButton"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource ModernPrimaryButton}"
+                        Height="36"
+                        Padding="24,8"
+                        Command="{Binding SaveCommand}"
+                        Click="SaveButton_Click">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Loading Spinner -->
+                        <Grid Width="16" Height="16" 
+                              Margin="0,0,8,0"
+                              Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <!-- Modern Ring Spinner -->
+                            <Ellipse Stroke="{DynamicResource PrimaryButtonTextBrush}" 
+                                    StrokeThickness="2" 
+                                    Width="14" Height="14"
+                                    StrokeDashArray="10,5"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Ellipse.RenderTransform>
+                                    <RotateTransform x:Name="SaveButtonSpinnerRotation"/>
+                                </Ellipse.RenderTransform>
+                                <Ellipse.Triggers>
+                                    <EventTrigger RoutedEvent="Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard RepeatBehavior="Forever">
+                                                <DoubleAnimation Storyboard.TargetName="SaveButtonSpinnerRotation"
+                                                               Storyboard.TargetProperty="Angle"
+                                                               From="0" To="360" Duration="0:0:0.8"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Ellipse.Triggers>
+                            </Ellipse>
+                        </Grid>
+                        
+                        <!-- Icon (hidden when loading) -->
+                        <TextBlock Text="{Binding ActionButtonIcon}" 
+                                  Margin="0,0,6,0" 
+                                  FontSize="12" 
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                        
+                        <!-- Button Text -->
+                        <TextBlock Text="{Binding ActionButtonText}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
+

@@ -1,0 +1,493 @@
+<UserControl x:Class="ModStack.GUI.Views.PackageManagerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:vm="clr-namespace:ModStack.GUI.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=vm:PackageManagerViewModel}">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Package Manager" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" 
+                               Margin="0,0,0,8"/>
+                    <TextBlock Text="Browse and install development services for your stack"
+                               FontSize="14" 
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Modern Add Package Button -->
+                    <Button Style="{StaticResource ModernPrimaryButton}"
+                            Width="140"
+                            Height="40"
+                            Margin="0,0,12,0"
+                            Command="{Binding AddPackageCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="➕" Margin="0,0,8,0"/>
+                            <TextBlock Text="Add Package"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Modern Refresh Button -->
+                    <Button Style="{StaticResource ModernSecondaryButton}"
+                            Width="140"
+                            Height="40"
+                            Command="{Binding RefreshCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,8,0"/>
+                            <TextBlock Text="Refresh"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Modern Search and Filter Bar -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20,16" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Modern Search Box -->
+                <TextBox Grid.Column="0"
+                         Style="{StaticResource SearchBox}"
+                         Height="40"
+                         Margin="0,0,12,0"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                </TextBox>
+
+                <!-- Modern Category Filter -->
+                <ComboBox Grid.Column="1"
+                          Style="{StaticResource ModernComboBox}"
+                          Height="40"
+                          Width="140"
+                          Margin="0,0,12,0"
+                          ItemsSource="{Binding Categories}"
+                          SelectedItem="{Binding SelectedCategory}">
+                </ComboBox>
+
+                <!-- Modern Status Filter -->
+                <ComboBox Grid.Column="2"
+                          Style="{StaticResource ModernComboBox}"
+                          Height="40"
+                          Width="140"
+                          Margin="0,0,0,0"
+                          ItemsSource="{Binding StatusOptions}"
+                          SelectedItem="{Binding SelectedStatus}">
+                </ComboBox>
+            </Grid>
+        </Border>
+
+        <!-- Packages Table -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Margin="0,0,0,20">
+            
+            <!-- Header -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- List Header -->
+                <Border Grid.Row="0" 
+                        Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="0,0,0,1" 
+                        CornerRadius="8,8,0,0" 
+                        Padding="20,16">
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" 
+                                  Text="Package" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                        <TextBlock Grid.Column="1" 
+                                  Text="Status" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="2" 
+                                  Text="Category" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="3" 
+                                  Text="Size" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="4" 
+                                  Text="Actions" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Packages List -->
+                <ScrollViewer Grid.Row="1" 
+                              VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding FilteredPackages}"
+                                  Margin="0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource CardBrush}" 
+                                        BorderBrush="{DynamicResource BorderBrush}" 
+                                        BorderThickness="0,0,0,1" 
+                                        Padding="20,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="200"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Package Info -->
+                                        <StackPanel Grid.Column="0" 
+                                                   Orientation="Horizontal" 
+                                                   VerticalAlignment="Center">
+                                            <Ellipse Width="12" Height="12" 
+                                                    Fill="{DynamicResource PrimaryBrush}"
+                                                    Margin="0,0,12,0"
+                                                    VerticalAlignment="Center"/>
+                                            <StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                    <TextBlock Text="{Binding DisplayName}" 
+                                                              FontSize="14" 
+                                                              FontWeight="SemiBold" 
+                                                              Foreground="{DynamicResource TextPrimaryBrush}"
+                                                              Margin="0,0,8,0"/>
+                                                    
+                                                    <Border Background="{DynamicResource PrimaryBrush}" 
+                                                           CornerRadius="8" 
+                                                           Padding="4,2" 
+                                                           Margin="0,0,4,0"
+                                                           Visibility="{Binding IsPopular, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                        <TextBlock Text="POPULAR" 
+                                                                  Foreground="White" 
+                                                                  FontSize="8" 
+                                                                  FontWeight="Bold"
+                                                                  HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding Description}" 
+                                                          FontSize="12" 
+                                                          Foreground="{DynamicResource TextSecondaryBrush}" 
+                                                          TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Status -->
+                                        <StackPanel Grid.Column="1" 
+                                                   Orientation="Vertical" 
+                                                   VerticalAlignment="Center" 
+                                                   Margin="8,0,0,0">
+                                            <Ellipse Width="10" Height="10" 
+                                                    Fill="{Binding InstallationStatus, Converter={StaticResource PackageInstallationStatusToColorConverter}}"
+                                                    Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding InstallationStatus}" 
+                                                      FontSize="11" 
+                                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                                      HorizontalAlignment="Center"
+                                                      TextWrapping="Wrap"
+                                                      TextAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!-- Category -->
+                                        <StackPanel Grid.Column="2" 
+                                                   Orientation="Vertical" 
+                                                   VerticalAlignment="Center" 
+                                                   Margin="16,0,0,0">
+                                            <TextBlock Text="{Binding Category}" 
+                                                      FontSize="11" 
+                                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                                      HorizontalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!-- Size -->
+                                        <TextBlock Grid.Column="3" 
+                                                  Text="{Binding FormattedSize}" 
+                                                  FontSize="12" 
+                                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                                  VerticalAlignment="Center" 
+                                                  Margin="16,0,0,0"
+                                                  HorizontalAlignment="Center"/>
+
+                                        <!-- Actions -->
+                                        <StackPanel Grid.Column="4" 
+                                                   Orientation="Horizontal" 
+                                                   VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Center">
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="0,0,8,0"
+                                                   Command="{Binding DataContext.InstallCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"
+                                                   ToolTip="Install Package"
+                                                   Visibility="{Binding HasAllVersionsInstalled, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                                                <TextBlock Text="↓" FontSize="14"/>
+                                            </Button>
+                                            
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="0,0,8,0"
+                                                   IsEnabled="False"
+                                                   ToolTip="All Installed"
+                                                   Visibility="{Binding HasAllVersionsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <TextBlock Text="✅" FontSize="12"/>
+                                            </Button>
+
+                                            <!-- Edit/View Button - changes based on IsSystemPackage -->
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="0,0,8,0"
+                                                   Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}">
+                                                <Button.ToolTip>
+                                                    <TextBlock Text="{Binding SourcePackage.IsSystemPackage, Converter={StaticResource BooleanToStringConverter}, ConverterParameter='View Package|Edit Package'}"/>
+                                                </Button.ToolTip>
+                                                <TextBlock FontSize="12">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Text" Value="✏️"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SourcePackage.IsSystemPackage}" Value="True">
+                                                                    <Setter Property="Text" Value="👁️"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Button>
+
+                                            <!-- Delete/Lock Button - changes based on IsSystemPackage -->
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="0,0,8,0"
+                                                   Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}">
+                                                <Button.ToolTip>
+                                                    <TextBlock Text="{Binding SourcePackage.IsSystemPackage, Converter={StaticResource BooleanToStringConverter}, ConverterParameter='System Package|Delete Package'}"/>
+                                                </Button.ToolTip>
+                                                <Button.IsEnabled>
+                                                    <Binding Path="SourcePackage.IsSystemPackage" Converter="{StaticResource InverseBoolConverter}"/>
+                                                </Button.IsEnabled>
+                                                <TextBlock FontSize="12">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Text" Value="🗑️"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SourcePackage.IsSystemPackage}" Value="True">
+                                                                    <Setter Property="Text" Value="🔒"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                
+                <!-- Loading Overlay -->
+                <Border Name="LoadingOverlay" 
+                        Grid.Row="1"
+                        Background="{DynamicResource BackgroundBrush}"
+                        Panel.ZIndex="1000"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <!-- Animated Loading Spinner -->
+                            <Border Width="48" Height="48" 
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,0,20">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                                        <Setter Property="BorderThickness" Value="4"/>
+                                        <Setter Property="CornerRadius" Value="24"/>
+                                        <Style.Triggers>
+                                            <EventTrigger RoutedEvent="Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard RepeatBehavior="Forever">
+                                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                       From="0" To="360" Duration="0:0:1"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Border.RenderTransform>
+                                    <RotateTransform CenterX="24" CenterY="24"/>
+                                </Border.RenderTransform>
+                                <Ellipse Width="8" Height="8" 
+                                         Fill="{DynamicResource PrimaryBrush}"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         Margin="2"/>
+                            </Border>
+                            
+                            <TextBlock Text="Loading Packages..." 
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      FontSize="18"
+                                      FontWeight="SemiBold"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding LoadingMessage}" 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      FontSize="14"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                
+                <!-- Empty State Message (shown when no packages) -->
+                <StackPanel Grid.Row="1"
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           Width="400"
+                           Background="{DynamicResource CardBrush}"
+                           Visibility="{Binding HasPackages, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <!-- Package Icon with Dark Mode Support -->
+                    <Border Width="64" 
+                            Height="64" 
+                            HorizontalAlignment="Center" 
+                            Margin="0,0,0,16"
+                            Background="{DynamicResource SurfaceBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="2"
+                            CornerRadius="32">
+                        <TextBlock Text="📦" 
+                                  FontSize="32" 
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"
+                                  Foreground="{DynamicResource TextSecondaryBrush}"
+                                  Opacity="0.7"/>
+                    </Border>
+                    <TextBlock Text="No Packages Found" 
+                              FontSize="18" 
+                              FontWeight="Bold" 
+                              Foreground="{DynamicResource TextPrimaryBrush}" 
+                              HorizontalAlignment="Center" 
+                              Margin="0,0,0,8"/>
+                    <TextBlock Text="No packages match your current search or filter criteria. Try adjusting your search terms or clearing the filters." 
+                              FontSize="14" 
+                              Foreground="{DynamicResource TextSecondaryBrush}" 
+                              HorizontalAlignment="Center" 
+                              TextWrapping="Wrap" 
+                              TextAlignment="Center"
+                              Margin="0,0,0,16"/>
+                    <Button Style="{StaticResource ModernSecondaryButton}"
+                           HorizontalAlignment="Center"
+                           Command="{Binding ClearFiltersCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,8,0" FontSize="16"/>
+                            <TextBlock Text="Clear Filters"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Modern Status Bar -->
+        <Border Grid.Row="3" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1"
+                CornerRadius="8" 
+                Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0"
+                          Text="{Binding StatusMessage}"
+                          Style="{StaticResource ModernCaptionText}"
+                          VerticalAlignment="Center"/>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Text="{Binding TotalPackages, StringFormat='{}{0} packages'}"
+                              Style="{StaticResource ModernCaptionText}"
+                              Margin="0,0,16,0"
+                              VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding InstalledPackages, StringFormat='{}{0} installed'}"
+                              Style="{StaticResource ModernCaptionText}"
+                              Foreground="{StaticResource SuccessBrush}"
+                              VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

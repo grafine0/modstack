@@ -1,0 +1,187 @@
+{
+  "version": "1.0",
+  "description": "Default packages and versions to seed in the ModStack database",
+  "packages": [
+    {
+      "name": "apache",
+      "displayName": "Apache HTTP Server",
+      "description": "Apache HTTP Server for web hosting",
+      "category": "Web Server",
+      "icon": "apache-icon.png",
+      "isPopular": true,
+      "tags": ["web", "server", "http", "apache"],
+      "versions": [
+        {
+          "version": "2.4.58",
+          "displayName": "Apache HTTP Server 2.4.58",
+          "serviceName": "apache-2.4.58",
+          "releaseDate": "2023-10-01T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 15728640,
+          "downloadUrls": [
+            "https://archive.apache.org/dist/httpd/httpd-2.4.58-win64-VS17.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nginx",
+      "displayName": "Nginx",
+      "description": "High-performance web server and reverse proxy",
+      "category": "Web Server",
+      "icon": "nginx-icon.png",
+      "isPopular": true,
+      "tags": ["web", "server", "nginx", "proxy"],
+      "versions": [
+        {
+          "version": "1.24.0",
+          "displayName": "Nginx 1.24.0",
+          "serviceName": "nginx-1.24.0",
+          "releaseDate": "2023-04-11T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 1048576,
+          "downloadUrls": [
+            "https://nginx.org/download/nginx-1.24.0.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "php",
+      "displayName": "PHP",
+      "description": "PHP scripting language for web development",
+      "category": "Programming Language",
+      "icon": "php-icon.png",
+      "isPopular": true,
+      "tags": ["php", "scripting", "web", "development"],
+      "versions": [
+        {
+          "version": "8.3.0",
+          "displayName": "PHP 8.3.0",
+          "serviceName": "php-8.3.0",
+          "releaseDate": "2023-11-23T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 31457280,
+          "downloadUrls": [
+            "https://windows.php.net/downloads/releases/php-8.3.0-Win32-vs16-x64.zip"
+          ]
+        },
+        {
+          "version": "8.4.2",
+          "displayName": "PHP 8.4.2",
+          "serviceName": "php-8.4.2",
+          "releaseDate": "2024-01-15T00:00:00Z",
+          "isStable": true,
+          "isRecommended": false,
+          "isLTS": false,
+          "size": 32505856,
+          "downloadUrls": [
+            "https://windows.php.net/downloads/releases/php-8.4.2-Win32-vs16-x64.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "mysql",
+      "displayName": "MySQL",
+      "description": "MySQL relational database management system",
+      "category": "Database",
+      "icon": "mysql-icon.png",
+      "isPopular": true,
+      "tags": ["database", "mysql", "sql", "relational"],
+      "versions": [
+        {
+          "version": "8.0.35",
+          "displayName": "MySQL 8.0.35",
+          "serviceName": "mysql-8.0.35",
+          "releaseDate": "2023-10-25T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": true,
+          "size": 524288000,
+          "downloadUrls": [
+            "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.35-winx64.zip"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "postgresql",
+      "displayName": "PostgreSQL",
+      "description": "PostgreSQL advanced relational database system",
+      "category": "Database",
+      "icon": "postgresql-icon.png",
+      "isPopular": true,
+      "tags": ["database", "postgresql", "sql", "advanced"],
+      "versions": [
+        {
+          "version": "16.0",
+          "displayName": "PostgreSQL 16.0",
+          "serviceName": "postgresql-16.0",
+          "releaseDate": "2023-09-14T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 314572800,
+          "downloadUrls": [
+            "https://get.enterprisedb.com/postgresql/postgresql-16.0-1-windows-x64.exe"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "redis",
+      "displayName": "Redis",
+      "description": "Redis in-memory data structure store",
+      "category": "Database",
+      "icon": "redis-icon.png",
+      "isPopular": true,
+      "tags": ["database", "redis", "cache", "memory"],
+      "versions": [
+        {
+          "version": "7.2.3",
+          "displayName": "Redis 7.2.3",
+          "serviceName": "redis-7.2.3",
+          "releaseDate": "2023-10-25T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 10485760,
+          "downloadUrls": [
+            "https://github.com/microsoftarchive/redis/releases/download/win-3.0.504/Redis-x64-3.0.504.msi"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "phpmyadmin",
+      "displayName": "phpMyAdmin",
+      "description": "Web-based MySQL administration tool",
+      "category": "Web Application",
+      "icon": "phpmyadmin-icon.png",
+      "isPopular": false,
+      "tags": ["mysql", "admin", "web", "tool"],
+      "versions": [
+        {
+          "version": "5.2.1",
+          "displayName": "phpMyAdmin 5.2.1",
+          "serviceName": "phpmyadmin-5.2.1",
+          "releaseDate": "2023-10-01T00:00:00Z",
+          "isStable": true,
+          "isRecommended": true,
+          "isLTS": false,
+          "size": 10485760,
+          "downloadUrls": [
+            "https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.zip"
+          ]
+        }
+      ]
+    }
+  ]
+}

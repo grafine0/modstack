@@ -1,0 +1,444 @@
+<UserControl x:Class="ModStack.GUI.Views.ProjectManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:views="clr-namespace:ModStack.GUI.Views.Controls"
+             xmlns:converters="clr-namespace:ModStack.GUI.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Project Management" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" 
+                               Margin="0,0,0,8"/>
+                    <TextBlock Text="Manage your web development projects and virtual hosts"
+                               FontSize="14" 
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="CreateProjectButton"
+                            Grid.Column="2"
+                            Style="{StaticResource ModernPrimaryButton}"
+                            Width="140"
+                            Height="40"
+                            Margin="0,0,12,0"
+                            Command="{Binding CreateProjectCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="➕" Margin="0,0,8,0"/>
+                            <TextBlock Text="Create Project"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Modern Refresh Button -->
+                    <Button x:Name="RefreshButton"
+                            Grid.Column="3"
+                            Style="{StaticResource ModernSecondaryButton}"
+                            Width="140"
+                            Height="40"
+                            Command="{Binding RefreshCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,8,0"/>
+                            <TextBlock Text="Refresh"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Modern Search and Filter Bar -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20,16" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/> <!-- Search wider -->
+                    <ColumnDefinition Width="1*"/> <!-- Status -->
+                    <ColumnDefinition Width="1*"/> <!-- Stack -->
+                </Grid.ColumnDefinitions>
+
+            <!-- Search Box -->
+            <TextBox Name="SearchTextBox"
+                    Grid.Column="0"
+                    Style="{StaticResource SearchBox}"
+                    Height="40"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,0,12,0"
+                    Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <!-- Stack Filter -->
+            <ComboBox Name="StackFilterComboBox"
+                    Grid.Column="1"
+                    Style="{StaticResource ModernComboBox}"
+                    Height="40"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,0,12,0"
+                    ItemsSource="{Binding StackOptions}"
+                    SelectedItem="{Binding StackFilter}"
+                    SelectedIndex="0"/>
+
+            <!-- Status Filter -->
+            <ComboBox Name="StatusFilterComboBox"
+                    Grid.Column="2"
+                    Style="{StaticResource ModernComboBox}"
+                    Height="40"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,0,0,0"
+                    ItemsSource="{Binding StatusOptions}"
+                    SelectedItem="{Binding StatusFilter}"
+                    SelectedIndex="0"/>
+            </Grid>
+        </Border>
+
+        <!-- Projects List Container -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" 
+                        Background="{DynamicResource CardBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="0,0,0,1"
+                        CornerRadius="8,8,0,0"
+                        Padding="20,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" 
+                                  Text="Project" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                        <TextBlock Grid.Column="1" 
+                                  Text="Domain" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="2" 
+                                  Text="Stack" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="3" 
+                                  Text="Status" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="4" 
+                                  Text="Actions" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Projects List -->
+                <ScrollViewer Grid.Row="1" 
+                              VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl Name="ProjectsItemsControl" 
+                                ItemsSource="{Binding FilteredProjects}"
+                                Margin="0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource CardBrush}" 
+                                        BorderBrush="{DynamicResource BorderBrush}" 
+                                        BorderThickness="0,0,0,1" 
+                                        Padding="20,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="200"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Project Info -->
+                                        <StackPanel Grid.Column="0" 
+                                                   Orientation="Horizontal" 
+                                                   VerticalAlignment="Center">
+                                            <Ellipse Width="12" Height="12" 
+                                                    Fill="#4CAF50"
+                                                    Margin="0,0,12,0"
+                                                    VerticalAlignment="Center"/>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Name}" 
+                                                          FontSize="14" 
+                                                          FontWeight="SemiBold" 
+                                                          Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                                <TextBlock Text="{Binding Path}" 
+                                                          FontSize="12" 
+                                                          Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Domain -->
+                                        <TextBlock Grid.Column="1" 
+                                                  VerticalAlignment="Center" 
+                                                  Margin="16,0,0,0"
+                                                  HorizontalAlignment="Center"
+                                                  FontSize="12">
+                                            <Hyperlink Command="{Binding DataContext.OpenDomainCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                      CommandParameter="{Binding}"
+                                                      TextDecorations="Underline"
+                                                      Foreground="{DynamicResource AccentBrush}"
+                                                      Cursor="Hand"
+                                                      ToolTip="Click to open in browser">
+                                                <Run Text="{Binding Domain}"/>
+                                            </Hyperlink>
+                                        </TextBlock>
+
+                                        <!-- Stack -->
+                                        <TextBlock Grid.Column="2" 
+                                                  Text="{Binding StackName}" 
+                                                  FontSize="12" 
+                                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                                  VerticalAlignment="Center" 
+                                                  Margin="16,0,0,0"
+                                                  HorizontalAlignment="Center"/>
+
+                                        <!-- Status -->
+                                        <StackPanel Grid.Column="3" 
+                                                   Orientation="Vertical" 
+                                                   VerticalAlignment="Center" 
+                                                   Margin="16,0,0,0">
+                                            <Ellipse Width="10" Height="10" 
+                                                    Fill="{Binding Status, Converter={StaticResource ProjectStatusToColorConverter}}"
+                                                    Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding Status}" 
+                                                      FontSize="11" 
+                                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                                      HorizontalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!-- Actions -->
+                                        <StackPanel Grid.Column="4" 
+                                                   Orientation="Horizontal" 
+                                                   VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Center"
+                                                   Margin="16,0,0,0">
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="0,0,8,0"
+                                                   Command="{Binding DataContext.EditProjectCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"
+                                                   ToolTip="Edit Project">
+                                                <TextBlock Text="✏️" FontSize="12"/>
+                                            </Button>
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="0,0,8,0"
+                                                   Command="{Binding DataContext.DeleteProjectCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"
+                                                   ToolTip="Delete Project">
+                                                <TextBlock Text="🗑️" FontSize="12"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                
+                <!-- Loading Overlay -->
+                <Border Name="LoadingOverlay" 
+                        Grid.Row="1"
+                        Background="{DynamicResource BackgroundBrush}"
+                        Panel.ZIndex="1000"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <!-- Animated Loading Spinner -->
+                            <Border Width="48" Height="48" 
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,0,20">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                                        <Setter Property="BorderThickness" Value="4"/>
+                                        <Setter Property="CornerRadius" Value="24"/>
+                                        <Style.Triggers>
+                                            <EventTrigger RoutedEvent="Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard RepeatBehavior="Forever">
+                                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                       From="0" To="360" Duration="0:0:1"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Border.RenderTransform>
+                                    <RotateTransform CenterX="24" CenterY="24"/>
+                                </Border.RenderTransform>
+                                <Ellipse Width="8" Height="8" 
+                                         Fill="{DynamicResource PrimaryBrush}"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         Margin="2"/>
+                            </Border>
+                            
+                            <TextBlock Text="Loading Projects..." 
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      FontSize="18"
+                                      FontWeight="SemiBold"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,0,0,8"/>
+                            <TextBlock Text="Loading project data..." 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      FontSize="14"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                
+                <!-- Empty State Message (shown when no stacks) -->
+                <StackPanel Name="EmptyStatePanel"
+                           Grid.Row="1"
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           Width="400"
+                           Background="{DynamicResource CardBrush}"
+                           Visibility="{Binding ShowEmptyState, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <!-- Package Icon with Dark Mode Support -->
+                    <Border Width="64" 
+                            Height="64" 
+                            HorizontalAlignment="Center" 
+                            Margin="0,0,0,16"
+                            Background="{DynamicResource SurfaceBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="2"
+                            CornerRadius="32">
+                        <TextBlock Text="📁" 
+                                  FontSize="32" 
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"
+                                  Foreground="{DynamicResource TextSecondaryBrush}"
+                                  Opacity="0.7"/>
+                    </Border>
+                    <TextBlock Text="No Projects Found" 
+                              FontSize="18" 
+                              FontWeight="Bold" 
+                              Foreground="{DynamicResource TextPrimaryBrush}" 
+                              HorizontalAlignment="Center" 
+                              Margin="0,0,0,8"/>
+                    <TextBlock Text="No projects match your current search or filter criteria. Try adjusting your search terms or clearing the filters." 
+                              FontSize="14" 
+                              Foreground="{DynamicResource TextSecondaryBrush}" 
+                              HorizontalAlignment="Center" 
+                              TextWrapping="Wrap" 
+                              TextAlignment="Center"
+                              Margin="0,0,0,16"/>
+                    <Button Name="ClearFiltersButton"
+                           Style="{StaticResource ModernSecondaryButton}"
+                           HorizontalAlignment="Center"
+                           Command="{Binding ClearFiltersCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,8,0" FontSize="16"/>
+                            <TextBlock Text="Clear Filters"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                
+            </Grid>
+        </Border>
+
+        <!-- Modern Status Bar -->
+        <Border Grid.Row="3" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1"
+                CornerRadius="8" 
+                Margin="0,20,0,0"
+                Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0"
+                          Name="StatusTextBlock" 
+                          Text="{Binding StatusBarText}"
+                          Style="{StaticResource ModernCaptionText}"
+                          VerticalAlignment="Center"/>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Name="ActiveProjectCountTextBlock" 
+                              Text="{Binding ActiveProjects, StringFormat='{}{0} active'}"
+                              Style="{StaticResource ModernCaptionText}"
+                              Foreground="{StaticResource SuccessBrush}"
+                              VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <!-- Success Overlay -->
+        <views:SuccessOverlay x:Name="SuccessOverlay" 
+                             Grid.RowSpan="4"
+                             Visibility="Collapsed"/>
+    </Grid>
+</UserControl>

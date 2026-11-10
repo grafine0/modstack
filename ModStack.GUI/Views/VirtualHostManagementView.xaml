@@ -1,0 +1,456 @@
+<UserControl x:Class="ModStack.GUI.Views.VirtualHostManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:ModStack.GUI.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1200">
+
+    <UserControl.Resources>
+        <!-- Converters -->
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        <converters:BooleanToColorConverter x:Key="BooleanToColorConverter"/>
+        <converters:BooleanToStatusConverter x:Key="BooleanToStatusConverter"/>
+
+        <!-- Modern Card Style -->
+        <Style x:Key="ModernCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#000000" Opacity="0.1" ShadowDepth="2" BlurRadius="8"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern Button Style -->
+        <Style x:Key="ModernButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1976D2"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#1565C0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Status Badge Style -->
+        <Style x:Key="StatusBadgeStyle" TargetType="Border">
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- SSL Badge Style -->
+        <Style x:Key="SSLBadgeStyle" TargetType="Border">
+            <Setter Property="Background" Value="#FF9800"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Virtual Host Management" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" 
+                               Margin="0,0,0,8"/>
+                    <TextBlock Text="Manage your web server virtual hosts, domains, and SSL configurations"
+                               FontSize="14" 
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Name="CreateVirtualHostButton"
+                           Style="{StaticResource ModernPrimaryButton}"
+                           Margin="0,0,12,0"       
+                           Width="160"
+                           Height="40"
+                           Grid.Column="2"
+                           Click="CreateVirtualHostButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="➕" Margin="0,0,8,0"/>
+                            <TextBlock Text="Create Virtual Host"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="RefreshButton"
+                            Grid.Column="3"
+                            Style="{StaticResource ModernSecondaryButton}"
+                            Width="140"
+                            Height="40">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,8,0"/>
+                            <TextBlock Text="Refresh"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Filters Section -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20,16" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Search Box -->
+                <TextBox x:Name="SearchTextBox" 
+                        Grid.Column="0"
+                        Style="{StaticResource SearchBox}"
+                        Height="40"
+                        Margin="0,0,12,0"
+                        TextChanged="SearchTextBox_TextChanged">
+                </TextBox>
+
+                <!-- Service Filter -->
+                <ComboBox x:Name="ServiceFilterComboBox"
+                        Grid.Column="1"
+                        Style="{StaticResource ModernComboBox}"
+                        Height="40"
+                        Width="140"
+                        SelectedIndex="0"
+                        Margin="0,0,12,0"
+                        SelectionChanged="ServiceFilterComboBox_SelectionChanged"/>
+
+                <!-- Status Filter -->
+                <ComboBox x:Name="StatusFilterComboBox"
+                        Grid.Column="2"
+                        Style="{StaticResource ModernComboBox}"
+                        Height="40"
+                        Width="140"
+                        HorizontalAlignment="Stretch"
+                        SelectedIndex="0"
+                        SelectionChanged="StatusFilterComboBox_SelectionChanged">
+                    <ComboBoxItem Content="All Status"/>
+                    <ComboBoxItem Content="Active"/>
+                    <ComboBoxItem Content="Inactive"/>
+                </ComboBox>
+            </Grid>
+        </Border>
+
+        <!-- Virtual Hosts List Container -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" 
+                        Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" 
+                        BorderThickness="0,0,0,1" 
+                        CornerRadius="8,8,0,0" 
+                        Padding="20,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" 
+                                  Text="Domain" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                        <TextBlock Grid.Column="1" 
+                                  Text="Port" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="2" 
+                                  Text="Document Root" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                        <TextBlock Grid.Column="3" 
+                                  Text="Status" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="4" 
+                                  Text="Service" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="5" 
+                                  Text="Actions" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  HorizontalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Virtual Hosts List -->
+                <ScrollViewer Grid.Row="1" 
+                              VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl Name="VirtualHostsItemsControl" 
+                                ItemsSource="{Binding FilteredVirtualHosts}"
+                                Margin="0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource CardBrush}" 
+                                        BorderBrush="{DynamicResource BorderBrush}" 
+                                        BorderThickness="0,0,0,1" 
+                                        Padding="20,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="140"/>
+                                            <ColumnDefinition Width="200"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Domain Info -->
+                                        <StackPanel Grid.Column="0" 
+                                                   Orientation="Horizontal" 
+                                                   VerticalAlignment="Center">
+                                            <Ellipse Width="12" Height="12" 
+                                                    Fill="#2196F3"
+                                                    Margin="0,0,12,0"
+                                                    VerticalAlignment="Center"/>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding ServerName}" 
+                                                          FontSize="14" 
+                                                          FontWeight="SemiBold" 
+                                                          Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                                <TextBlock Text="{Binding DocumentRoot}" 
+                                                          FontSize="12" 
+                                                          Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Port -->
+                                        <TextBlock Grid.Column="1" 
+                                                  Text="{Binding Port}" 
+                                                  FontSize="12" 
+                                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                                  VerticalAlignment="Center" 
+                                                  Margin="16,0,0,0"
+                                                  HorizontalAlignment="Center"/>
+
+                                        <!-- Document Root -->
+                                        <TextBlock Grid.Column="2" 
+                                                  Text="{Binding DocumentRoot}" 
+                                                  FontSize="12" 
+                                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                                  VerticalAlignment="Center" 
+                                                  Margin="16,0,0,0"/>
+
+                                        <!-- Status -->
+                                        <StackPanel Grid.Column="3" 
+                                                   Orientation="Vertical" 
+                                                   VerticalAlignment="Center" 
+                                                   Margin="16,0,0,0">
+                                            <Ellipse Width="10" Height="10" 
+                                                    Fill="{Binding IsEnabled, Converter={StaticResource BooleanToStatusColorConverter}}"
+                                                    Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding IsEnabled, Converter={StaticResource BooleanToStatusConverter}}" 
+                                                      FontSize="11" 
+                                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                                      HorizontalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!-- Service -->
+                                        <TextBlock Grid.Column="4" 
+                                                  Text="{Binding Service.DisplayName}" 
+                                                  FontSize="12" 
+                                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                                  VerticalAlignment="Center" 
+                                                  Margin="16,0,0,0"
+                                                  HorizontalAlignment="Center"/>
+
+                                        <!-- Actions -->
+                                        <StackPanel Grid.Column="5" 
+                                                   Orientation="Horizontal" 
+                                                   VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Center"
+                                                   Margin="16,0,0,0">
+                                            <Button Style="{StaticResource TitleBarButton}" 
+                                                   Width="32" Height="32" 
+                                                   Click="EditVirtualHostButton_Click"
+                                                   Tag="{Binding}"
+                                                   ToolTip="Edit Virtual Host"
+                                                   Margin="0,0,8,0">
+                                                <TextBlock Text="✏️" FontSize="12"/>
+                                            </Button>
+                                            <Button Style="{StaticResource TitleBarButton}" 
+                                                   Width="32" Height="32" 
+                                                   Click="DeleteVirtualHostButton_Click"
+                                                   Tag="{Binding}"
+                                                   ToolTip="Delete Virtual Host">
+                                                <TextBlock Text="🗑️" FontSize="12"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+        
+                <!-- Empty State Message (shown when no stacks) -->
+                <StackPanel Name="EmptyStatePanel"
+                           Grid.Row="1"
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           Width="400"
+                           Background="{DynamicResource CardBrush}"
+                           Visibility="Collapsed">
+                    <!-- Package Icon with Dark Mode Support -->
+                    <Border Width="64" 
+                            Height="64" 
+                            HorizontalAlignment="Center" 
+                            Margin="0,0,0,16"
+                            Background="{DynamicResource SurfaceBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="2"
+                            CornerRadius="32">
+                        <TextBlock Text="🌐" 
+                                  FontSize="32" 
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"
+                                  Foreground="{DynamicResource TextSecondaryBrush}"
+                                  Opacity="0.7"/>
+                    </Border>
+                    <TextBlock Text="No Virtual Hosts Found" 
+                              FontSize="18" 
+                              FontWeight="Bold" 
+                              Foreground="{DynamicResource TextPrimaryBrush}" 
+                              HorizontalAlignment="Center" 
+                              Margin="0,0,0,8"/>
+                    <TextBlock Text="No virtual hosts match your current search or filter criteria. Try adjusting your search terms or clearing the filters." 
+                              FontSize="14" 
+                              Foreground="{DynamicResource TextSecondaryBrush}" 
+                              HorizontalAlignment="Center" 
+                              TextWrapping="Wrap" 
+                              TextAlignment="Center"
+                              Margin="0,0,0,16"/>
+                    <Button Name="ClearFiltersButton"
+                           Style="{StaticResource ModernSecondaryButton}"
+                           HorizontalAlignment="Center"
+                           Click="ClearFiltersButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,8,0" FontSize="16"/>
+                            <TextBlock Text="Clear Filters"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Modern Status Bar -->
+        <Border Grid.Row="3" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1"
+                CornerRadius="8" 
+                Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0"
+                          Name="StatusTextBlock" 
+                          Text="Ready"
+                          Style="{StaticResource ModernCaptionText}"
+                          VerticalAlignment="Center"/>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Name="VirtualHostCountTextBlock" 
+                              Text="0 virtual hosts"
+                              Style="{StaticResource ModernCaptionText}"
+                              Margin="0,0,16,0"
+                              VerticalAlignment="Center"/>
+                    <TextBlock Name="ActiveVirtualHostCountTextBlock" 
+                              Text="0 active"
+                              Style="{StaticResource ModernCaptionText}"
+                              Foreground="{StaticResource SuccessBrush}"
+                              VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

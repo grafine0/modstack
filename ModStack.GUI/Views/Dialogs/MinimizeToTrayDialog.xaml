@@ -1,0 +1,125 @@
+<Window x:Class="ModStack.GUI.Views.Dialogs.MinimizeToTrayDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        Title="ModStack"
+        Height="300" Width="520"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        Background="Transparent">
+    
+        <Border CornerRadius="8"
+            Background="{DynamicResource CardBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            SnapsToDevicePixels="True">
+        
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Custom Title Bar -->
+                <Border Grid.Row="0"
+                        Background="{DynamicResource CardBrush}"
+                        CornerRadius="12,12,0,0">
+                    <Grid>
+                        <TextBlock Text="ModStack"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                VerticalAlignment="Center"
+                                Margin="20,0,0,0"/>
+                        
+                        <Button Style="{StaticResource CloseButton}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0,0,12,0"
+                                Click="CloseButton_Click"/>
+                    </Grid>
+                </Border>
+                
+                <!-- Content -->
+                <Grid Grid.Row="1" Margin="20,16,20,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Icon and Question -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
+                        <Border Width="48" Height="48"
+                                Background="{DynamicResource PrimaryBrush}"
+                                CornerRadius="24"
+                                Margin="0,0,16,0">
+                            <TextBlock Text="?"
+                                    FontSize="24"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <StackPanel VerticalAlignment="Center" MaxWidth="390">
+                            <TextBlock Text="Do you want to minimize ModStack to the system tray?"
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    TextWrapping="Wrap"
+                                    LineHeight="22"
+                                    Margin="0,0,0,12"/>
+                            
+                            <TextBlock Text="Click 'Yes' to minimize to tray, 'No' to exit completely."
+                                    FontSize="13"
+                                    Foreground="{DynamicResource TextSecondaryBrush}"
+                                    TextWrapping="Wrap"
+                                    LineHeight="18"
+                                    Margin="0,0,0,16"/>
+                            
+                            <!-- Remember Choice -->
+                            <CheckBox x:Name="RememberChoiceCheckBox"
+                                      Content="Remember my choice and don't ask again"
+                                      FontSize="12"
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      Cursor="Hand"
+                                      Margin="0,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <!-- Buttons -->
+                    <StackPanel Grid.Row="2" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Right"
+                                Margin="0,12,0,12">
+                        
+                        <Button Name="YesButton"
+                                Content="Yes"
+                                Style="{StaticResource ModernPrimaryButton}"
+                                Width="90"
+                                Height="34"
+                                Margin="0,0,12,0"
+                                Click="YesButton_Click"/>
+                        
+                        <Button Name="NoButton"
+                                Content="No"
+                                Style="{StaticResource ModernSecondaryButton}"
+                                Width="90"
+                                Height="34"
+                                Margin="0,0,12,0"
+                                Click="NoButton_Click"/>
+                        
+                        <Button Name="CancelButton"
+                                Content="Cancel"
+                                Style="{StaticResource ModernSecondaryButton}"
+                                Width="90"
+                                Height="34"
+                                Click="CancelButton_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+</Window>

@@ -1,0 +1,326 @@
+[PHP]
+; PHP Configuration Template for ModStack
+; This template is used to generate PHP configurations dynamically
+
+; Engine Settings
+engine = On
+short_open_tag = Off
+precision = 14
+output_buffering = 4096
+zlib.output_compression = Off
+implicit_flush = Off
+unserialize_callback_func =
+serialize_precision = -1
+
+; Safe Mode (deprecated but some settings remain)
+disable_functions =
+disable_classes =
+
+; Colors for PHP error output
+;highlight.string  = #DD0000
+;highlight.comment = #FF9900
+;highlight.keyword = #007700
+;highlight.bg      = #FFFFFF
+;highlight.default = #0000BB
+;highlight.html    = #000000
+
+; Error handling and logging
+error_reporting = {{ERROR_REPORTING}}
+display_errors = {{DISPLAY_ERRORS}}
+display_startup_errors = {{DISPLAY_STARTUP_ERRORS}}
+log_errors = On
+log_errors_max_len = 1024
+ignore_repeated_errors = Off
+ignore_repeated_source = Off
+report_memleaks = On
+track_errors = Off
+error_log = "{{PHP_ROOT}}/logs/php_errors.log"
+
+; Data Handling
+arg_separator.output = "&amp;"
+arg_separator.input = ";&"
+variables_order = "GPCS"
+request_order = "GP"
+register_globals = Off
+register_long_arrays = Off
+register_argc_argv = Off
+auto_globals_jit = On
+post_max_size = {{POST_MAX_SIZE}}
+auto_prepend_file =
+auto_append_file =
+default_mimetype = "text/html"
+default_charset = "UTF-8"
+
+; File Uploads
+file_uploads = {{FILE_UPLOADS}}
+upload_tmp_dir = "{{PHP_ROOT}}/tmp"
+upload_max_filesize = {{UPLOAD_MAX_FILESIZE}}
+max_file_uploads = {{MAX_FILE_UPLOADS}}
+
+; Fopen wrappers
+allow_url_fopen = {{ALLOW_URL_FOPEN}}
+allow_url_include = {{ALLOW_URL_INCLUDE}}
+from = "me@example.com"
+user_agent = "PHP"
+default_socket_timeout = 60
+
+; Dynamic Extensions
+extension_dir = "{{PHP_ROOT}}/ext"
+
+; Core Extensions
+{{#EXTENSIONS}}
+extension={{.}}
+{{/EXTENSIONS}}
+
+; Module Settings
+
+[CLI Server]
+cli_server.color = On
+
+[Date]
+date.timezone = {{TIMEZONE}}
+
+[filter]
+filter.default = unsafe_raw
+filter.default_flags =
+
+[iconv]
+iconv.input_encoding = ISO-8859-1
+iconv.internal_encoding = ISO-8859-1
+iconv.output_encoding = ISO-8859-1
+
+[intl]
+intl.default_locale =
+intl.error_level = 0
+intl.use_exceptions = 0
+
+[sqlite3]
+sqlite3.extension_dir =
+
+[Pcre]
+pcre.backtrack_limit = 100000
+pcre.recursion_limit = 100000
+
+[Pdo]
+pdo_mysql.cache_size = 2000
+pdo_mysql.default_socket =
+
+[Pdo_mysql]
+pdo_mysql.default_socket =
+
+[Phar]
+phar.readonly = On
+phar.require_hash = On
+phar.cache_list =
+
+[mail function]
+SMTP = localhost
+smtp_port = 25
+mail.add_x_header = On
+
+[SQL]
+sql.safe_mode = Off
+
+[ODBC]
+odbc.allow_persistent = On
+odbc.check_persistent = On
+odbc.max_persistent = -1
+odbc.max_links = -1
+odbc.defaultlrl = 4096
+odbc.defaultbinmode = 1
+
+[Interbase]
+ibase.allow_persistent = 1
+ibase.max_persistent = -1
+ibase.max_links = -1
+ibase.timestampformat = "%Y-%m-%d %H:%M:%S"
+ibase.dateformat = "%Y-%m-%d"
+ibase.timeformat = "%H:%M:%S"
+
+[MySQL]
+mysql.allow_local_infile = On
+mysql.allow_persistent = On
+mysql.cache_size = 2000
+mysql.max_persistent = -1
+mysql.max_links = -1
+mysql.default_port = {{MYSQL_PORT}}
+mysql.default_socket =
+mysql.default_host = {{MYSQL_HOST}}
+mysql.default_user = {{MYSQL_USER}}
+mysql.default_password = {{MYSQL_PASSWORD}}
+mysql.connect_timeout = 60
+mysql.trace_mode = Off
+
+[MySQLi]
+mysqli.max_persistent = -1
+mysqli.allow_persistent = On
+mysqli.max_links = -1
+mysqli.cache_size = 2000
+mysqli.default_port = {{MYSQL_PORT}}
+mysqli.default_socket =
+mysqli.default_host = {{MYSQL_HOST}}
+mysqli.default_user = {{MYSQL_USER}}
+mysqli.default_pw = {{MYSQL_PASSWORD}}
+mysqli.reconnect = Off
+
+[mysqlnd]
+mysqlnd.collect_statistics = On
+mysqlnd.collect_memory_statistics = Off
+
+[OCI8]
+oci8.privileged_connect = Off
+oci8.max_persistent = -1
+oci8.persistent_timeout = -1
+oci8.ping_interval = 60
+oci8.connection_class =
+oci8.events = Off
+oci8.statement_cache_size = 20
+oci8.default_prefetch = 100
+oci8.old_oci_close_semantics = Off
+
+[PostgreSQL]
+pgsql.allow_persistent = On
+pgsql.auto_reset_persistent = Off
+pgsql.max_persistent = -1
+pgsql.max_links = -1
+pgsql.ignore_notice = 0
+pgsql.log_notice = 0
+
+[Sybase-CT]
+sybct.allow_persistent = On
+sybct.max_persistent = -1
+sybct.max_links = -1
+sybct.min_server_severity = 10
+sybct.min_client_severity = 10
+
+[bcmath]
+bcmath.scale = 0
+
+[browscap]
+;browscap = extra/browscap.ini
+
+[Session]
+session.save_handler = files
+session.save_path = "{{PHP_ROOT}}/sessions"
+session.use_strict_mode = 0
+session.use_cookies = 1
+session.use_only_cookies = 1
+session.name = PHPSESSID
+session.auto_start = 0
+session.cookie_lifetime = {{SESSION_COOKIE_LIFETIME}}
+session.cookie_path = /
+session.cookie_domain =
+session.cookie_httponly = {{SESSION_COOKIE_HTTPONLY}}
+session.cookie_secure = {{SESSION_COOKIE_SECURE}}
+session.serialize_handler = php
+session.gc_probability = 1
+session.gc_divisor = 1000
+session.gc_maxlifetime = {{SESSION_GC_MAXLIFETIME}}
+session.referer_check =
+session.cache_limiter = nocache
+session.cache_expire = 180
+session.use_trans_sid = 0
+session.hash_function = 0
+session.hash_bits_per_character = 5
+url_rewriter.tags = "a=href,area=href,frame=src,input=src,form=fakeentry"
+
+[MSSQL]
+mssql.allow_persistent = On
+mssql.max_persistent = -1
+mssql.max_links = -1
+mssql.min_error_severity = 10
+mssql.min_message_severity = 10
+mssql.compatibility_mode = Off
+mssql.secure_connection = Off
+
+[Assertion]
+assert.active = On
+assert.warning = On
+assert.bail = Off
+assert.callback = 0
+assert.quiet_eval = 0
+
+[COM]
+com.typelib_file =
+com.allow_dcom = 1
+com.autoregister_typelib = 1
+com.autoregister_casesensitive = 1
+com.autoregister_verbose = 1
+com.code_page =
+
+[mbstring]
+mbstring.language = English
+mbstring.internal_encoding = UTF-8
+mbstring.http_input = auto
+mbstring.http_output = UTF-8
+mbstring.encoding_translation = Off
+mbstring.detect_order = auto
+mbstring.substitute_character = none
+mbstring.func_overload = 0
+mbstring.strict_detection = On
+mbstring.http_output_conv_mimetype =
+
+[gd]
+gd.jpeg_ignore_warning = 0
+
+[exif]
+exif.encode_unicode = ISO-8859-15
+exif.decode_unicode_motorola = UCS-2BE
+exif.decode_unicode_intel    = UCS-2LE
+exif.encode_jis =
+exif.decode_jis_motorola = JIS
+exif.decode_jis_intel    = JIS
+
+[Tidy]
+tidy.clean_output = Off
+
+[soap]
+soap.wsdl_cache_enabled = 1
+soap.wsdl_cache_dir = "/tmp"
+soap.wsdl_cache_ttl = 86400
+soap.wsdl_cache_limit = 5
+
+[sysvshm]
+sysvshm.init_mem = 10000
+
+[ldap]
+ldap.max_links = -1
+
+[mcrypt]
+mcrypt.algorithms_dir =
+mcrypt.modes_dir =
+
+[dba]
+dba.default_handler =
+
+[curl]
+curl.cainfo = "{{PHP_ROOT}}/extras/ssl/cacert.pem"
+
+[openssl]
+openssl.cafile = "{{PHP_ROOT}}/extras/ssl/cacert.pem"
+openssl.capath = "{{PHP_ROOT}}/extras/ssl/certs"
+
+; Performance Settings
+max_execution_time = {{MAX_EXECUTION_TIME}}
+max_input_time = {{MAX_INPUT_TIME}}
+max_input_vars = {{MAX_INPUT_VARS}}
+memory_limit = {{MEMORY_LIMIT}}
+
+; Error Logging for Different Environments
+{{#DEVELOPMENT_MODE}}
+error_reporting = E_ALL
+display_errors = On
+display_startup_errors = On
+log_errors = On
+{{/DEVELOPMENT_MODE}}
+
+{{#PRODUCTION_MODE}}
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+display_errors = Off
+display_startup_errors = Off
+log_errors = On
+{{/PRODUCTION_MODE}}
+
+; ModStack Custom Configuration Section
+; This section is managed by ModStack - do not edit manually
+{{MODSTACK_CUSTOM_CONFIG}}

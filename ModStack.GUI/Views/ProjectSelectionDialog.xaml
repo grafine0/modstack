@@ -1,0 +1,285 @@
+<Window x:Class="ModStack.GUI.Views.ProjectSelectionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Select Project for Installation" 
+        Height="600" 
+        Width="800"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0" 
+                   Text="Select Target Project" 
+                   FontSize="18" 
+                   FontWeight="Bold" 
+                   Margin="0,0,0,10"/>
+
+        <!-- Package Info -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" 
+                BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" 
+                BorderThickness="1" 
+                CornerRadius="5" 
+                Padding="15" 
+                Margin="0,0,0,15">
+            <StackPanel>
+                <TextBlock Text="{Binding PackageDisplayName}" 
+                           FontSize="14" 
+                           FontWeight="SemiBold" 
+                           Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding PackageDescription}" 
+                           Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" 
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Project Selection -->
+        <GroupBox Grid.Row="2" 
+                  Header="Available Projects" 
+                  Margin="0,0,0,15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Search Box -->
+                <TextBox Grid.Row="0" 
+                         x:Name="SearchTextBox"
+                         Margin="0,0,0,10"
+                         Padding="8,5"
+                         FontSize="12"
+                         Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                         BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                         BorderThickness="1"/>
+
+                <!-- Projects List -->
+                <ListView Grid.Row="1" 
+                          x:Name="ProjectsListView"
+                          ItemsSource="{Binding Projects}"
+                          SelectedItem="{Binding SelectedProject}"
+                          Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                          BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                          BorderThickness="1"
+                          SelectionChanged="ProjectsListView_SelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="Transparent" 
+                                    Padding="10,8">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Project Name -->
+                                    <TextBlock Grid.Row="0" 
+                                               Grid.Column="0"
+                                               Text="{Binding DisplayName}" 
+                                               FontWeight="SemiBold" 
+                                               FontSize="14"/>
+
+                                    <!-- Project Domain -->
+                                    <TextBlock Grid.Row="1" 
+                                               Grid.Column="0"
+                                               Text="{Binding Domain, StringFormat='Domain: {0}'}" 
+                                               FontSize="12" 
+                                               Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                                               Margin="0,2,0,0"/>
+
+                                    <!-- Project Path -->
+                                    <TextBlock Grid.Row="2" 
+                                               Grid.Column="0"
+                                               Text="{Binding Path}" 
+                                               FontSize="11" 
+                                               Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                                               Margin="0,2,0,0"/>
+
+                                    <!-- Stack Info -->
+                                    <StackPanel Grid.Row="0" 
+                                                Grid.RowSpan="3"
+                                                Grid.Column="1" 
+                                                Orientation="Horizontal" 
+                                                HorizontalAlignment="Right">
+                                        <Border Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" 
+                                                CornerRadius="10" 
+                                                Padding="6,2" 
+                                                Margin="5,0,0,0">
+                                            <TextBlock Text="{Binding Stack.Name, FallbackValue='Unbound'}" 
+                                                       FontSize="10" 
+                                                       Foreground="White"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </GroupBox>
+
+        <!-- Installation Options -->
+        <GroupBox Grid.Row="3" 
+                  Header="Installation Options" 
+                  Margin="0,0,0,15">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Installation Path -->
+                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,10">
+                    <Label Content="Installation Path:" FontWeight="SemiBold"/>
+                    <TextBox x:Name="InstallPathTextBox" 
+                             Text="{Binding InstallationPath}" 
+                             Padding="5"
+                             Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                             BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                             BorderThickness="1"/>
+                </StackPanel>
+
+                <!-- Subdomain Option -->
+                <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,0,10">
+                    <CheckBox x:Name="CreateSubdomainCheckBox" 
+                              Content="Create Subdomain" 
+                              IsChecked="{Binding CreateSubdomain}"
+                              Margin="0,0,0,5"/>
+                    <TextBox x:Name="SubdomainTextBox" 
+                             Text="{Binding Subdomain}" 
+                             Padding="5"
+                             Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                             BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                             BorderThickness="1"
+                             IsEnabled="{Binding IsChecked, ElementName=CreateSubdomainCheckBox}"/>
+                </StackPanel>
+
+                <!-- Web Configuration Options -->
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,10">
+                    <Label Content="Web Configuration" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
+                    
+                    <!-- SSL Configuration -->
+                    <CheckBox x:Name="EnableSSLCheckBox" 
+                              Content="Enable SSL/HTTPS" 
+                              IsChecked="{Binding EnableSSL}"
+                              Margin="0,0,0,10"/>
+                    
+                    <!-- Port Configuration -->
+                    <StackPanel Margin="0,0,0,10">
+                        <Label Content="Port:" FontSize="12"/>
+                        <TextBox x:Name="PortTextBox" 
+                                 Text="{Binding CustomPort}" 
+                                 Padding="5"
+                                 Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                 BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                                 BorderThickness="1"
+                                 Width="100" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    
+                    <!-- Auto-start Configuration -->
+                    <CheckBox x:Name="AutoStartCheckBox" 
+                              Content="Start automatically after installation" 
+                              IsChecked="{Binding AutoStart}"
+                              Margin="0,0,0,10"/>
+                </StackPanel>
+
+                <!-- Database Options -->
+                <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,10">
+                    <CheckBox x:Name="SetupDatabaseCheckBox" 
+                              Content="Setup Database" 
+                              IsChecked="{Binding SetupDatabase}"
+                              Margin="0,0,0,10"/>
+                    
+                    <Grid IsEnabled="{Binding IsChecked, ElementName=SetupDatabaseCheckBox}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Database Name -->
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,10">
+                            <Label Content="Database Name:" FontSize="12"/>
+                            <TextBox x:Name="DatabaseNameTextBox" 
+                                     Text="{Binding DatabaseName}" 
+                                     Padding="5"
+                                     Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                     BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                                     BorderThickness="1"/>
+                        </StackPanel>
+
+                        <!-- Database User -->
+                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,10,10">
+                            <Label Content="Database User:" FontSize="12"/>
+                            <TextBox x:Name="DatabaseUserTextBox" 
+                                     Text="{Binding DatabaseUser}" 
+                                     Padding="5"
+                                     Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                     BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                                     BorderThickness="1"/>
+                        </StackPanel>
+
+                        <!-- Database Password -->
+                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="10,0,0,10">
+                            <Label Content="Database Password:" FontSize="12"/>
+                            <PasswordBox x:Name="DatabasePasswordBox" 
+                                         Padding="5"
+                                         Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                         BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                                         BorderThickness="1"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="4" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right">
+            <Button Content="Cancel" 
+                    Width="80" 
+                    Height="32" 
+                    Margin="0,0,10,0"
+                    Click="CancelButton_Click"/>
+            <Button Content="Install" 
+                    Width="80" 
+                    Height="32" 
+                    IsDefault="True"
+                    Click="InstallButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

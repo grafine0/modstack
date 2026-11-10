@@ -1,0 +1,334 @@
+<Window x:Class="ModStack.GUI.Views.PackageInstallDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Install Package"
+        Width="650"
+        Height="750"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+    
+    <!-- Modern dialog container with shadow -->
+    <Border CornerRadius="8"
+            Background="{DynamicResource CardBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            SnapsToDevicePixels="True">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000"
+                              Opacity="0.25"
+                              BlurRadius="15"
+                              ShadowDepth="0"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Modern Title Bar -->
+            <Border Grid.Row="0" Style="{StaticResource DialogTitleBarStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>  <!-- Icon -->
+                        <ColumnDefinition Width="*"/>     <!-- Title and Description -->
+                        <ColumnDefinition Width="Auto"/>  <!-- Close Button -->
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Package Icon -->
+                    <TextBlock Grid.Column="0"
+                             x:Name="PackageIconTextBlock" 
+                             FontSize="24" 
+                             Margin="0,0,12,0"
+                             VerticalAlignment="Center"
+                             Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    
+                    <!-- Title and Description Stack -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock x:Name="PackageNameTextBlock" 
+                                 Style="{StaticResource DialogTitleTextStyle}"
+                                 Margin="0,0,0,2"/>
+                        <TextBlock x:Name="PackageDescriptionTextBlock" 
+                                 Style="{StaticResource DialogSubtitleTextStyle}"/>
+                    </StackPanel>
+                    
+                    <!-- Close Button -->
+                    <Button Grid.Column="2" 
+                        Style="{DynamicResource CloseButton}" 
+                        Width="40" 
+                        Height="40"
+                        ToolTip="Close" 
+                        Click="CloseButton_Click">
+                        <TextBlock Text="×" FontSize="16" />
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Modern Content Area -->
+            <ScrollViewer Grid.Row="1" 
+                        VerticalScrollBarVisibility="Auto"
+                        Style="{DynamicResource ModernScrollViewer}"
+                        Padding="24">
+                <StackPanel>
+                
+                    <!-- Version Selection Section -->
+                    <TextBlock Text="Version Selection" 
+                            Style="{StaticResource ModernHeading2}"/>
+
+                    <TextBlock Text="Choose Version *" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <ComboBox x:Name="VersionComboBox" 
+                             Style="{StaticResource ModernComboBox}"
+                             Height="40"
+                             SelectionChanged="VersionComboBox_SelectionChanged"
+                             Margin="0,0,0,20">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Version Name -->
+                                    <TextBlock Grid.Column="0" 
+                                              Text="{Binding Version.DisplayName}" 
+                                              VerticalAlignment="Center"/>
+                                    
+                                    <!-- Installation Status Indicator (data-bound visibility) -->
+                                    <StackPanel Grid.Column="1" 
+                                               Orientation="Horizontal"
+                                               VerticalAlignment="Center"
+                                               Margin="8,0,0,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsInstalled}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <TextBlock Text="✅" 
+                                                  FontSize="12" 
+                                                  Margin="0,0,4,0"/>
+                                        <TextBlock Text="Installed" 
+                                                  FontSize="11" 
+                                                  Foreground="Green"
+                                                  FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!-- Installation Configuration -->
+                    <TextBlock Text="Installation Configuration" 
+                            Style="{StaticResource ModernHeading2}"/>
+
+                    <!-- Project Selection (for StandaloneWebApp, Framework, Tool) -->
+                    <StackPanel x:Name="ProjectSelectionSection" Visibility="Collapsed">
+                        <TextBlock Text="Target Project *" 
+                                FontSize="14" 
+                                FontWeight="SemiBold" 
+                                Foreground="{DynamicResource TextPrimaryBrush}" 
+                                Margin="0,0,0,8"/>
+                        <ComboBox x:Name="ProjectSelectionComboBox" 
+                                Style="{StaticResource ModernComboBox}"
+                                DisplayMemberPath="DisplayName"
+                                SelectedValuePath="Id"
+                                Margin="0,0,0,8"/>
+                        <TextBlock x:Name="ProjectInstallPathTextBlock" 
+                                FontSize="12" 
+                                Foreground="{DynamicResource TextSecondaryBrush}" 
+                                Margin="0,0,0,16"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="InstallPathSection">
+                        <TextBlock Text="Installation Path *" 
+                                FontSize="14" 
+                                FontWeight="SemiBold" 
+                                Foreground="{DynamicResource TextPrimaryBrush}" 
+                                Margin="0,0,0,8"/>
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="InstallPathTextBox" 
+                                    Grid.Column="0"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Height="40"
+                                    Margin="0,0,8,0"/>
+                            <Button Grid.Column="1" 
+                                   Content="Browse..." 
+                                   Style="{StaticResource ModernSecondaryButton}"
+                                   Height="40"
+                                   MinWidth="100"
+                                   Click="BrowsePathButton_Click"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Service Configuration -->
+                    <StackPanel x:Name="ServiceConfigurationSection">
+                        <TextBlock Text="Service Configuration" 
+                                FontSize="14" 
+                                FontWeight="SemiBold" 
+                                Foreground="{DynamicResource TextPrimaryBrush}" 
+                                Margin="0,0,0,8"/>
+                        <Border Background="{DynamicResource SurfaceBrush}" 
+                                BorderBrush="{DynamicResource BorderBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="6" 
+                                Padding="16" 
+                                Margin="0,0,0,20">
+                            <StackPanel x:Name="ConfigurationPanel"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Service Options -->
+                    <TextBlock Text="Service Options" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <Border x:Name="ServiceOptionsSection"
+                            Background="{DynamicResource SurfaceBrush}" 
+                            BorderBrush="{DynamicResource BorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="6" 
+                            Padding="16" 
+                            Margin="0,0,0,20">
+                        <StackPanel>
+                            <!-- Auto Start Option -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="0"
+                                         Text="Start automatically after installation"
+                                         VerticalAlignment="Center"
+                                         FontSize="14"
+                                         Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <CheckBox x:Name="AutoStartCheckBox" 
+                                         Grid.Column="1"
+                                         Style="{StaticResource ModernToggleSwitch}"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Center"/>
+                            </Grid>
+                            
+                            <!-- Register Service Option -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="0"
+                                         Text="Register as Windows Service"
+                                         VerticalAlignment="Center"
+                                         FontSize="14"
+                                         Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <CheckBox x:Name="RegisterServiceCheckBox" 
+                                         Grid.Column="1"
+                                         Style="{StaticResource ModernToggleSwitch}"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Package Information -->
+                    <TextBlock Text="Package Information" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <Border Background="{DynamicResource SurfaceBrush}" 
+                            BorderBrush="{DynamicResource BorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="6" 
+                            Padding="16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                     Text="Size: " 
+                                     FontWeight="SemiBold"
+                                     Foreground="{DynamicResource TextSecondaryBrush}" 
+                                     Margin="0,0,8,8"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" 
+                                     x:Name="SizeTextBlock" 
+                                     Foreground="{DynamicResource TextPrimaryBrush}"
+                                     Margin="0,0,0,8"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" 
+                                     Text="License: " 
+                                     FontWeight="SemiBold"
+                                     Foreground="{DynamicResource TextSecondaryBrush}" 
+                                     Margin="0,0,8,8"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" 
+                                     x:Name="LicenseTextBlock" 
+                                     Foreground="{DynamicResource TextPrimaryBrush}"
+                                     Margin="0,0,0,8"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" 
+                                     Text="Homepage: " 
+                                     FontWeight="SemiBold"
+                                     Foreground="{DynamicResource TextSecondaryBrush}" 
+                                     Margin="0,0,8,0"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" 
+                                     x:Name="HomepageTextBlock" 
+                                     Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Modern Action Buttons -->
+            <Border Grid.Row="2" 
+                    Background="{DynamicResource CardBrush}" 
+                    BorderBrush="{DynamicResource BorderBrush}" 
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="0,0,8,8"
+                    Padding="24,16">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Cancel" 
+                           Style="{StaticResource ModernSecondaryButton}"
+                           MinWidth="100"
+                           Height="40"
+                           Margin="0,0,12,0"
+                           Click="CancelButton_Click"/>
+                    <Button x:Name="InstallButton"
+                           Style="{StaticResource ModernPrimaryButton}"
+                           MinWidth="120"
+                           Height="40"
+                           Click="InstallButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📥" Margin="0,0,8,0"/>
+                            <TextBlock Text="Install"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

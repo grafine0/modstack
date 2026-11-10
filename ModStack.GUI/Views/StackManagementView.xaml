@@ -1,0 +1,467 @@
+<UserControl x:Class="ModStack.GUI.Views.StackManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:ModStack.GUI.Converters"
+             xmlns:vm="clr-namespace:ModStack.GUI.ViewModels"
+             xmlns:loc="clr-namespace:ModStack.GUI.Converters"
+             xmlns:helpers="clr-namespace:ModStack.GUI.Helpers">
+
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <converters:StackStatusToColorConverter x:Key="StackStatusToColorConverter"/>
+        <converters:StackStatusToTextConverter x:Key="StackStatusToTextConverter"/>
+        <!-- Proxy to access ViewModel from popups/context menus -->
+        <helpers:BindingProxy x:Key="VmProxy" Data="{Binding}"/>
+        
+        <Style x:Key="FilterComboBox" TargetType="ComboBox" BasedOn="{StaticResource ModernComboBox}">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{loc:Localize StackManagementTitle}" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" 
+                               Margin="0,0,0,8"/>
+                    <TextBlock Text="{loc:Localize StackManagementSubtitle}"
+                               FontSize="14" 
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource ModernPrimaryButton}"
+                            Width="140"
+                            Height="40"
+                            Margin="0,0,12,0"
+                            Command="{Binding CreateStackCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="➕" Margin="0,0,8,0"/>
+                            <TextBlock Text="{loc:Localize ButtonCreateStack}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource ModernSecondaryButton}"
+                            Width="140"
+                            Height="40"
+                            Command="{Binding RefreshCommand}"
+                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,8,0"/>
+                            <TextBlock Text="{loc:Localize ButtonRefresh}"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Filters Section -->
+        <Border Grid.Row="1" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20,16" 
+                Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+            <!-- Search Box -->
+            <TextBox Grid.Column="0"
+                     Style="{StaticResource SearchBox}"
+                     Height="40"
+                     Margin="0,0,12,0"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <!-- Service Count Filter -->
+            <ComboBox Grid.Column="1"
+                     Style="{StaticResource FilterComboBox}"
+                     Width="160"
+                     ItemsSource="{Binding ServiceCountOptions}"
+                     SelectedItem="{Binding ServiceCountFilter}"/>
+            
+            <!-- Status Filter -->
+            <ComboBox Grid.Column="2"
+                     Style="{StaticResource FilterComboBox}"
+                     Width="140"
+                     ItemsSource="{Binding StatusOptions}"
+                     SelectedItem="{Binding StatusFilter}"/>
+            
+            <!-- Clear Filters Button -->
+            <Button Grid.Column="3"
+                    Style="{StaticResource ModernSecondaryButton}"
+                    Height="40"
+                    Width="120"
+                    Command="{Binding ClearFiltersCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="✖" Margin="0,0,8,0"/>
+                    <TextBlock Text="{loc:Localize ButtonClearFilters}"/>
+                </StackPanel>
+            </Button>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                CornerRadius="8"
+                Margin="0,0,0,20">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- List Header -->
+                <Border Grid.Row="0" 
+                        Background="{DynamicResource CardBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="0,0,0,1" 
+                        CornerRadius="8,8,0,0" 
+                        Padding="20,16">
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="180"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" 
+                                  Text="{loc:Localize ColumnStackName}" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                  VerticalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="1" 
+                                  Text="{loc:Localize ColumnDescription}" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                  VerticalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="2" 
+                                  Text="{loc:Localize ColumnServices}" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                  VerticalAlignment="Center"  
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="3" 
+                                  Text="{loc:Localize ColumnStatus}" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}" 
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="4" 
+                                  Text="{loc:Localize ColumnActions}" 
+                                  FontWeight="Bold" 
+                                  FontSize="14" 
+                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Center"
+                                Margin="16,0,0,0"/>
+                    </Grid>
+                </Border>
+                
+                <!-- Stacks List -->
+                <ScrollViewer Grid.Row="1" 
+                              VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Disabled"
+                              Visibility="{Binding HasStacks, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ItemsControl ItemsSource="{Binding FilteredStacks}"
+                                Margin="0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource CardBrush}" 
+                                        BorderBrush="{DynamicResource BorderBrush}" 
+                                        BorderThickness="0,0,0,1" 
+                                        Padding="20,12">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="{loc:Localize ContextMenuStartStack}"
+                                                     Command="{Binding Data.StartStackCommand, Source={StaticResource VmProxy}}"
+                                                     CommandParameter="{Binding}">
+                                                <MenuItem.Icon>
+                                                    <TextBlock Text="▶️" FontSize="14"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="{loc:Localize ContextMenuStopStack}"
+                                                     Command="{Binding Data.StopStackCommand, Source={StaticResource VmProxy}}"
+                                                     CommandParameter="{Binding}">
+                                                <MenuItem.Icon>
+                                                    <TextBlock Text="⏹️" FontSize="14"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <Separator/>
+                                            <MenuItem Header="{loc:Localize ContextMenuEditStack}"
+                                                     Command="{Binding Data.EditStackCommand, Source={StaticResource VmProxy}}"
+                                                     CommandParameter="{Binding}">
+                                                <MenuItem.Icon>
+                                                    <TextBlock Text="✏️" FontSize="14"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="{loc:Localize ContextMenuDeleteStack}"
+                                                     Command="{Binding Data.DeleteStackCommand, Source={StaticResource VmProxy}}"
+                                                     CommandParameter="{Binding}">
+                                                <MenuItem.Icon>
+                                                    <TextBlock Text="🗑️" FontSize="14"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+                                    <Grid VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="180"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Stack Name -->
+                                        <StackPanel Grid.Column="0" 
+                                                   Orientation="Horizontal" 
+                                                   VerticalAlignment="Center">
+                                            <Ellipse Width="12" Height="12" 
+                                                    Fill="{Binding Status, Converter={StaticResource StackStatusToColorConverter}}"
+                                                    Margin="0,0,12,0"
+                                                    VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding DisplayName}" 
+                                                      FontSize="14" 
+                                                      FontWeight="SemiBold" 
+                                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                                      VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!-- Description -->
+                                        <TextBlock Grid.Column="1" 
+                                                  Text="{Binding Description}" 
+                                                  FontSize="12" 
+                                                  Foreground="{DynamicResource TextSecondaryBrush}"
+                                                  TextWrapping="Wrap"
+                                                  VerticalAlignment="Center"/>
+
+                                        <!-- Services Count -->
+                                        <TextBlock Grid.Column="2" 
+                                                  Text="{Binding Services.Count}" 
+                                                  FontSize="14" 
+                                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+
+                                        <!-- Status -->
+                                        <TextBlock Grid.Column="3" 
+                                                  Text="{Binding Status, Converter={StaticResource StackStatusToTextConverter}}" 
+                                                  FontSize="12" 
+                                                  FontWeight="SemiBold"
+                                                  Foreground="{Binding Status, Converter={StaticResource StackStatusToColorConverter}}"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+
+                                        <!-- Actions -->
+                                        <StackPanel Grid.Column="4" 
+                                                   Orientation="Horizontal" 
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Margin="16,0,0,0">
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Command="{Binding DataContext.StartStackCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"
+                                                   ToolTip="{loc:Localize ContextMenuStartStack}">
+                                                <TextBlock Text="▶️" FontSize="12"/>
+                                            </Button>
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="8,0,0,0"
+                                                   Command="{Binding DataContext.StopStackCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"
+                                                   ToolTip="{loc:Localize ContextMenuStopStack}">
+                                                <TextBlock Text="⏹️" FontSize="12"/>
+                                            </Button>
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="8,0,0,0"
+                                                   Command="{Binding DataContext.EditStackCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"
+                                                   ToolTip="{loc:Localize ContextMenuEditStack}">
+                                                <TextBlock Text="✏️" FontSize="12"/>
+                                            </Button>
+                                            <Button Style="{StaticResource TitleBarButton}"
+                                                   Width="32" Height="32"
+                                                   Margin="8,0,0,0"
+                                                   Command="{Binding DataContext.DeleteStackCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"
+                                                   ToolTip="{loc:Localize ContextMenuDeleteStack}">
+                                                <TextBlock Text="🗑️" FontSize="12"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- Loading Overlay -->
+                <Border Name="LoadingOverlay" 
+                        Grid.Row="1"
+                        Background="{DynamicResource BackgroundBrush}"
+                        Panel.ZIndex="1000"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <!-- Animated Loading Spinner -->
+                            <Border Width="48" Height="48" 
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,0,20">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                                        <Setter Property="BorderThickness" Value="4"/>
+                                        <Setter Property="CornerRadius" Value="24"/>
+                                        <Style.Triggers>
+                                            <EventTrigger RoutedEvent="Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard RepeatBehavior="Forever">
+                                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                       From="0" To="360" Duration="0:0:1"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Border.RenderTransform>
+                                    <RotateTransform CenterX="24" CenterY="24"/>
+                                </Border.RenderTransform>
+                                <Ellipse Width="8" Height="8" 
+                                         Fill="{DynamicResource PrimaryBrush}"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         Margin="2"/>
+                            </Border>
+                            
+                            <TextBlock Text="Loading Stacks..." 
+                                      Foreground="{DynamicResource TextPrimaryBrush}"
+                                      FontSize="18"
+                                      FontWeight="SemiBold"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,0,0,8"/>
+                            <TextBlock Text="Loading stack data..." 
+                                      Foreground="{DynamicResource TextSecondaryBrush}"
+                                      FontSize="14"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Empty State -->
+                <StackPanel Grid.Row="1" 
+                           x:Name="EmptyStatePanel"
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"
+                           Visibility="{Binding HasStacks, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <TextBlock Text="📦" 
+                              FontSize="64" 
+                              HorizontalAlignment="Center"
+                              Margin="0,0,0,16"/>
+                    <TextBlock Text="{loc:Localize EmptyStacksTitle}" 
+                              FontSize="20" 
+                              FontWeight="SemiBold"
+                              Foreground="{DynamicResource TextPrimaryBrush}"
+                              HorizontalAlignment="Center"
+                              Margin="0,0,0,8"/>
+                    <TextBlock Text="{loc:Localize EmptyStacksSubtitle}" 
+                              FontSize="14" 
+                              Foreground="{DynamicResource TextSecondaryBrush}"
+                              HorizontalAlignment="Center"
+                              Margin="0,0,0,20"/>
+                    <Button Style="{StaticResource ModernPrimaryButton}"
+                           Width="160"
+                           Height="40"
+                           Command="{Binding CreateStackCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="➕" Margin="0,0,8,0"/>
+                            <TextBlock Text="{loc:Localize ButtonCreateStack}"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="3" 
+                Background="{DynamicResource CardBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1"
+                CornerRadius="8" 
+                Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0"
+                          Text="{Binding StatusBarText}"
+                          Style="{StaticResource ModernCaptionText}"
+                          VerticalAlignment="Center"/>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Text="{Binding TotalStacksText}"
+                              Style="{StaticResource ModernCaptionText}"
+                              Margin="0,0,16,0"
+                              VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding ActiveStacksText}"
+                              Style="{StaticResource ModernCaptionText}"
+                              Foreground="{StaticResource SuccessBrush}"
+                              VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

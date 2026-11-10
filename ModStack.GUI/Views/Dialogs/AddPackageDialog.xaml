@@ -1,0 +1,709 @@
+<Window x:Class="ModStack.GUI.Views.Dialogs.AddPackageDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:ModStack.GUI.Views.Controls"
+        Title="Add New Package"
+        Height="780" 
+        Width="680"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+
+    <!-- Dialog container with enhanced shadow -->
+    
+    <Border CornerRadius="8"
+            Background="{DynamicResource CardBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            SnapsToDevicePixels="True">
+        <Grid>
+            <!-- Main Dialog Content -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+            <!-- Custom Title Bar -->
+            <Border Grid.Row="0" Style="{StaticResource DialogTitleBarStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Title -->
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="Add New Package" 
+                                Style="{StaticResource DialogTitleTextStyle}"/>
+                        <TextBlock Text="Add a custom package to the package manager" 
+                                Style="{StaticResource DialogSubtitleTextStyle}"/>
+                    </StackPanel>
+                    
+                    <!-- Close Button -->
+                    <Button Grid.Column="1" 
+                            Style="{StaticResource DialogCloseButtonStyle}"
+                            Command="{Binding CancelCommand}"/>
+                </Grid>
+            </Border>
+
+            <!-- Content Area -->
+            <ScrollViewer Grid.Row="1" 
+                        VerticalScrollBarVisibility="Auto"
+                        Padding="24">
+                <StackPanel>
+                    <!-- Basic Information -->
+                    <TextBlock Text="Basic Information" 
+                            Style="{StaticResource ModernHeading2}"/>
+
+                    <TextBlock Text="Package Name *" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <StackPanel Margin="0,0,0,0">
+                        <Grid Margin="0,0,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBox x:Name="NameTextBox" 
+                                    Grid.Column="0"
+                                    Style="{StaticResource ModernTextBox}"
+                                    Text="{Binding PackageName, UpdateSourceTrigger=PropertyChanged}"/>
+                            
+                            <!-- Validation Indicator -->
+                            <TextBlock Grid.Column="1"
+                                      Text="✓"
+                                      FontSize="16"
+                                      VerticalAlignment="Center"
+                                      Margin="8,0,0,0"
+                                      Foreground="Green"
+                                      Visibility="{Binding IsPackageNameValid, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </Grid>
+                        
+                        <!-- Package Name Validation Message (hidden in edit mode) -->
+                        <TextBlock x:Name="PackageNameValidationTextBlock"
+                                  Text="{Binding PackageNameValidationMessage}"
+                                  FontSize="11"
+                                  Margin="0,4,0,8"
+                                  Foreground="{Binding IsPackageNameValid, Converter={StaticResource BooleanToColorConverter}}"/>
+                    </StackPanel>
+                    
+                    <!-- Edit Mode Warning -->
+                    <TextBlock x:Name="EditModeWarningTextBlock"
+                              Text="⚠️ Package name cannot be changed when editing existing packages"
+                              FontSize="11"
+                              Foreground="Orange"
+                              Margin="0,0,0,16"
+                              Visibility="Collapsed"/>
+
+                    <TextBlock Text="Display Name *" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <TextBox x:Name="DisplayNameTextBox" 
+                            Style="{StaticResource ModernTextBox}"
+                            Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Description" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <TextBox x:Name="DescriptionTextBox" 
+                            Style="{StaticResource ModernTextBox}"
+                            Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="Wrap"
+                            Height="60"
+                            VerticalScrollBarVisibility="Auto"
+                            Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Category *" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <ComboBox x:Name="CategoryComboBox" 
+                            Style="{StaticResource ModernComboBox}"
+                            SelectedValue="{Binding Category, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedValuePath="Content"
+                            Margin="0,0,0,16">
+                        <ComboBoxItem Content="Web Server"/>
+                        <ComboBoxItem Content="Database"/>
+                        <ComboBoxItem Content="Runtime"/>
+                        <ComboBoxItem Content="Cache"/>
+                        <ComboBoxItem Content="Database Tool"/>
+                        <ComboBoxItem Content="Other"/>
+                    </ComboBox>
+
+                    <TextBlock Text="Package Type *" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <ComboBox x:Name="PackageTypeComboBox" 
+                            Style="{StaticResource ModernComboBox}"
+                            SelectedValue="{Binding PackageType, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedValuePath="Content"
+                            Margin="0,0,0,16">
+                        <ComboBoxItem Content="Service"/>
+                        <ComboBoxItem Content="StandaloneWebApp"/>
+                        <ComboBoxItem Content="Framework"/>
+                        <ComboBoxItem Content="Tool"/>
+                    </ComboBox>
+
+                    <!-- Project Selection (for StandaloneWebApp, Framework, Tool) -->
+                    <StackPanel x:Name="ProjectSelectionSection" Visibility="Collapsed">
+                        <TextBlock Text="Target Project *" 
+                                FontSize="14" 
+                                FontWeight="SemiBold" 
+                                Foreground="{DynamicResource TextPrimaryBrush}" 
+                                Margin="0,0,0,8"/>
+                        <ComboBox x:Name="ProjectSelectionComboBox" 
+                                Style="{StaticResource ModernComboBox}"
+                                DisplayMemberPath="DisplayName"
+                                SelectedValuePath="Id"
+                                SelectedValue="{Binding SelectedProjectId, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,0,0,8"/>
+                        <TextBlock x:Name="ProjectInstallPathTextBlock" 
+                                FontSize="12" 
+                                Foreground="{DynamicResource TextSecondaryBrush}" 
+                                Margin="0,0,0,16"/>
+                    </StackPanel>
+
+                    <TextBlock Text="Icon (emoji or path)" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <TextBox x:Name="IconTextBox" 
+                            Style="{StaticResource ModernTextBox}"
+                            Text="{Binding Icon, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,16"/>
+
+                    <!-- Package Details -->
+                    <TextBlock Text="Package Details" 
+                            Style="{StaticResource ModernHeading2}"/>
+
+                    <TextBlock Text="Download Size (MB)" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <TextBox x:Name="SizeTextBox" 
+                            Style="{StaticResource ModernTextBox}"
+                            Text="{Binding DownloadSizeMB, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Homepage URL" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <TextBox x:Name="HomepageTextBox" 
+                            Style="{StaticResource ModernTextBox}"
+                            Text="{Binding Homepage, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,16"/>
+
+                    <TextBlock Text="License" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <TextBox x:Name="LicenseTextBox" 
+                            Style="{StaticResource ModernTextBox}"
+                            Text="{Binding License, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Tags (comma-separated)" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <TextBox x:Name="TagsTextBox" 
+                            Style="{StaticResource ModernTextBox}"
+                            Text="{Binding TagsString, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,16"/>
+
+                    <!-- Version Management -->
+                    <TextBlock Text="Version Management" 
+                            Style="{StaticResource ModernHeading2}"/>
+
+                    <!-- Add Version Section -->
+                    <Border Background="{DynamicResource SurfaceBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="16"
+                            Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="Add New Version" 
+                                    FontSize="14" 
+                                    FontWeight="SemiBold" 
+                                    Foreground="{DynamicResource TextPrimaryBrush}" 
+                                    Margin="0,0,0,12"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>  <!-- Labels row -->
+                                    <RowDefinition Height="Auto"/>  <!-- Input fields row -->
+                                    <RowDefinition Height="Auto"/>  <!-- Service name label -->
+                                    <RowDefinition Height="Auto"/>  <!-- Service name field -->
+                                    <RowDefinition Height="Auto"/>  <!-- Validation messages row -->
+                                    <RowDefinition Height="Auto"/>  <!-- Download URL label -->
+                                    <RowDefinition Height="Auto"/>  <!-- Download URL field + validation -->
+                                    <RowDefinition Height="Auto"/>  <!-- Checkboxes row -->
+                                </Grid.RowDefinitions>
+
+                                <!-- Labels Row -->
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Version *" 
+                                        FontSize="12" 
+                                        FontWeight="SemiBold" 
+                                        Foreground="{DynamicResource TextPrimaryBrush}" 
+                                        Margin="0,0,8,4"/>
+                                        
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="Display Name" 
+                                        FontSize="12" 
+                                        FontWeight="SemiBold" 
+                                        Foreground="{DynamicResource TextPrimaryBrush}" 
+                                        Margin="8,0,0,4"/>
+
+                                <!-- Input Fields Row (aligned) -->
+                                <Grid Grid.Row="1" Grid.Column="0" Margin="0,0,8,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBox x:Name="NewVersionTextBox" 
+                                            Grid.Column="0"
+                                            Style="{StaticResource ModernTextBox}"
+                                            ToolTip="Enter version in format: 1.0.0, 2.1.0-alpha, 3.0.0-beta.1"/>
+                                    
+                                    <!-- Version Validation Indicator -->
+                                    <TextBlock Grid.Column="1"
+                                              Text="✓"
+                                              FontSize="14"
+                                              VerticalAlignment="Center"
+                                              Margin="6,0,0,0"
+                                              Foreground="Green"
+                                              Visibility="{Binding IsVersionValid, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                </Grid>
+                                
+                                <TextBox x:Name="NewVersionDisplayNameTextBox" 
+                                        Grid.Row="1" Grid.Column="1"
+                                        Style="{StaticResource ModernTextBox}"
+                                        Margin="8,0,0,4"/>
+
+                                <!-- Service Name Field (Auto-generated) -->
+                                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="Service Name (Auto-generated)" 
+                                        FontSize="12" 
+                                        FontWeight="SemiBold" 
+                                        Foreground="{DynamicResource TextSecondaryBrush}" 
+                                        Margin="0,8,0,4"/>
+                                        
+                                <TextBox x:Name="NewVersionServiceNameTextBox" 
+                                        Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                        Style="{StaticResource ModernTextBox}"
+                                        IsEnabled="False"
+                                        Background="{DynamicResource DisabledBackgroundBrush}"
+                                        Foreground="{DynamicResource TextSecondaryBrush}"
+                                        Margin="0,0,0,4"
+                                        ToolTip="This field is automatically generated based on package name and version"/>
+
+                                <!-- Validation Messages Row -->
+                                <TextBlock Grid.Row="4" Grid.Column="0"
+                                          Text="{Binding VersionValidationMessage}"
+                                          FontSize="10"
+                                          Margin="0,0,8,8"
+                                          Foreground="{Binding IsVersionValid, Converter={StaticResource BooleanToColorConverter}}"/>
+                                          
+                                <!-- Empty space for Display Name validation (if needed later) -->
+                                <TextBlock Grid.Row="4" Grid.Column="1" 
+                                          Text=""
+                                          FontSize="10"
+                                          Margin="8,0,0,8"/>
+
+                                <!-- Download URL Label -->
+                                <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Download URL *" 
+                                        FontSize="12" 
+                                        FontWeight="SemiBold" 
+                                        Foreground="{DynamicResource TextPrimaryBrush}" 
+                                        Margin="0,0,0,4"/>
+                                        
+                                <!-- Download URL Field with Validation -->
+                                <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,0">
+                                    <Grid Margin="0,0,0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBox x:Name="NewVersionDownloadUrlTextBox" 
+                                                Grid.Column="0"
+                                                Style="{StaticResource ModernTextBox}"
+                                                ToolTip="Enter a valid URL starting with http:// or https://"/>
+                                        
+                                        <!-- URL Validation Indicator -->
+                                        <TextBlock Grid.Column="1"
+                                                  Text="✓"
+                                                  FontSize="14"
+                                                  VerticalAlignment="Center"
+                                                  Margin="6,0,0,0"
+                                                  Foreground="Green"
+                                                  Visibility="{Binding IsDownloadUrlValid, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    </Grid>
+                                    
+                                    <!-- URL Validation Message -->
+                                    <TextBlock Text="{Binding UrlValidationMessage}"
+                                              FontSize="10"
+                                              Margin="0,0,0,8"
+                                              Foreground="{Binding IsDownloadUrlValid, Converter={StaticResource BooleanToColorConverter}}"/>
+                                </StackPanel>
+
+                                <!-- Checkboxes Row -->
+                                <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,8,0,0">
+                                    <CheckBox x:Name="NewVersionIsStableCheckBox" 
+                                            Content="Stable" 
+                                            IsChecked="True"
+                                            Margin="0,0,16,0"/>
+                                    <CheckBox x:Name="NewVersionIsRecommendedCheckBox" 
+                                            Content="Recommended" 
+                                            Margin="0,0,16,0"/>
+                                    <CheckBox x:Name="NewVersionIsLTSCheckBox" 
+                                            Content="LTS"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                                <Button x:Name="CancelEditVersionButton"
+                                        Content="❌ Cancel Edit"
+                                        Style="{StaticResource ModernSecondaryButton}"
+                                        MinWidth="100"
+                                        Margin="0,0,8,0"
+                                        Visibility="Collapsed"
+                                        Command="{Binding CancelEditVersionCommand}"/>
+                                <Button x:Name="AddVersionButton"
+                                        Content="➕ Add Version"
+                                        Style="{StaticResource ModernSecondaryButton}"
+                                        MinWidth="120"
+                                        Command="{Binding AddVersionCommand}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Versions List -->
+                    <TextBlock Text="Package Versions" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    
+                    <Border Background="{DynamicResource SurfaceBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            MinHeight="120"
+                            MaxHeight="200"
+                            Margin="0,0,0,16">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl x:Name="VersionsItemsControl" 
+                                        ItemsSource="{Binding PackageVersions}"
+                                        Margin="8">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource CardBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="12,8"
+                                                Margin="0,0,0,4">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Version}" 
+                                                                FontSize="14" 
+                                                                FontWeight="SemiBold" 
+                                                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                                                Margin="0,0,8,0"/>
+                                                        
+                                                        <!-- Installation Status Badge -->
+                                                        <Border Background="{DynamicResource SuccessBrush}" 
+                                                                CornerRadius="8" 
+                                                                Padding="4,2" 
+                                                                Margin="0,0,4,0"
+                                                                Visibility="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding InstallationStatusIcon}" 
+                                                                        Foreground="White" 
+                                                                        FontSize="8" 
+                                                                        Margin="0,0,2,0"/>
+                                                                <TextBlock Text="INSTALLED" 
+                                                                        Foreground="White" 
+                                                                        FontSize="8" 
+                                                                        FontWeight="Bold"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                        
+                                                        <Border Background="{DynamicResource PrimaryBrush}" 
+                                                                CornerRadius="8" 
+                                                                Padding="4,2" 
+                                                                Margin="0,0,4,0"
+                                                                Visibility="{Binding IsRecommended, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <TextBlock Text="RECOMMENDED" 
+                                                                    Foreground="White" 
+                                                                    FontSize="8" 
+                                                                    FontWeight="Bold"/>
+                                                        </Border>
+                                                        <Border Background="{DynamicResource SuccessBrush}" 
+                                                                CornerRadius="8" 
+                                                                Padding="4,2" 
+                                                                Margin="0,0,4,0"
+                                                                Visibility="{Binding IsLTS, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <TextBlock Text="LTS" 
+                                                                    Foreground="White" 
+                                                                    FontSize="8" 
+                                                                    FontWeight="Bold"/>
+                                                        </Border>
+                                                    </StackPanel>
+                                                    <TextBlock Text="{Binding DisplayName}" 
+                                                            FontSize="12" 
+                                                            Foreground="{DynamicResource TextSecondaryBrush}"
+                                                            Margin="0,2,0,0"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                    <Button Style="{StaticResource TitleBarButton}"
+                                                            Width="24" Height="24"
+                                                            Margin="0,0,4,0"
+                                                            Command="{Binding DataContext.EditVersionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            CommandParameter="{Binding}"
+                                                            ToolTip="Edit Version">
+                                                        <TextBlock Text="✏️" FontSize="10"/>
+                                                    </Button>
+                                                    <Button Style="{StaticResource TitleBarButton}"
+                                                            Width="24" Height="24"
+                                                            Command="{Binding DataContext.RemoveVersionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            CommandParameter="{Binding}"
+                                                            ToolTip="Remove Version">
+                                                        <TextBlock Text="🗑️" FontSize="10"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+
+                    <!-- Configuration -->
+                    <TextBlock Text="Default Configuration" 
+                            Style="{StaticResource ModernHeading2}"/>
+
+                    <TextBlock Text="Default Port" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <TextBox x:Name="PortTextBox" 
+                            Style="{StaticResource ModernTextBox}"
+                            Text="{Binding DefaultPort, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Install Path" 
+                            FontSize="14" 
+                            FontWeight="SemiBold" 
+                            Foreground="{DynamicResource TextPrimaryBrush}" 
+                            Margin="0,0,0,8"/>
+                    <TextBox x:Name="InstallPathTextBox" 
+                            Style="{StaticResource ModernTextBox}"
+                            Text="{Binding InstallPath, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,16"/>
+
+                    <!-- Popular Package Toggle -->
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Text="Mark as Popular Package"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Width="200"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                Margin="0,0,10,0"/>
+                        <CheckBox x:Name="IsPopularCheckBox" 
+                                Grid.Column="1"
+                                Style="{StaticResource ModernToggleSwitch}"
+                                HorizontalAlignment="Left"
+                                Margin="12,0,0,0"
+                                FontSize="14"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                IsChecked="{Binding IsPopular, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+
+                    <!-- Auto-start Toggle -->
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Text="Auto-start after installation"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Width="200"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                Margin="0,0,10,0"/>
+                        <CheckBox x:Name="AutoStartCheckBox" 
+                                Grid.Column="1"
+                                Style="{StaticResource ModernToggleSwitch}"
+                                HorizontalAlignment="Left"
+                                Margin="12,0,0,0"
+                                FontSize="14"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                IsChecked="{Binding AutoStart, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+
+                    <!-- Register as Service Toggle -->
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Text="Register as Windows Service"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Width="200"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                Margin="0,0,10,0"/>
+                        <CheckBox x:Name="RegisterAsServiceCheckBox" 
+                                Grid.Column="1"
+                                Style="{StaticResource ModernToggleSwitch}"
+                                HorizontalAlignment="Left"
+                                Margin="12,0,0,0"
+                                FontSize="14"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                IsChecked="{Binding RegisterAsService, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Buttons with Progress Indicator -->
+            <Border Grid.Row="2" 
+                    Background="{DynamicResource CardBrush}" 
+                    BorderBrush="{DynamicResource BorderBrush}" 
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="0,0,12,12"
+                    Padding="24,16">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Progress Bar -->
+                    <ProgressBar x:Name="SaveProgressBar"
+                                Grid.Row="0"
+                                Height="4"
+                                Margin="0,0,0,8"
+                                IsIndeterminate="True"
+                                Visibility="Collapsed"
+                                Foreground="{DynamicResource PrimaryBrush}"/>
+                    
+                    <!-- Progress Text -->
+                    <TextBlock x:Name="ProgressTextBlock"
+                              Grid.Row="1"
+                              Text="Saving package..."
+                              FontSize="12"
+                              Foreground="{DynamicResource TextSecondaryBrush}"
+                              HorizontalAlignment="Center"
+                              Margin="0,0,0,12"
+                              Visibility="Collapsed"/>
+                    
+                    <!-- Action Buttons -->
+                    <StackPanel Grid.Row="2" 
+                               Orientation="Horizontal" 
+                               HorizontalAlignment="Right">
+                        <Button x:Name="CancelButton"
+                                Content="Cancel"
+                                Style="{StaticResource ModernSecondaryButton}"
+                                Margin="0,0,12,0"
+                                MinWidth="100"
+                                Command="{Binding CancelCommand}"/>
+                        <Button x:Name="SaveButton"
+                                Style="{StaticResource ModernPrimaryButton}"
+                                MinWidth="120"
+                                Command="{Binding SavePackageCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <!-- Loading Spinner -->
+                                <Grid x:Name="LoadingSpinner" 
+                                      Width="16" Height="16" 
+                                      Margin="0,0,8,0"
+                                      Visibility="Collapsed">
+                                    <!-- Modern Ring Spinner -->
+                                    <Ellipse Stroke="{DynamicResource PrimaryButtonTextBrush}" 
+                                            StrokeThickness="2" 
+                                            Width="14" Height="14"
+                                            StrokeDashArray="10,5"
+                                            RenderTransformOrigin="0.5,0.5">
+                                        <Ellipse.RenderTransform>
+                                            <RotateTransform x:Name="RingSpinnerRotation"/>
+                                        </Ellipse.RenderTransform>
+                                        <Ellipse.Triggers>
+                                            <EventTrigger RoutedEvent="Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard RepeatBehavior="Forever">
+                                                        <DoubleAnimation Storyboard.TargetName="RingSpinnerRotation"
+                                                                       Storyboard.TargetProperty="Angle"
+                                                                       From="0" To="360" Duration="0:0:0.8"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Ellipse.Triggers>
+                                    </Ellipse>
+                                </Grid>
+                                
+                                <!-- Button Text -->
+                                <TextBlock x:Name="SaveButtonText" Text="Add Package"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            </Grid>
+
+            <!-- Success Overlay -->
+            <views:SuccessOverlay x:Name="SuccessOverlay" 
+                                 Grid.RowSpan="4"
+                                 Visibility="Collapsed"/>
+        </Grid>
+    </Border>
+</Window>

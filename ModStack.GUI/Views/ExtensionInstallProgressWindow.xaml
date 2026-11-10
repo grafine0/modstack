@@ -1,0 +1,199 @@
+<Window x:Class="ModStack.GUI.Views.ExtensionInstallProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:ModStack.GUI.Converters"
+        Title="{Binding Title}" 
+        Height="340" 
+        Width="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+    
+    <Window.Resources>
+        <converters:ProgressToWidthConverter x:Key="ProgressToWidthConverter"/>
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+    </Window.Resources>
+    
+    <!-- Modern dialog container with shadow -->
+    <Border CornerRadius="12"
+            Background="{DynamicResource BackgroundBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            SnapsToDevicePixels="True">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000"
+                              Opacity="0.3"
+                              BlurRadius="20"
+                              ShadowDepth="0"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>  <!-- Title bar -->
+                <RowDefinition Height="*"/>     <!-- Content -->
+                <RowDefinition Height="Auto"/>  <!-- Buttons -->
+            </Grid.RowDefinitions>
+
+            <!-- Modern Title Bar -->
+            <Border Grid.Row="0" Style="{StaticResource DialogTitleBarStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Extension Icon -->
+                    <TextBlock Grid.Column="0"
+                              Text="🧩"
+                              FontSize="20"
+                              Foreground="{DynamicResource AccentBrush}"
+                              VerticalAlignment="Center"
+                              Margin="0,0,12,0"/>
+                    
+                    <!-- Title -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Installing PHP Extension" 
+                                  Style="{StaticResource DialogTitleTextStyle}"/>
+                        <TextBlock Text="{Binding ExtensionName}" 
+                                  Style="{StaticResource DialogSubtitleTextStyle}"/>
+                    </StackPanel>
+                    
+                    <!-- Close Button (hidden during installation) -->
+                    <Button Grid.Column="2" 
+                            Style="{StaticResource DialogCloseButtonStyle}"
+                            Click="CloseButton_Click"
+                            Visibility="{Binding CanClose, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </Grid>
+            </Border>
+
+            <!-- Content Area -->
+            <StackPanel Grid.Row="1" Margin="24,20,24,16">
+                
+                <!-- Progress Information -->
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Status Icon -->
+                    <Border Grid.Column="0"
+                            Background="{DynamicResource AccentBrush}"
+                            CornerRadius="20"
+                            Width="40" Height="40"
+                            Margin="0,0,16,0">
+                        <TextBlock Text="🧩"
+                                  FontSize="18"
+                                  Foreground="White"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    </Border>
+                    
+                    <!-- Extension Details -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding ExtensionDisplayName}"
+                                  FontSize="16"
+                                  FontWeight="SemiBold"
+                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding ExtensionDescription}"
+                                  FontSize="12"
+                                  Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Progress Bar Container -->
+                <Border Background="{DynamicResource CardBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="16"
+                        Margin="0,0,0,16">
+                    
+                    <!-- Progress Bar Background -->
+                    <Grid>
+                        <Border x:Name="ProgressTrack"
+                                Background="{DynamicResource SurfaceBrush}"
+                                CornerRadius="4"
+                                Height="8">
+                            <!-- Progress Fill -->
+                            <Border Background="{DynamicResource AccentBrush}"
+                                    CornerRadius="4"
+                                    HorizontalAlignment="Left">
+                                <Border.Width>
+                                    <MultiBinding Converter="{StaticResource ProgressToWidthConverter}">
+                                        <Binding Path="ProgressPercentage"/>
+                                        <Binding ElementName="ProgressTrack" Path="ActualWidth"/>
+                                    </MultiBinding>
+                                </Border.Width>
+                            </Border>
+                        </Border>
+                        
+                        <!-- Progress Text -->
+                        <TextBlock Text="{Binding ProgressText}"
+                                  FontSize="12"
+                                  FontWeight="SemiBold"
+                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Margin="0,12,0,0"/>
+                    </Grid>
+                </Border>
+
+                <!-- Status Text -->
+                <TextBlock Text="{Binding StatusText}"
+                          FontSize="13"
+                          Foreground="{DynamicResource TextSecondaryBrush}"
+                          TextAlignment="Center"
+                          TextWrapping="Wrap"
+                          MaxWidth="420"
+                          LineHeight="18"
+                          Margin="0,0,0,16"
+                          Visibility="{Binding StatusText, Converter={StaticResource StringToVisibilityConverter}}"/>
+
+                <!-- Download Information -->
+                <StackPanel Orientation="Horizontal"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,8"
+                           Visibility="{Binding DownloadInfo, Converter={StaticResource StringToVisibilityConverter}}">
+                    <TextBlock Text="📥"
+                              FontSize="12"
+                              Margin="0,0,8,0"
+                              VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding DownloadInfo}"
+                              FontSize="12"
+                              Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Action Buttons -->
+            <Border Grid.Row="2" 
+                    Background="{DynamicResource CardBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="0,0,12,12"
+                    Padding="20,16">
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Right">
+                    <Button Content="Cancel" 
+                            Style="{StaticResource ModernSecondaryButton}"
+                            Click="CancelButton_Click"
+                            Visibility="{Binding CanCancel, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Margin="0,0,12,0"
+                            Padding="16,8"
+                            MinWidth="80"/>
+                            
+                    <Button Content="Close"
+                           Style="{StaticResource ModernPrimaryButton}"
+                           Click="CloseButton_Click"
+                           Visibility="{Binding CanClose, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           Padding="16,8"
+                           MinWidth="80"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

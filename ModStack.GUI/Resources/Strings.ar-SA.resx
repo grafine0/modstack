@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- Application Name and Branding -->
+  <data name="AppName" xml:space="preserve">
+    <value>ModStack</value>
+  </data>
+  <data name="AppSubtitle" xml:space="preserve">
+    <value>مدير مكدس التطوير</value>
+  </data>
+  <data name="AppTitle" xml:space="preserve">
+    <value>ModStack - مدير مكدس تطوير الويب المعياري</value>
+  </data>
+  
+  <!-- Navigation Menu -->
+  <data name="NavDashboard" xml:space="preserve">
+    <value>لوحة التحكم</value>
+  </data>
+  <data name="NavPackageManager" xml:space="preserve">
+    <value>مدير الحزم</value>
+  </data>
+  <data name="NavManagePackages" xml:space="preserve">
+    <value>إدارة الحزم</value>
+  </data>
+  <data name="NavAddPackage" xml:space="preserve">
+    <value>إضافة حزمة</value>
+  </data>
+  <data name="NavManageServices" xml:space="preserve">
+    <value>إدارة الخدمات</value>
+  </data>
+  <data name="NavServiceLogs" xml:space="preserve">
+    <value>سجلات الخدمة</value>
+  </data>
+  <data name="NavManageStacks" xml:space="preserve">
+    <value>إدارة المكدسات</value>
+  </data>
+  <data name="NavCreateStack" xml:space="preserve">
+    <value>إنشاء مكدس</value>
+  </data>
+  <data name="NavManageProjects" xml:space="preserve">
+    <value>إدارة المشاريع</value>
+  </data>
+  <data name="NavCreateProject" xml:space="preserve">
+    <value>إنشاء مشروع</value>
+  </data>
+  <data name="NavConfigEditor" xml:space="preserve">
+    <value>محرر الإعدادات</value>
+  </data>
+  <data name="NavHostsFileEditor" xml:space="preserve">
+    <value>محرر ملف المضيفين</value>
+  </data>
+  <data name="NavSettings" xml:space="preserve">
+    <value>الإعدادات</value>
+  </data>
+  <data name="NavAbout" xml:space="preserve">
+    <value>حول</value>
+  </data>
+  
+  <!-- Section Headers -->
+  <data name="SectionPackages" xml:space="preserve">
+    <value>الحزم</value>
+  </data>
+  <data name="SectionServices" xml:space="preserve">
+    <value>الخدمات</value>
+  </data>
+  <data name="SectionStacks" xml:space="preserve">
+    <value>المكدسات</value>
+  </data>
+  <data name="SectionProjects" xml:space="preserve">
+    <value>المشاريع</value>
+  </data>
+  <data name="SectionTools" xml:space="preserve">
+    <value>الأدوات</value>
+  </data>
+  <data name="SectionSystem" xml:space="preserve">
+    <value>النظام</value>
+  </data>
+  
+  <!-- Service Logs View -->
+  <data name="ServiceLogsTitle" xml:space="preserve">
+    <value>سجلات الخدمة</value>
+  </data>
+  <data name="ServiceLogsDescription" xml:space="preserve">
+    <value>سجلات التطبيق في الوقت الفعلي ومعلومات حالة الخدمة</value>
+  </data>
+  <data name="LogLevelAll" xml:space="preserve">
+    <value>جميع المستويات</value>
+  </data>
+  <data name="LogLevelInfo" xml:space="preserve">
+    <value>معلومات فقط</value>
+  </data>
+  <data name="LogLevelWarning" xml:space="preserve">
+    <value>تحذير فقط</value>
+  </data>
+  <data name="LogLevelError" xml:space="preserve">
+    <value>خطأ فقط</value>
+  </data>
+  <data name="ButtonRefresh" xml:space="preserve">
+    <value>تحديث</value>
+  </data>
+  <data name="ButtonClear" xml:space="preserve">
+    <value>مسح</value>
+  </data>
+  <data name="ButtonSaveLogs" xml:space="preserve">
+    <value>حفظ السجلات</value>
+  </data>
+  <data name="ButtonCopyAllLogs" xml:space="preserve">
+    <value>نسخ جميع السجلات</value>
+  </data>
+  <data name="AutoScroll" xml:space="preserve">
+    <value>التمرير التلقائي</value>
+  </data>
+  <data name="LoadedLogEntries" xml:space="preserve">
+    <value>تم تحميل {0} إدخالات السجل</value>
+  </data>
+  <data name="NoLogFileFound" xml:space="preserve">
+    <value>لم يتم العثور على ملف السجل. ستظهر سجلات التصحيح هنا عند إنشائها.</value>
+  </data>
+  
+  <!-- Stack Management View -->
+  <data name="StackManagementTitle" xml:space="preserve">
+    <value>إدارة المكدسات</value>
+  </data>
+  <data name="StackManagementDescription" xml:space="preserve">
+    <value>إدارة مكدسات التطوير وإعدادات الخدمة</value>
+  </data>
+  <data name="ButtonCreateStack" xml:space="preserve">
+    <value>إنشاء مكدس</value>
+  </data>
+  <data name="ButtonClearFilters" xml:space="preserve">
+    <value>مسح المرشحات</value>
+  </data>
+  <data name="ColumnStackName" xml:space="preserve">
+    <value>اسم المكدس</value>
+  </data>
+  <data name="ColumnDescription" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="ColumnServices" xml:space="preserve">
+    <value>الخدمات</value>
+  </data>
+  <data name="ColumnStatus" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="ColumnActions" xml:space="preserve">
+    <value>الإجراءات</value>
+  </data>
+  <data name="ContextMenuStartStack" xml:space="preserve">
+    <value>تشغيل المكدس</value>
+  </data>
+  <data name="ContextMenuStopStack" xml:space="preserve">
+    <value>إيقاف المكدس</value>
+  </data>
+  <data name="ContextMenuEditStack" xml:space="preserve">
+    <value>تعديل المكدس</value>
+  </data>
+  <data name="ContextMenuDeleteStack" xml:space="preserve">
+    <value>حذف المكدس</value>
+  </data>
+  <data name="TooltipStartStack" xml:space="preserve">
+    <value>تشغيل المكدس</value>
+  </data>
+  <data name="TooltipStopStack" xml:space="preserve">
+    <value>إيقاف المكدس</value>
+  </data>
+  <data name="TooltipEditStack" xml:space="preserve">
+    <value>تعديل المكدس</value>
+  </data>
+  <data name="TooltipDeleteStack" xml:space="preserve">
+    <value>حذف المكدس</value>
+  </data>
+  <data name="NoStacksFound" xml:space="preserve">
+    <value>لم يتم العثور على مكدسات</value>
+  </data>
+  <data name="NoStacksFoundDescription" xml:space="preserve">
+    <value>قم بإنشاء أول مكدس تطوير للبدء</value>
+  </data>
+  
+  <!-- Common Buttons -->
+  <data name="ButtonOk" xml:space="preserve">
+    <value>موافق</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="ButtonSave" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="ButtonDelete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="ButtonEdit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="ButtonClose" xml:space="preserve">
+    <value>إغلاق</value>
+  </data>
+  <data name="ButtonYes" xml:space="preserve">
+    <value>نعم</value>
+  </data>
+  <data name="ButtonNo" xml:space="preserve">
+    <value>لا</value>
+  </data>
+  
+  <!-- Status Bar -->
+  <data name="StatusReady" xml:space="preserve">
+    <value>جاهز</value>
+  </data>
+  <data name="ButtonLogs" xml:space="preserve">
+    <value>السجلات</value>
+  </data>
+  
+  <!-- Error Messages -->
+  <data name="ErrorGeneric" xml:space="preserve">
+    <value>حدث خطأ</value>
+  </data>
+  <data name="ErrorLoading" xml:space="preserve">
+    <value>خطأ في التحميل: {0}</value>
+  </data>
+  <data name="ErrorSaving" xml:space="preserve">
+    <value>خطأ في الحفظ: {0}</value>
+  </data>
+  
+  <!-- Success Messages -->
+  <data name="SuccessSaved" xml:space="preserve">
+    <value>تم الحفظ بنجاح</value>
+  </data>
+  <data name="SuccessDeleted" xml:space="preserve">
+    <value>تم الحذف بنجاح</value>
+  </data>
+  
+  <!-- Settings -->
+  <data name="SettingsLanguage" xml:space="preserve">
+    <value>لغة التطبيق</value>
+  </data>
+  <data name="SettingsLanguageDescription" xml:space="preserve">
+    <value>اختر لغة العرض للتطبيق</value>
+  </data>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>تم تغيير اللغة إلى {0}</value>
+  </data>
+  <data name="SettingsLanguageChanged" xml:space="preserve">
+    <value>تم تغيير اللغة</value>
+  </data>
+  <data name="ErrorChangingLanguage" xml:space="preserve">
+    <value>خطأ في تغيير اللغة: {0}</value>
+  </data>
+  
+  <!-- Settings View -->
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>الإعدادات</value>
+  </data>
+  <data name="SettingsDescription" xml:space="preserve">
+    <value>قم بتكوين تفضيلات تطبيق ModStack الخاص بك</value>
+  </data>
+  <data name="ButtonResetToDefaults" xml:space="preserve">
+    <value>إعادة تعيين إلى الافتراضي</value>
+  </data>
+  <data name="ButtonSaveSettings" xml:space="preserve">
+    <value>حفظ الإعدادات</value>
+  </data>
+  <data name="ButtonApplySettings" xml:space="preserve">
+    <value>تطبيق الإعدادات</value>
+  </data>
+  <data name="SectionAppearanceSettings" xml:space="preserve">
+    <value>إعدادات المظهر</value>
+  </data>
+  <data name="SettingsApplicationTheme" xml:space="preserve">
+    <value>مظهر التطبيق</value>
+  </data>
+  <data name="SettingsApplicationThemeDescription" xml:space="preserve">
+    <value>اختر المظهر المرئي للتطبيق</value>
+  </data>
+  <data name="SettingsAccentColor" xml:space="preserve">
+    <value>لون التمييز</value>
+  </data>
+  <data name="SettingsAccentColorDescription" xml:space="preserve">
+    <value>اللون الأساسي للأزرار والتمييزات</value>
+  </data>
+  <data name="ButtonChooseColor" xml:space="preserve">
+    <value>اختر اللون</value>
+  </data>
+  <data name="SettingsAlwaysOnTop" xml:space="preserve">
+    <value>دائماً في المقدمة</value>
+  </data>
+  <data name="SettingsAlwaysOnTopDescription" xml:space="preserve">
+    <value>إبقاء نافذة ModStack فوق التطبيقات الأخرى</value>
+  </data>
+  <data name="SectionApplicationSettings" xml:space="preserve">
+    <value>إعدادات التطبيق</value>
+  </data>
+  <data name="SettingsStartWithWindows" xml:space="preserve">
+    <value>البدء مع Windows</value>
+  </data>
+  <data name="SettingsStartWithWindowsDescription" xml:space="preserve">
+    <value>بدء ModStack تلقائياً عند تشغيل Windows</value>
+  </data>
+  <data name="SettingsMinimizeToTray" xml:space="preserve">
+    <value>تصغير إلى صينية النظام</value>
+  </data>
+  <data name="SettingsMinimizeToTrayDescription" xml:space="preserve">
+    <value>تصغير التطبيق إلى صينية النظام بدلاً من شريط المهام</value>
+  </data>
+  <data name="SettingsResetMinimizeChoice" xml:space="preserve">
+    <value>إعادة تعيين خيار التصغير</value>
+  </data>
+  <data name="SettingsResetMinimizeChoiceDescription" xml:space="preserve">
+    <value>مسح التفضيل المحفوظ وإظهار الحوار مرة أخرى عند الإغلاق</value>
+  </data>
+  <data name="ButtonReset" xml:space="preserve">
+    <value>إعادة تعيين</value>
+  </data>
+  <data name="SettingsAutoRefreshInterval" xml:space="preserve">
+    <value>فترة التحديث التلقائي (بالثواني)</value>
+  </data>
+  <data name="SettingsAutoRefreshIntervalDescription" xml:space="preserve">
+    <value>عدد مرات تحديث حالة الخدمة تلقائياً</value>
+  </data>
+  <data name="SettingsEnableLogging" xml:space="preserve">
+    <value>تفعيل التسجيل</value>
+  </data>
+  <data name="SettingsEnableLoggingDescription" xml:space="preserve">
+    <value>تفعيل أو تعطيل وظيفة تسجيل التطبيق</value>
+  </data>
+  <data name="SettingsLogLevel" xml:space="preserve">
+    <value>مستوى التسجيل</value>
+  </data>
+  <data name="SettingsLogLevelDescription" xml:space="preserve">
+    <value>تعيين الحد الأدنى لمستوى التسجيل لتسجيل التطبيق</value>
+  </data>
+  <data name="SectionServiceSettings" xml:space="preserve">
+    <value>إعدادات الخدمة</value>
+  </data>
+  <data name="SettingsAutoAssignPorts" xml:space="preserve">
+    <value>تعيين المنافذ تلقائياً</value>
+  </data>
+  <data name="SettingsAutoAssignPortsDescription" xml:space="preserve">
+    <value>تعيين المنافذ المتاحة تلقائياً للخدمات الجديدة</value>
+  </data>
+  <data name="SettingsPortRangeStart" xml:space="preserve">
+    <value>بداية نطاق المنفذ</value>
+  </data>
+  <data name="SettingsPortRangeStartDescription" xml:space="preserve">
+    <value>رقم المنفذ الأولي للتعيين التلقائي للمنافذ</value>
+  </data>
+  <data name="SettingsPortRangeEnd" xml:space="preserve">
+    <value>نهاية نطاق المنفذ</value>
+  </data>
+  <data name="SettingsPortRangeEndDescription" xml:space="preserve">
+    <value>رقم المنفذ النهائي للتعيين التلقائي للمنافذ</value>
+  </data>
+  <data name="SettingsRootDirectory" xml:space="preserve">
+    <value>المجلد الجذر</value>
+  </data>
+  <data name="SettingsRootDirectoryDescription" xml:space="preserve">
+    <value>المجلد الجذر حيث ينشئ ModStack جميع المجلدات (المشاريع، الخدمات، السجلات)</value>
+  </data>
+  <data name="ButtonBrowse" xml:space="preserve">
+    <value>تصفح</value>
+  </data>
+  <data name="SectionNotifications" xml:space="preserve">
+    <value>الإشعارات</value>
+  </data>
+  <data name="NotificationsDescription" xml:space="preserve">
+    <value>تحكم في كيفية ومتى تتلقى الإشعارات</value>
+  </data>
+  <data name="SettingsShowSuccessNotifications" xml:space="preserve">
+    <value>عرض إشعارات النجاح</value>
+  </data>
+  <data name="SettingsShowSuccessNotificationsDescription" xml:space="preserve">
+    <value>عرض الإشعارات للإجراءات الناجحة</value>
+  </data>
+  <data name="SettingsShowErrorNotifications" xml:space="preserve">
+    <value>عرض إشعارات الخطأ</value>
+  </data>
+  <data name="SettingsShowErrorNotificationsDescription" xml:space="preserve">
+    <value>عرض الإشعارات للأخطاء والإخفاقات</value>
+  </data>
+  <data name="SettingsAutoDismissNotifications" xml:space="preserve">
+    <value>إغلاق الإشعارات تلقائياً</value>
+  </data>
+  <data name="SettingsAutoDismissNotificationsDescription" xml:space="preserve">
+    <value>إخفاء الإشعارات تلقائياً بعد تأخير</value>
+  </data>
+  <data name="SettingsDismissTimeout" xml:space="preserve">
+    <value>مهلة الإغلاق</value>
+  </data>
+  <data name="SettingsDismissTimeoutDescription" xml:space="preserve">
+    <value>مدة عرض الإشعارات قبل الإغلاق التلقائي</value>
+  </data>
+  
+  <!-- Create Stack View -->
+  <data name="CreateStackTitle" xml:space="preserve">
+    <value>إنشاء مجموعة جديدة</value>
+  </data>
+  <data name="EditStackTitle" xml:space="preserve">
+    <value>تعديل المجموعة</value>
+  </data>
+  <data name="CreateStackSubtitle" xml:space="preserve">
+    <value>قم بتكوين مجموعة تطوير جديدة مع خدماتك المفضلة</value>
+  </data>
+  <data name="EditStackSubtitle" xml:space="preserve">
+    <value>قم بتعديل تكوين مجموعة التطوير الخاصة بك</value>
+  </data>
+  <data name="ButtonUpdateStack" xml:space="preserve">
+    <value>تحديث المجموعة</value>
+  </data>
+  
+  <!-- Config Editor View -->
+  <data name="ConfigEditorNoFileLoaded" xml:space="preserve">
+    <value>لم يتم تحميل ملف</value>
+  </data>
+  <data name="ConfigEditorLines" xml:space="preserve">
+    <value>السطور: {0}</value>
+  </data>
+  <data name="ConfigEditorChars" xml:space="preserve">
+    <value>الأحرف: {0}</value>
+  </data>
+  <data name="ConfigEditorModified" xml:space="preserve">
+    <value>معدل - {0}</value>
+  </data>
+  <data name="ConfigEditorDialogTitle" xml:space="preserve">
+    <value>فتح ملف التكوين</value>
+  </data>
+  <data name="ConfigEditorLoadingFile" xml:space="preserve">
+    <value>جاري تحميل الملف...</value>
+  </data>
+  <data name="ConfigEditorFileLoadedSuccessfully" xml:space="preserve">
+    <value>تم تحميل الملف بنجاح</value>
+  </data>
+  <data name="ConfigEditorFileNotFound" xml:space="preserve">
+    <value>الملف غير موجود</value>
+  </data>
+  <data name="ConfigEditorErrorLoadingFile" xml:space="preserve">
+    <value>خطأ في تحميل الملف: {0}</value>
+  </data>
+  <data name="ConfigEditorLoadError" xml:space="preserve">
+    <value>خطأ في التحميل</value>
+  </data>
+  <data name="ConfigEditorSavingFile" xml:space="preserve">
+    <value>جاري حفظ الملف...</value>
+  </data>
+  <data name="ConfigEditorFileSaved" xml:space="preserve">
+    <value>تم حفظ الملف بنجاح</value>
+  </data>
+  <data name="ConfigEditorErrorSavingFile" xml:space="preserve">
+    <value>خطأ في حفظ الملف: {0}</value>
+  </data>
+  <data name="ConfigEditorSaveError" xml:space="preserve">
+    <value>خطأ في الحفظ</value>
+  </data>
+  <data name="ConfigEditorDialogSaveTitle" xml:space="preserve">
+    <value>حفظ ملف التكوين</value>
+  </data>
+  
+  <!-- MainWindow Tooltips -->
+  <data name="TooltipMinimize" xml:space="preserve">
+    <value>تصغير</value>
+  </data>
+  <data name="TooltipMaximize" xml:space="preserve">
+    <value>تكبير/استعادة</value>
+  </data>
+  <data name="TooltipClose" xml:space="preserve">
+    <value>إغلاق</value>
+  </data>
+  
+  <!-- About Section -->
+  <data name="ButtonWebsite" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
+  <data name="ButtonDocumentation" xml:space="preserve">
+    <value>التوثيق</value>
+  </data>
+  <data name="ButtonReportIssue" xml:space="preserve">
+    <value>الإبلاغ عن مشكلة</value>
+  </data>
+</root>
+
